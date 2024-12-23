@@ -1,12 +1,12 @@
 const renderRankHistoryGraph = require("./renderRankGraph.js");
-const { formatNumber, getBackground, encodeImage } = require("./utils.js");
+const { formatNumber, getBackground } = require("./utils.js");
 
-const renderCard = async (data, background = "default", hex = null) => {
+const renderCard = (data, background = "default", hex = null) => {
     const stats = data.statistics || {};
     const grades = ["SSH", "SS", "SH", "S", "A"];
     const gradeCounts = stats.grade_counts || {};
-    const avatarUrl = await encodeImage(data.avatar_url || "");
-    const flagUrl = await encodeImage(`https://osu.ppy.sh/images/flags/${data.country_code}.png`);
+    const avatarUrl = data.avatar_url || "";
+    const flagUrl = `https://osu.ppy.sh/images/flags/${data.country_code}.png`;
     const globalRank = stats.global_rank || "N/A";
     const countryRank = stats.country_rank || "N/A";
     const pp = stats.pp.toFixed(0) || "N/A";
@@ -26,7 +26,7 @@ const renderCard = async (data, background = "default", hex = null) => {
     const svgHeight = 200;
 
     // Background Settings 🗣🔥
-    const backgroundType = encodeImage(getBackground(background, hex, svgWidth, svgHeight));
+    const backgroundType = getBackground(background, hex, svgWidth, svgHeight);
 
     // Grade Settings 👨‍🎓
     const gradeIconHeight = 12;
@@ -40,10 +40,9 @@ const renderCard = async (data, background = "default", hex = null) => {
     let currentX = gradeStartX;
     for (const grade of grades) {
         const gradeCount = gradeCounts[grade.toLowerCase()] || 0;
-        gradeIcon = await encodeImage(`/assets/images/grades/${grade}.svg`);
         gradeIcons += `
             <g transform="translate(${currentX}, ${gradeStartY})">
-                <image href="${gradeIcon}" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
+                <image href="/assets/images/grades/${grade}.svg" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
                 <text x="${gradeIconWidth / 2}" y="${
             gradeIconHeight + 10
         }" class="medium text ans" text-anchor="middle">${gradeCount}</text>
@@ -59,7 +58,7 @@ const renderCard = async (data, background = "default", hex = null) => {
 
     // Play mode settings 🎹🍎1️⃣🥁
     const playMode = data.playmode || "osu";
-    const playModeIcon = await encodeImage(`/assets/images/icons/mode-${playMode}.png`);
+    const playModeIcon = `/assets/images/icons/mode-${playMode}.png`;
 
     // Playstyles ⌨🐁✏🗑
     const playStyles = data.playstyle || [];
@@ -106,7 +105,7 @@ const renderCard = async (data, background = "default", hex = null) => {
         .small { font-size: 7px; }
         .ans { fill: rgb(247, 201, 221); }
     </style>
-    <image/ href="${backgroundType}">
+    ${backgroundType}
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
     <image href="${avatarUrl}" clip-path="url(#clip-pfp)" x="15" y="15" width="50" height="50" />
     <image class="flag" href="${playModeIcon}" x="300" y="15" width="40" height="25" />
