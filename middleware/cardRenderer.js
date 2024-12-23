@@ -42,7 +42,7 @@ const renderCard = (data, background = "default", hex = null) => {
         const gradeCount = gradeCounts[grade.toLowerCase()] || 0;
         gradeIcons += `
             <g transform="translate(${currentX}, ${gradeStartY})">
-                <image href="/assets/images/grades/${grade}.svg" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
+                <image href="https://osu-profile-stats.vercel.app/assets/images/grades/${grade}.svg" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
                 <text x="${gradeIconWidth / 2}" y="${
             gradeIconHeight + 10
         }" class="medium text ans" text-anchor="middle">${gradeCount}</text>
@@ -58,7 +58,7 @@ const renderCard = (data, background = "default", hex = null) => {
 
     // Play mode settings 🎹🍎1️⃣🥁
     const playMode = data.playmode || "osu";
-    const playModeIcon = `/assets/images/icons/mode-${playMode}.png`;
+    const playModeIcon = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playMode}.png`;
 
     // Playstyles ⌨🐁✏🗑
     const playStyles = data.playstyle || [];
@@ -78,7 +78,7 @@ const renderCard = (data, background = "default", hex = null) => {
                 playStyleBoxY + row * (playStyleIconSize + playStylePadding);
 
             playStyleIcons += `
-                <image href="/assets/images/icons/${style}.svg" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
+                <image href="https://osu-profile-stats.vercel.app/assets/images/icons/${style}.svg" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
             `;
         });
     }
@@ -97,7 +97,7 @@ const renderCard = (data, background = "default", hex = null) => {
     <style>
         @font-face {
             font-family: 'Torus';
-            src: url('/assets/fonts/Torus-Regular.otf') format('opentype');
+            src: url('https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf') format('opentype');
         }
         .text { fill:rgb(255, 255, 255); font-family: 'Torus', Arial, sans-serif; }
         .large { font-size: 12px; font-weight: bold; }
