@@ -4,10 +4,7 @@ const renderRankHistoryGraph = (rankHistory) => {
     const data = rankHistory.data;
 
     if (!data || data.length === 0) {
-        return `
-        <svg xmlns="http://www.w3.org/2000/svg" width="800" height="100">
-        </svg>
-        `;
+        return `<g></g>`;
     }
 
     const svgWidth = 800;
@@ -20,7 +17,7 @@ const renderRankHistoryGraph = (rankHistory) => {
     if (minRank === maxRank) {
         const flatLineY = svgHeight - padding - (svgHeight - 2 * padding) / 2;
         const flatLineRender = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+        <g x="80" y="80" width="180" height="40">
             <line 
                 x1="${padding}" 
                 y1="${flatLineY}" 
@@ -29,7 +26,7 @@ const renderRankHistoryGraph = (rankHistory) => {
                 stroke="yellow" 
                 stroke-width="2" 
             />
-        </svg>
+        </g>
         `;
         return flatLineRender;
     }
@@ -65,16 +62,13 @@ const renderRankHistoryGraph = (rankHistory) => {
         .join("");
 
     const render = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
-    <g transform="rotate(180, ${svgWidth / 2}, ${
+    <g x="80" y="80" width="180" height="40" transform="rotate(180, ${svgWidth / 2}, ${
         svgHeight / 2
     }) scale(-1, 1) translate(-${svgWidth}, 0)">
         <path d="${pathData}" stroke="yellow" fill="none" stroke-width="2" stroke-linejoin="round" stroke-dasharray="1000" stroke-dashoffset="1000">
             <animate attributeName="stroke-dashoffset" from="1000" to="0" dur="1s" repeatCount="1" fill="freeze" />
         </path>
-        
     </g>
-    </svg>
     `;
 
     return render;
