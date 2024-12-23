@@ -23,23 +23,25 @@ const renderRankHistoryGraph = (rankHistory, x = 80, y = 80, width = 180, height
         .join(" ");
 
     return `
-    <g transform="translate(${x}, ${y}) rotate(180, ${width / 2}, ${height / 2}) scale(-1, 1)">
-        <path d="${pathData}" 
-              stroke="yellow" 
-              fill="none" 
-              stroke-width="2" 
-              stroke-linejoin="round" 
-              stroke-dasharray="1000" 
-              stroke-dashoffset="1000">
-            <animate attributeName="stroke-dashoffset" from="1000" to="0" dur="1s" repeatCount="1" fill="freeze" />
-        </path>
-        ${points
-            .map(
-                (point) => `
-        <circle cx="${point.split(",")[0]}" cy="${point.split(",")[1]}" r="2" fill="yellow" />
-        `
-            )
-            .join("")}
+    <g transform="translate(${x}, ${y})">
+        <g transform="rotate(180, ${width / 2}, ${height / 2}) scale(-1, 1)">
+            <path d="${pathData}" 
+                stroke="yellow" 
+                fill="none" 
+                stroke-width="2" 
+                stroke-linejoin="round" 
+                stroke-dasharray="1000" 
+                stroke-dashoffset="1000">
+                <animate attributeName="stroke-dashoffset" from="1000" to="0" dur="1s" repeatCount="1" fill="freeze" />
+            </path>
+            ${points
+                .map(
+                    (point) => `
+            <circle cx="${point.split(",")[0]}" cy="${point.split(",")[1]}" r="2" fill="yellow" />
+            `
+                )
+                .join("")}
+        </g>
     </g>`;
 };
 
