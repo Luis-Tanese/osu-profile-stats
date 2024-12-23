@@ -52,7 +52,7 @@ const renderCard = (data, background = "default", hex = null) => {
 
     // Renderign the silly rank graph 👍
     const rankGraphSVG = renderRankHistoryGraph(rankHistory);
-    const rankGraphDataURI = `data:image/svg+xmls;base64,${Buffer.from(
+    const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
         rankGraphSVG
     ).toString("base64")}`;
 
