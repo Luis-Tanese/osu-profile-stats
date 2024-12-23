@@ -42,7 +42,7 @@ const renderCard = (data, background = "default", hex = null) => {
         const gradeCount = gradeCounts[grade.toLowerCase()] || 0;
         gradeIcons += `
             <g transform="translate(${currentX}, ${gradeStartY})">
-                <image href="https://osu-profile-stats.vercel.app/assets/images/grades/${grade}.svg" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
+                <image href="/assets/images/grades/${grade}.svg" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
                 <text x="${gradeIconWidth / 2}" y="${
             gradeIconHeight + 10
         }" class="medium text ans" text-anchor="middle">${gradeCount}</text>
@@ -52,10 +52,13 @@ const renderCard = (data, background = "default", hex = null) => {
 
     // Renderign the silly rank graph 👍
     const rankGraphSVG = renderRankHistoryGraph(rankHistory);
+    const rankGraphDataURI = `data:image/svg+xmls;base64,${Buffer.from(
+        rankGraphSVG
+    ).toString("base64")}`;
 
     // Play mode settings 🎹🍎1️⃣🥁
     const playMode = data.playmode || "osu";
-    const playModeIcon = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playMode}.png`;
+    const playModeIcon = `/assets/images/icons/mode-${playMode}.png`;
 
     // Playstyles ⌨🐁✏🗑
     const playStyles = data.playstyle || [];
@@ -75,7 +78,7 @@ const renderCard = (data, background = "default", hex = null) => {
                 playStyleBoxY + row * (playStyleIconSize + playStylePadding);
 
             playStyleIcons += `
-                <image href="https://osu-profile-stats.vercel.app/assets/images/icons/${style}.svg" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
+                <image href="/assets/images/icons/${style}.svg" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
             `;
         });
     }
@@ -94,7 +97,7 @@ const renderCard = (data, background = "default", hex = null) => {
     <style>
         @font-face {
             font-family: 'Torus';
-            src: url('https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf') format('opentype');
+            src: url('/assets/fonts/Torus-Regular.otf') format('opentype');
         }
         .text { fill:rgb(255, 255, 255); font-family: 'Torus', Arial, sans-serif; }
         .large { font-size: 12px; font-weight: bold; }
@@ -114,8 +117,10 @@ const renderCard = (data, background = "default", hex = null) => {
 
     <text x="160" y="50" class="text medium">Country Rank</text>
     <text x="160" y="60" class="text medium ans">#${countryRank}</text>
-    
-    ${rankGraphSVG}
+
+
+    <image href="${rankGraphDataURI}" x="80" y="80" width="180" height="40" />
+
 
     <text x="290" y="65" class="text small">Ranked Score</text>
     <text x="343" y="65" class="text small ans">${formatNumber(
