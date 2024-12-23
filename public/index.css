@@ -1,0 +1,93 @@
+@font-face {
+    font-family: "Torus";
+    src: url("../assets/fonts/Torus-Regular.otf");
+}
+
+* {
+    font-family: 'Torus';
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    line-height: 1.6;
+    background-color: #35272E;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+}
+
+header.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #35272E;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+header.navbar nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+header.navbar nav ul li {
+    margin-left: 1.5rem;
+}
+
+header.navbar nav ul li a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+}
+
+header.navbar nav ul li a:hover {
+    color: #fff0f6;
+}
+
+main {
+    padding: 2rem;
+    text-align: center;
+    flex: 1;
+}
+
+main .intro h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ff66aa;
+}
+
+main .intro p {
+    font-size: 1.1rem;
+    color: #ffffff;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.click-api {
+    text-decoration: none;
+    color: #ff66aa;
+    transition: color 0.3s;
+}
+
+.click-api:hover {
+    color: #fff0f6;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #35272E;
+    color: white;
+    font-size: 0.9rem;
+    border-top: 1px solid #444;
+}
