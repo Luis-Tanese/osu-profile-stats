@@ -145,7 +145,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 "en-us"
             )}][RENDER] Rendering silly profile card for ${username}.`
         );
-        const card = renderCard(
+        const card = await renderCard(
             userData,
             background || undefined,
             hex || undefined
