@@ -1,78 +1,30 @@
 const { log } = require("./utils.js");
 
-const renderRankHistoryGraph = (rankHistory) => {
-    const data = rankHistory.data;
+const renderRankHistoryGraph = (rankHistory, x = 80, y = 80, width = 180, height = 40) => {
+    const data = rankHistory.data || [];
 
-    if (!data || data.length === 0) {
-        return `<g></g>`;
+    if (!data.length) {
+        return `<g transform="translate(${x}, ${y})"></g>`;
     }
 
-    const svgWidth = 800;
-    const svgHeight = 100;
-    const padding = 20;
-
+    const padding = 5;
     const minRank = Math.min(...data);
     const maxRank = Math.max(...data);
-
-    if (minRank === maxRank) {
-        const flatLineY = svgHeight - padding - (svgHeight - 2 * padding) / 2;
-        const flatLineRender = `
-        <g x="80" y="80" width="180" height="40">
-            <line 
-                x1="${padding}" 
-                y1="${flatLineY}" 
-                x2="${svgWidth - padding}" 
-                y2="${flatLineY}" 
-                stroke="yellow" 
-                stroke-width="2" 
-            />
-        </g>
-        `;
-        return flatLineRender;
-    }
-
-    const normalize = (value) => {
-        return (value - minRank) / (maxRank - minRank);
-    };
+    const normalize = (value) => (value - minRank) / (maxRank - minRank);
 
     const points = data.map((rank, index) => {
-        const x =
-            (index / (data.length - 1)) * (svgWidth - 2 * padding) + padding;
-        const y =
-            svgHeight - padding - normalize(rank) * (svgHeight - 2 * padding);
-        return { x, y };
+        const px = (index / (data.length - 1)) * (width - 2 * padding) + padding;
+        const py = height - padding - normalize(rank) * (height - 2 * padding);
+        return `${px},${py}`;
     });
 
-    const pathData = points
-        .map((point, index) => {
-            return index === 0
-                ? `M ${point.x}, ${point.y}`
-                : `L ${point.x}, ${point.y}`;
-        })
-        .join(" ");
-
-    const circleElements = points
-        .map(
-            (point) => `
-        <circle cx="${point.x}" cy="${point.y}" r="4" fill="yellow">
-            <title>Rank: ${point.rank}</title>
-        </circle>
-    `
-        )
-        .join("");
-
-    const render = `
-    <g x="80" y="80" transform="rotate(180, ${svgWidth / 2}, ${
-        svgHeight / 2
-    }) scale(-1, 1) translate(-${svgWidth}, 0)">
-        <path d="${pathData}" stroke="yellow" fill="none" stroke-width="2" stroke-linejoin="round" stroke-dasharray="1000" stroke-dashoffset="1000">
-            <animate attributeName="stroke-dashoffset" from="1000" to="0" dur="1s" repeatCount="1" fill="freeze" />
-        </path>
-    </g>
-    `;
-
-    return render;
+    return `
+    <g transform="translate(${x}, ${y})">
+        <rect x="0" y="0" width="${width}" height="${height}" fill="rgba(255, 255, 255, 0.1)" rx="5" ry="5" />
+        <polyline points="${points.join(" ")}" fill="none" stroke="yellow" stroke-width="2" />
+    </g>`;
 };
+
 
 /* const rankHistory = {
     mode: "mania",
