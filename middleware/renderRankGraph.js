@@ -62,7 +62,7 @@ const renderRankHistoryGraph = (rankHistory) => {
         .join("");
 
     const render = `
-    <g x="80" y="80" width="180" height="40" transform="rotate(180, ${svgWidth / 2}, ${
+    <g x="80" y="80" transform="rotate(180, ${svgWidth / 2}, ${
         svgHeight / 2
     }) scale(-1, 1) translate(-${svgWidth}, 0)">
         <path d="${pathData}" stroke="yellow" fill="none" stroke-width="2" stroke-linejoin="round" stroke-dasharray="1000" stroke-dashoffset="1000">
