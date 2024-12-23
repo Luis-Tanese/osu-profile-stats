@@ -21,4 +21,13 @@ const getBackground = (background, hex = null, svgWidth, svgHeight) => {
     }
 };
 
-module.exports = { log, formatNumber, getBackground };
+const encodeImage = async (url) => {
+    try {
+        const response = await axios.get(url, { responseType: 'arraybuffer' });
+        return `data:${response.headers['content-type']};base64,${Buffer.from(response.data).toString('base64')}`;
+    } catch (error) {
+        return null;
+    }
+};
+
+module.exports = { log, formatNumber, getBackground, encodeImage };
