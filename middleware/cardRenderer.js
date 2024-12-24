@@ -1,7 +1,7 @@
 const renderRankHistoryGraph = require("./renderRankGraph.js");
-const { formatNumber, getBackground, toBase64 } = require("./utils.js");
+const { formatNumber, getBackground } = require("./utils.js");
 
-const renderCard = async (data, background = "default", hex = null) => {
+const renderCard = (data, background = "default", hex = null) => {
     const stats = data.statistics || {};
     const grades = ["SSH", "SS", "SH", "S", "A"];
     const gradeCounts = stats.grade_counts || {};
@@ -24,12 +24,6 @@ const renderCard = async (data, background = "default", hex = null) => {
     // SVG Settings =^-^=
     const svgWidth = 400;
     const svgHeight = 200;
-
-    // Converting stuff (>'-'<)
-    const avatarBase64 = await toBase64(avatarUrl);
-    const flagBase64 = await toBase64(flagUrl);
-    const playModeIconUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${data.playmode}.png`;
-    const playModeBase64 = await toBase64(playModeIconUrl);
 
     // Background Settings 🗣🔥
     const backgroundType = getBackground(background, hex, svgWidth, svgHeight);
@@ -61,6 +55,10 @@ const renderCard = async (data, background = "default", hex = null) => {
     const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
         rankGraphSVG
     ).toString("base64")}`;
+
+    // Play mode settings 🎹🍎1️⃣🥁
+    const playMode = data.playmode || "osu";
+    const playModeIcon = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playMode}.png`;
 
     // Playstyles ⌨🐁✏🗑
     const playStyles = data.playstyle || [];
@@ -109,9 +107,9 @@ const renderCard = async (data, background = "default", hex = null) => {
     </style>
     ${backgroundType}
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
-    <image href="${avatarBase64}" clip-path="url(#clip-pfp)" x="15" y="15" width="50" height="50" />
-    <image class="flag" href="${playModeBase64}" x="300" y="15" width="40" height="25" />
-    <image class="flag" href="${flagBase64}" x="340" y="15" width="40" height="25" />
+    <image href="${avatarUrl}" clip-path="url(#clip-pfp)" x="15" y="15" width="50" height="50" />
+    <image class="flag" href="${playModeIcon}" x="300" y="15" width="40" height="25" />
+    <image class="flag" href="${flagUrl}" x="340" y="15" width="40" height="25" />
     <text x="80" y="30" class="text large">${data.username}</text>
 
     <text x="80" y="50" class="text medium">Global Rank</text>
