@@ -1,8 +1,4 @@
-const axios = require("axios");
-const { dateTan } = require("datetan");
-
-const log = (string, type = "log") => {
-    
+const log = (string) => {
     console.log(string);
 };
 
@@ -12,6 +8,7 @@ const formatNumber = (value) => {
 };
 
 const getBackground = (background, hex = null, svgWidth, svgHeight) => {
+
     if (background === "color") {
         let hexSelected = hex;
         if (hexSelected === null) hexSelected = "f3f3f3f3f3"
@@ -24,20 +21,4 @@ const getBackground = (background, hex = null, svgWidth, svgHeight) => {
     }
 };
 
-const toBase64 = async (url) => {
-    try {
-        const res = await axios.get(url, { responseType: "arraybuffer" });
-        const buffer = Buffer.from(res.data, "binary");
-        const mimeType = res.headers["Content-Type"];
-        return `data:${mimeType};base64,${buffer.toString("base64")}`;
-    } catch (error) {
-        log(`[${dateTan(
-                new Date(),
-                "YYYY-MM-DD HH:mm:ss:ms Z",
-                "en-us"
-            )}][ERROR] Failed to fetch resource at ${url}: ${error}`, "error");
-        return "";
-    }
-};
-
-module.exports = { log, formatNumber, getBackground, toBase64 };
+module.exports = { log, formatNumber, getBackground };
