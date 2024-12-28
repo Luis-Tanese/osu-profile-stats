@@ -27,6 +27,10 @@ const renderCard = async (data, background = "default", hex = null) => {
     const playmode = data.playmode || "osu";
     const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
     const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
+    const rankGraphSVG = renderRankHistoryGraph(rankHistory);
+    const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
+        rankGraphSVG
+    ).toString("base64")}`;
     const gradeIcons = {};
     for (const grade of grades) {
         const gradeURL = `https://osu-profile-stats.vercel.app/assets/images/grades/${grade}.svg`;
@@ -74,12 +78,6 @@ const renderCard = async (data, background = "default", hex = null) => {
             </g>`;
         currentX += gradeIconWidth + gradeSpacing;
     }
-
-    // Renderign the silly rank graph 👍
-    const rankGraphSVG = await renderRankHistoryGraph(rankHistory);
-    const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
-        rankGraphSVG
-    ).toString("base64")}`;;
 
     // Playstyles ⌨🐁✏🗑
     const playStyleBoxX = 15;
