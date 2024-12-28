@@ -1,6 +1,6 @@
 # osu-profile-stats
 
-osu-profile-stats generates SVG cards displaying osu! profile statistics. Customize the cards' appearance and play mode preferences through URL parameters, and embed them directly into your website or README files.
+osu-profile-stats generates SVG cards displaying osu! profile statistics. Customize the cards' appearance and play mode preferences through URL parameters, and embed them directly into your website or README files. You can adjust size by using the height selection in your `img` tag. Default height is 200.
 
 ---
 
