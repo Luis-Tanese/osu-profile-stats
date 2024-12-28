@@ -8,7 +8,7 @@ osu-profile-stats generates SVG cards displaying osu! profile statistics. Custom
 - You can choose from default, themed, or solid-color backgrounds.
 - Display stats for osu, mania, fruits, or taiko modes.
 - Use `<img>` tags to display your profile stats SVG anywhere.
-- Stats are updated every 30 minutes to prevent API overload (You can host your own deployment following the tutorial here).
+- Stats are updated every 30 minutes to prevent API overload (You can host your own deployment following the tutorial [here](#deploying-your-instance-wip)).
 
 ---
 
@@ -85,5 +85,7 @@ Combine parameters for detailed customization:
 Detailed deployment instructions will be added soon. Stay tuned!
 
 ---
+
+### If you have any troubles or issues using this, feel free to dm me in discord at tanese or open an issue in this repository
 
 Made with ♥ by Tanese
