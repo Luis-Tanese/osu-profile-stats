@@ -54,7 +54,7 @@ const renderRankHistoryGraph = (rankHistory) => {
         })
         .join(" ");
 
-    const render = `
+    /* const render = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
     <g transform="rotate(180, ${svgWidth / 2}, ${
         svgHeight / 2
@@ -63,6 +63,16 @@ const renderRankHistoryGraph = (rankHistory) => {
             <animate attributeName="stroke-dashoffset" from="1000" to="0" dur="1s" repeatCount="1" fill="freeze" />
         </path>
         
+    </g>
+    </svg>
+    `; */
+
+    const render = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+    <g transform="rotate(180, ${svgWidth / 2}, ${
+        svgHeight / 2
+    }) scale(-1, 1) translate(-${svgWidth}, 0)">
+        <path d="${pathData}" stroke="yellow" fill="none" stroke-width="2" stroke-linejoin="round" />
     </g>
     </svg>
     `;
