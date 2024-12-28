@@ -31,7 +31,7 @@ const getBackground = async (background, hex = null, svgWidth, svgHeight) => {
         const selectedBg = bgTypes.includes(background)
             ? background
             : "default";
-        const backgroundDataURI = getSillyImage(
+        const backgroundDataURI = await getSillyImage(
             `https://osu-profile-stats.vercel.app/assets/images/backgrounds/${selectedBg}.jpg`
         );
 
