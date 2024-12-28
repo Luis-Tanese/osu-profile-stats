@@ -1,6 +1,6 @@
 const { log } = require("./utils.js");
 
-const renderRankHistoryGraph = (rankHistory) => {
+const renderRankHistoryGraph = async (rankHistory) => {
     const data = rankHistory.data;
 
     if (!data || data.length === 0) {

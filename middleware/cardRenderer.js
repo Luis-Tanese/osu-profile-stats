@@ -76,10 +76,10 @@ const renderCard = async (data, background = "default", hex = null) => {
     }
 
     // Renderign the silly rank graph 👍
-    const rankGraphSVG = renderRankHistoryGraph(rankHistory);
+    const rankGraphSVG = await renderRankHistoryGraph(rankHistory);
     const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
         rankGraphSVG
-    ).toString("base64")}`;
+    ).toString("base64")}`;;
 
     // Playstyles ⌨🐁✏🗑
     const playStyleBoxX = 15;
