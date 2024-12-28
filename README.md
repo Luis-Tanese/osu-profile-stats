@@ -26,7 +26,7 @@ The SVG is customizable through URL parameters:
 
 | Parameter     | Values                               | Default    | Description                                   |
 |---------------|--------------------------------------|------------|-----------------------------------------------|
-| `background`  | `default`, `bg1`, `bg2`, `bg3`, `custom&hex=11bdb1` | `default`  | Choose a background. Use custom for solid colors by specifying a hex code (without `#`). |
+| `background`  | `default`, `bg1`, `bg2`, `bg3`, `color&hex=11bdb1` | `default`  | Choose a background. Use custom for solid colors by specifying a hex code (without `#`). |
 | `playmode`    | `osu`, `mania`, `fruits`, `taiko`    | User's default mode | Select a play mode to display stats for. |
 
 ---
@@ -40,7 +40,7 @@ Customize your background:
 | `bg1`    | ![bg1](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1)        | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1`          |
 | `bg2`    | ![bg2](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2)        | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2`          |
 | `bg3`    | ![bg3](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3)        | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3`          |
-| Custom (solid)  | ![Solid Color](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=custom&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=custom&hex=11bdb1` |
+| Color (solid)  | ![Solid Color](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1` |
 
 ---
 
@@ -62,7 +62,7 @@ Combine parameters for detailed customization:
 | Customization       | Preview                                                              | URL                                                                                              |
 |---------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
 | mania + bg3           | ![mania bg3](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3`     |
-| fruits + Custom Hex | ![fruits Hex](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=custom&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=custom&hex=11bdb1` |
+| fruits + Color Hex | ![fruits Hex](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
 
 ---
 
