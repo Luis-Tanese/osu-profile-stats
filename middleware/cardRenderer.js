@@ -114,7 +114,7 @@ const renderCard = async (data, background = "default", hex = null) => {
             src: url('https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf') format('opentype');
         }
         .text { fill:rgb(255, 255, 255); font-family: 'Torus', Arial, sans-serif; }
-        .large { font-size: 12px; font-weight: bold; }
+        .large { font-size: 12px; }
         .medium { font-size: 9px; }
         .small { font-size: 7px; }
         .ans { fill: rgb(247, 201, 221); }

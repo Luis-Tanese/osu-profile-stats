@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const Redis = require("ioredis");
-const rateLimit = require("express-rate-limit");
 const path = require("path");
 const renderCard = require("./middleware/cardRenderer.js");
 const { log } = require("./middleware/utils.js");
@@ -15,13 +14,6 @@ const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "assets")));
-
-const limiter = rateLimit({
-    windowsMs: 15 * 60 * 1000,
-    max: 1000,
-    message: "Too many requests from this IP, plase try again later",
-});
-app.use(limiter);
 
 const getOsuToken = async () => {
     const cachedToken = await redis.get("osuToken");
@@ -97,13 +89,13 @@ const fetchUserData = async (username, token, playmode) => {
     );
 
     const result = { ...statsRes.data, playmode: inferredPlaymode };
-    await redis.set(cacheKey, JSON.stringify(result), "EX", 300);
+    await redis.set(cacheKey, JSON.stringify(result), "EX", 1800);
     log(
         `[${dateTan(
             new Date(),
             "YYYY-MM-DD HH:mm:ss:ms Z",
             "en-us"
-        )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 5 minutes.`
+        )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 30 minutes.`
     );
     return result;
 };
