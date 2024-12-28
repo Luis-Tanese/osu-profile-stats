@@ -19,7 +19,7 @@ Embed the SVG in your project using an `<img>` tag:
 <img src="https://osu-profile-stats.vercel.app/api/profile-stats/{username}" height="245" alt="osu stats">
 ```
 
-Replace `{username}` with your osu! username.
+Replace `{username}` with your osu! username (If you have a space in your username, just put %20 in between, like silly tanese => silly%20tanese)
 
 ### URL Parameters
 The SVG is customizable through URL parameters:
@@ -49,7 +49,7 @@ Display stats for different play modes:
 
 | Play Mode | Preview                                                              | URL                                                                                       |
 |-----------|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| osu       | ![osu](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu`             |
+| osu       | ![osu](https://osu-profile-stats.vercel.app/api/profile-stats/osu%20angola?playmode=osu) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu`             |
 | mania     | ![mania](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania`           |
 | fruits    | ![fruits](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits`         |
 | taiko     | ![taiko](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=taiko) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=taiko`           |
