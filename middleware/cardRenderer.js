@@ -1,18 +1,5 @@
 const renderRankHistoryGraph = require("./renderRankGraph.js");
-const { formatNumber, getBackground } = require("./utils.js");
-const axios = require("axios");
-
-const getSillyImage = async (url) => {
-    try {
-        const res = await axios.get(url, { responseType: "arraybuffer" });
-        const contentType = res.headers["content-type"];
-        const base64 = Buffer.from(res.data, "binary").toString("base64");
-        return `data:${contentType};base64,${base64}`;
-    } catch (error) {
-        console.error(`Failed to get silly image from ${url}:`, error);
-        return "";
-    }
-};
+const { formatNumber, getBackground, getSillyImage } = require("./utils.js");
 
 const renderCard = async (data, background = "default", hex = null) => {
     const stats = data.statistics || {};
@@ -57,7 +44,12 @@ const renderCard = async (data, background = "default", hex = null) => {
     const svgHeight = 200;
 
     // Background Settings 🗣🔥
-    const backgroundType = getBackground(background, hex, svgWidth, svgHeight);
+    const backgroundType = await getBackground(
+        background,
+        hex,
+        svgWidth,
+        svgHeight
+    );
 
     // Grade Settings 👨‍🎓
     const gradeIconHeight = 12;
@@ -73,7 +65,9 @@ const renderCard = async (data, background = "default", hex = null) => {
         const gradeCount = gradeCounts[grade.toLowerCase()] || 0;
         gradeIconsRender += `
             <g transform="translate(${currentX}, ${gradeStartY})">
-                <image href="${gradeIcons[grade]}" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
+                <image href="${
+                    gradeIcons[grade]
+                }" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
                 <text x="${gradeIconWidth / 2}" y="${
             gradeIconHeight + 10
         }" class="medium text ans" text-anchor="middle">${gradeCount}</text>
@@ -97,10 +91,8 @@ const renderCard = async (data, background = "default", hex = null) => {
         const row = Math.floor(index / 2);
         const col = index % 2;
 
-        const x =
-            playStyleBoxX + col * (playStyleIconSize + playStylePadding);
-        const y =
-            playStyleBoxY + row * (playStyleIconSize + playStylePadding);
+        const x = playStyleBoxX + col * (playStyleIconSize + playStylePadding);
+        const y = playStyleBoxY + row * (playStyleIconSize + playStylePadding);
 
         playStyleIconsRender += `
             <image href="${playStyleIcons[style]}" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
