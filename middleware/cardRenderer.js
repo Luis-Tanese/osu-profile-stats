@@ -1,7 +1,20 @@
 const renderRankHistoryGraph = require("./renderRankGraph.js");
 const { formatNumber, getBackground } = require("./utils.js");
+const axios = require("axios");
 
-const renderCard = (data, background = "default", hex = null) => {
+const getSillyImage = async (url) => {
+    try {
+        const res = await axios.get(url, { responseType: "arraybuffer" });
+        const contentType = res.headers["content-type"];
+        const base64 = Buffer.from(res.data, "binary").toString("base64");
+        return `data:${contentType};base64,${base64}`;
+    } catch (error) {
+        console.error(`Failed to get silly image from ${url}:`, error);
+        return "";
+    }
+};
+
+const renderCard = async (data, background = "default", hex = null) => {
     const stats = data.statistics || {};
     const grades = ["SSH", "SS", "SH", "S", "A"];
     const gradeCounts = stats.grade_counts || {};
@@ -21,6 +34,24 @@ const renderCard = (data, background = "default", hex = null) => {
     const medals = data.user_achievements?.length || 0;
     const rankHistory = data.rank_history || [];
 
+    // Data URI settings ;-;
+    const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
+    const flagDataURI = await getSillyImage(flagUrl);
+    const playmode = data.playmode || "osu";
+    const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
+    const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
+    const gradeIcons = {};
+    for (const grade of grades) {
+        const gradeURL = `https://osu-profile-stats.vercel.app/assets/images/grades/${grade}.svg`;
+        gradeIcons[grade] = await getSillyImage(gradeURL);
+    }
+    const playStyles = data.playstyle || [];
+    const playStyleIcons = {};
+    for (const style of playStyles) {
+        const styleURL = `https://osu-profile-stats.vercel.app/assets/images/icons/${style}.svg`;
+        playStyleIcons[style] = await getSillyImage(styleURL);
+    }
+
     // SVG Settings =^-^=
     const svgWidth = 400;
     const svgHeight = 200;
@@ -36,13 +67,13 @@ const renderCard = (data, background = "default", hex = null) => {
         grades.length * (gradeIconWidth + gradeSpacing) - gradeSpacing;
     const gradeStartX = svgWidth - totalGradesWidth - 15;
     const gradeStartY = 165;
-    let gradeIcons = "";
+    let gradeIconsRender = "";
     let currentX = gradeStartX;
     for (const grade of grades) {
         const gradeCount = gradeCounts[grade.toLowerCase()] || 0;
-        gradeIcons += `
+        gradeIconsRender += `
             <g transform="translate(${currentX}, ${gradeStartY})">
-                <image href="https://osu-profile-stats.vercel.app/assets/images/grades/${grade}.svg" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
+                <image href="${gradeIcons[grade]}" height="${gradeIconHeight}px" width="${gradeIconWidth}px" />
                 <text x="${gradeIconWidth / 2}" y="${
             gradeIconHeight + 10
         }" class="medium text ans" text-anchor="middle">${gradeCount}</text>
@@ -56,32 +87,25 @@ const renderCard = (data, background = "default", hex = null) => {
         rankGraphSVG
     ).toString("base64")}`;
 
-    // Play mode settings 🎹🍎1️⃣🥁
-    const playMode = data.playmode || "osu";
-    const playModeIcon = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playMode}.png`;
-
     // Playstyles ⌨🐁✏🗑
-    const playStyles = data.playstyle || [];
     const playStyleBoxX = 15;
     const playStyleBoxY = 100;
     const playStyleIconSize = 25;
     const playStylePadding = 7;
-    let playStyleIcons = "";
-    if (playStyles.length > 0) {
-        playStyles.forEach((style, index) => {
-            const row = Math.floor(index / 2);
-            const col = index % 2;
+    let playStyleIconsRender = "";
+    playStyles.forEach((style, index) => {
+        const row = Math.floor(index / 2);
+        const col = index % 2;
 
-            const x =
-                playStyleBoxX + col * (playStyleIconSize + playStylePadding);
-            const y =
-                playStyleBoxY + row * (playStyleIconSize + playStylePadding);
+        const x =
+            playStyleBoxX + col * (playStyleIconSize + playStylePadding);
+        const y =
+            playStyleBoxY + row * (playStyleIconSize + playStylePadding);
 
-            playStyleIcons += `
-                <image href="https://osu-profile-stats.vercel.app/assets/images/icons/${style}.svg" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
-            `;
-        });
-    }
+        playStyleIconsRender += `
+            <image href="${playStyleIcons[style]}" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
+        `;
+    });
 
     // Rendering this silly thing ＞︿＜
     const render = `
@@ -107,9 +131,9 @@ const renderCard = (data, background = "default", hex = null) => {
     </style>
     ${backgroundType}
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
-    <image href="${avatarUrl}" clip-path="url(#clip-pfp)" x="15" y="15" width="50" height="50" />
-    <image class="flag" href="${playModeIcon}" x="300" y="15" width="40" height="25" />
-    <image class="flag" href="${flagUrl}" x="340" y="15" width="40" height="25" />
+    <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="15" y="15" width="50" height="50" />
+    <image class="flag" href="${playmodeIconDataURI}" x="300" y="15" width="40" height="25" />
+    <image class="flag" href="${flagDataURI}" x="340" y="15" width="40" height="25" />
     <text x="80" y="30" class="text large">${data.username}</text>
 
     <text x="80" y="50" class="text medium">Global Rank</text>
@@ -166,9 +190,9 @@ const renderCard = (data, background = "default", hex = null) => {
     <text x="160" y="185" class="text medium ans">${playTime} hours</text>
 
     
-    ${gradeIcons}
+    ${gradeIconsRender}
     <text x="15" y="90" class="text medium">Playstyles</text>
-    ${playStyleIcons}
+    ${playStyleIconsRender}
     </svg>
     `;
 

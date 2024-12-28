@@ -108,6 +108,10 @@ const fetchUserData = async (username, token, playmode) => {
     return result;
 };
 
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
@@ -141,7 +145,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 "en-us"
             )}][RENDER] Rendering silly profile card for ${username}.`
         );
-        const card = renderCard(
+        const card = await renderCard(
             userData,
             background || undefined,
             hex || undefined
@@ -171,8 +175,5 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
+//app.listen(3000);
 module.exports = app;
