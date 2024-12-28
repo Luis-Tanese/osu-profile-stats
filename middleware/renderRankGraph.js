@@ -54,16 +54,6 @@ const renderRankHistoryGraph = (rankHistory) => {
         })
         .join(" ");
 
-    const circleElements = points
-        .map(
-            (point) => `
-        <circle cx="${point.x}" cy="${point.y}" r="4" fill="yellow">
-            <title>Rank: ${point.rank}</title>
-        </circle>
-    `
-        )
-        .join("");
-
     const render = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
     <g transform="rotate(180, ${svgWidth / 2}, ${
