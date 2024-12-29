@@ -65,6 +65,7 @@ const fetchUserData = async (username, token, playmode) => {
                 "en-us"
             )}][CACHE] User data for ${username} (playmode: ${playmode}) retrieved from Redis.`
         );
+        //log(JSON.parse(cachedData));
         return JSON.parse(cachedData);
     }
 
@@ -97,6 +98,7 @@ const fetchUserData = async (username, token, playmode) => {
             "en-us"
         )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 30 minutes.`
     );
+    //log(result);
     return result;
 };
 
@@ -167,5 +169,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-//app.listen(3000);
+/* app.listen(3000, () => {
+    log("Server running");
+}); */
 module.exports = app;
