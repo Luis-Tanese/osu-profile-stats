@@ -1,4 +1,16 @@
 # osu-profile-stats
+<br>
+<div style="display: flex;">
+    <a href="https://github.com/Luis-Tanese/osu-profile-stats/blob/main/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/Luis-Tanese/osu-profile-stats"></a>
+    <a href="https://osu-profile-stats.vercel.app"><img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fosu-profile-stats.vercel.app"></a>
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Luis-Tanese/osu-profile-stats">
+</div>
+<br>
+<div style="display: flex;">
+    <img alt="Javascript Badge" src="https://img.shields.io/badge/-Javascript-F0DB4F?style=for-the-badge&labelColor=black&logo=javascript&logoColor=F0DB4F">
+    <img alt="Nodejs Badge" src="https://img.shields.io/badge/-Nodejs-3C873A?style=for-the-badge&labelColor=black&logo=node.js&logoColor=3C873A">
+</div>
+<br>
 
 osu-profile-stats generates SVG cards displaying osu! profile statistics. Customize the cards' appearance and play mode preferences through URL parameters, and embed them directly into your website or README files.
 
