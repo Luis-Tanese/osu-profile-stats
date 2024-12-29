@@ -1,6 +1,6 @@
 # osu-profile-stats
 
-osu-profile-stats generates SVG cards displaying osu! profile statistics. Customize the cards' appearance and play mode preferences through URL parameters, and embed them directly into your website or README files. You can adjust size by using the height selection in your `img` tag. Default height is 200.
+osu-profile-stats generates SVG cards displaying osu! profile statistics. Customize the cards' appearance and play mode preferences through URL parameters, and embed them directly into your website or README files.
 
 ---
 
@@ -18,8 +18,12 @@ Embed the SVG in your project using an `<img>` tag:
 ```html
 <img src="https://osu-profile-stats.vercel.app/api/profile-stats/{username}" height="245" alt="osu stats">
 ```
+> [!NOTE]
+> You can adjust size by using the height selection in your `img` tag. Default height is 200.
 
-Replace `{username}` with your osu! username (If you have a space in your username, just put %20 in between, like silly tanese => silly%20tanese)
+Replace `{username}` with your osu! username
+> [!TIP]
+> If you have a space in your username, just put %20 in between, like silly tanese => silly%20tanese.
 
 ### URL Parameters
 The SVG is customizable through URL parameters:
@@ -73,10 +77,13 @@ Combine parameters for detailed customization:
 ---
 
 ## Contributing
+> [!WARNING]
+> Ugly code ahead.
 1. Fork the repository.
 2. Create a new branch for your feature or fix.
 3. Commit your changes and open a pull request.
 4. Ensure your code follows project conventions and includes documentation.
+
 
 ---
 
@@ -86,6 +93,6 @@ Detailed deployment instructions will be added soon. Stay tuned!
 
 ---
 
-### If you have any troubles or issues using this, feel free to dm me in discord at tanese or open an issue in this repository
+### If you have any issues or questions, feel free to dm me in discord at `tanese` or open an issue in this repository
 
 Made with ♥ by Tanese
