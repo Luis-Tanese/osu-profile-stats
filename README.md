@@ -99,9 +99,8 @@ Combine parameters for detailed customization:
 
 ---
 
-## Deploying Your Instance (WIP)
-### Under Construction
-Detailed deployment instructions will be added soon. Stay tuned!
+## Deploying Your Own Instance
+Detailed deployment instructions can be found [here!](https://github.com/Luis-Tanese/osu-profile-stats/blob/main/DEPLOYMENT.md)
 
 ---
 
