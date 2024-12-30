@@ -90,13 +90,13 @@ const fetchUserData = async (username, token, playmode) => {
     );
 
     const result = { ...statsRes.data, playmode: inferredPlaymode };
-    await redis.set(cacheKey, JSON.stringify(result), "EX", 1800);
+    await redis.set(cacheKey, JSON.stringify(result), "EX", 300);
     log(
         `[${dateTan(
             new Date(),
             "YYYY-MM-DD HH:mm:ss:ms Z",
             "en-us"
-        )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 30 minutes.`
+        )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 5 minutes.`
     );
     //log(result);
     return result;
