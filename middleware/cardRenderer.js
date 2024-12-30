@@ -136,10 +136,10 @@ const renderCard = async (data, background = "default", hex = null) => {
     <image href="${supporterDataURI}" height="12" x="${80 + (data.username.length * 7) + 1}" y="20" />
 
     <text x="80" y="50" class="text medium">Global Rank</text>
-    <text x="80" y="60" class="text medium ans">#${globalRank}</text>
+    <text x="80" y="60" class="text medium ans">#${formatNumber(globalRank)}</text>
 
     <text x="160" y="50" class="text medium">Country Rank</text>
-    <text x="160" y="60" class="text medium ans">#${countryRank}</text>
+    <text x="160" y="60" class="text medium ans">#${formatNumber(countryRank)}</text>
 
 
     <image href="${rankGraphDataURI}" x="80" y="80" width="180" height="40" />
@@ -183,10 +183,10 @@ const renderCard = async (data, background = "default", hex = null) => {
     <text x="80" y="185" class="text medium ans">${medals}</text>
 
     <text x="120" y="175" class="text medium">pp</text>
-    <text x="120" y="185" class="text medium ans">${pp}</text>
+    <text x="120" y="185" class="text medium ans">${formatNumber(pp)}</text>
 
     <text x="160" y="175" class="text medium">Total Play Time</text>
-    <text x="160" y="185" class="text medium ans">${playTime} hours</text>
+    <text x="160" y="185" class="text medium ans">${formatNumber(playTime)} hours</text>
 
     
     ${gradeIconsRender}
