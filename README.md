@@ -58,7 +58,7 @@ Customize your background:
 
 | Background Type | Preview                                                              | URL                                                                                      |
 |-----------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| `default` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese" alt="default" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese` |
+| default | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese" alt="default" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese` |
 | `bg1` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1" alt="bg1" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1` |
 | `bg2` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2" alt="bg2" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2` |
 | `bg3` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3" alt="bg3" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3` |
