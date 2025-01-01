@@ -31,7 +31,7 @@ Embed the SVG in your project using an `<img>` tag:
 <img src="https://osu-profile-stats.vercel.app/api/profile-stats/{username}" height="150" alt="osu stats">
 ```
 > [!NOTE]
-> You can adjust size by using the height selection in your `img` tag. Default height is 200.
+> You can adjust size by using the height selection in your `img` tag. Default height is 120.
 
 Replace `{username}` with your osu! username
 > [!TIP]
@@ -54,13 +54,13 @@ Customize your background:
 
 | Background Type | Preview                                                              | URL                                                                                      |
 |-----------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| `default` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese" alt="default" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese` |
-| `bg1` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1" alt="bg1" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1` |
-| `bg2` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2" alt="bg2" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2` |
-| `bg3` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3" alt="bg3" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3` |
-| `bg4` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg4" alt="bg4" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg4` |
-| `bg5` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg5" alt="bg5" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg5` |
-| Color (solid) | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1" alt="Solid Color" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1` |
+| `default` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese" alt="default" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese` |
+| `bg1` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1" alt="bg1" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1` |
+| `bg2` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2" alt="bg2" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2` |
+| `bg3` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3" alt="bg3" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3` |
+| `bg4` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg4" alt="bg4" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg4` |
+| `bg5` | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg5" alt="bg5" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg5` |
+| Color (solid) | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1" alt="Solid Color" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1` |
 
 ---
 
@@ -69,10 +69,11 @@ Display stats for different play modes:
 
 | Play Mode | Preview                                                              | URL                                                                                       |
 |-----------|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| osu       | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu" alt="osu" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu`             |
-| mania     | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania" alt="mania" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania`           |
-| fruits    | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits" alt="fruits" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits`         |
-| taiko     | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=taiko" alt="taiko" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=taiko`           |
+| osu       | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu" alt="osu" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu`             |
+| mania     | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania" alt="mania" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania`           |
+| fruits    | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits" alt="fruits" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits`         |
+| taiko     | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=taiko" alt="taiko" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=taiko`           |
+
 ---
 
 ### Combined Customizations
@@ -80,8 +81,8 @@ Combine parameters for detailed customization:
 
 | Customization       | Preview                                                              | URL                                                                                              |
 |---------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| mania + bg3 | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3" alt="mania bg3" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3` |
-| osu + Color Hex | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1" alt="osu Hex" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
+| mania + bg3 | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3" alt="mania bg3" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3` |
+| osu + Color Hex | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1" alt="osu Hex" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
 
 ---
 
@@ -90,8 +91,8 @@ Full stats cards function like the minis, but with more data, with same customis
 
 | Customization       | Preview                                                              | URL                                                                                              |
 |---------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| full + mania + bg3 | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full" alt="mania bg3 full" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full` |
-| full + osu + Color Hex | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1&version=full" alt="osu Hex full" height="120"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1&version=full` |
+| full + mania + bg3 | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full" alt="mania bg3 full"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full` |
+| full + osu + Color Hex | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1&version=full" alt="osu Hex full"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1&version=full` |
 
 ---
 
