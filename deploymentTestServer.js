@@ -65,6 +65,7 @@ const fetchUserData = async (username, token, playmode) => {
                 "en-us"
             )}][CACHE] User data for ${username} (playmode: ${playmode}) retrieved from Redis.`
         );
+        //log(JSON.parse(cachedData));
         return JSON.parse(cachedData);
     } */
 
@@ -89,14 +90,15 @@ const fetchUserData = async (username, token, playmode) => {
     );
 
     const result = { ...statsRes.data, playmode: inferredPlaymode };
-    /* await redis.set(cacheKey, JSON.stringify(result), "EX", 1800);
+    /* await redis.set(cacheKey, JSON.stringify(result), "EX", 300);
     log(
         `[${dateTan(
             new Date(),
             "YYYY-MM-DD HH:mm:ss:ms Z",
             "en-us"
-        )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 30 minutes.`
+        )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 5 minutes.`
     ); */
+    //log(result);
     return result;
 };
 
@@ -107,7 +109,7 @@ app.get("/", (req, res) => {
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
-        const { playmode, background, hex } = req.query;
+        const { playmode, background, hex, version } = req.query;
         log(
             `[${dateTan(
                 new Date(),
@@ -139,8 +141,11 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
         const card = await renderCard(
             userData,
-            background || undefined,
-            hex || undefined
+            {
+                background: background || undefined,
+                hex: hex || undefined,
+                version: version || "new",
+            }
         );
 
         res.setHeader("Content-Type", "image/svg+xml");
@@ -167,5 +172,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-//app.listen(3000);
+/* app.listen(3000, () => {
+    log("Server running");
+}); */
 module.exports = app;

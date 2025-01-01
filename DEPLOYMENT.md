@@ -1,6 +1,6 @@
 # Deploying Your Own Instance on Vercel
 
-Easily deploy your own instance to reduce the delay (from 30 minutes) to be instant!
+Easily deploy your own instance to reduce the delay (from 5 minutes) to be instant!
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ Easily deploy your own instance to reduce the delay (from 30 minutes) to be inst
       ![Code Button](https://github.com/user-attachments/assets/fad5da4e-a261-4891-a4ad-80d2cb1c4a14)  
       Copy the repository link and run:
         ```bash
-        git clone <repository-link>
+        git clone https://github.com/Luis-Tanese/osu-profile-stats.git
         ```
     - Alternatively, download the ZIP file and extract its contents.
 

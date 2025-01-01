@@ -20,7 +20,7 @@ osu-profile-stats generates SVG cards displaying osu! profile statistics. Custom
 - You can choose from default, themed, or solid-color backgrounds.
 - Display stats for osu, mania, fruits, or taiko modes.
 - Use `<img>` tags to display your profile stats SVG anywhere.
-- Stats are updated every 30 minutes to prevent API overload (You can host your own deployment following the tutorial [here](#deploying-your-own-instance)).
+- Stats are updated every 5 minutes to prevent API overload (You can host your own deployment following the tutorial [here](#deploying-your-own-instance)).
 
 ---
 
@@ -42,8 +42,10 @@ The SVG is customizable through URL parameters:
 
 | Parameter     | Values                               | Default    | Description                                   |
 |---------------|--------------------------------------|------------|-----------------------------------------------|
-| `background`  | `default`, `bg1`, `bg2`, `bg3`, `color&hex=11bdb1` | `default`  | Choose a background. Use custom for solid colors by specifying a hex code (without `#`). |
-| `playmode`    | `osu`, `mania`, `fruits`, `taiko`    | User's default mode | Select a play mode to display stats for. |
+| `background` | `bg1`, `bg2`, `bg3`, `bg4`, `bg5`, `color&hex=11bdb1` | User's default cover | Choose a background. Use color for solid colors by specifying a hex code (without `#`). |
+| `playmode` | `osu`, `mania`, `fruits`, `taiko` | User's default mode | Select a play mode to display stats for. |
+| `version` | `mini`, `full` | `mini` | This selects the type of card, since the old one was a bit ugly I made the mini version. |
+
 
 ---
 
@@ -52,11 +54,13 @@ Customize your background:
 
 | Background Type | Preview                                                              | URL                                                                                      |
 |-----------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| `default`         | ![default](https://osu-profile-stats.vercel.app/api/profile-stats/tanese) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese`       |
-| `bg1`    | ![bg1](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1)        | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1`          |
-| `bg2`    | ![bg2](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2)        | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2`          |
-| `bg3`    | ![bg3](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3)        | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3`          |
-| Color (solid)  | ![Solid Color](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1` |
+| `default` | ![default](https://osu-profile-stats.vercel.app/api/profile-stats/tanese) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese` |
+| `bg1` | ![bg1](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg1` |
+| `bg2` | ![bg2](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg2` |
+| `bg3` | ![bg3](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg3` |
+| `bg4` | ![bg4](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg4) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg4` |
+| `bg5` | ![bg5](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg5) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=bg5` |
+| Color (solid) | ![Solid Color](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?background=color&hex=11bdb1` |
 
 ---
 
@@ -77,13 +81,23 @@ Combine parameters for detailed customization:
 
 | Customization       | Preview                                                              | URL                                                                                              |
 |---------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| mania + bg3           | ![mania bg3](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3`     |
-| fruits + Color Hex | ![fruits Hex](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
+| mania + bg3 | ![mania bg3](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3` |
+| osu + Color Hex | ![fruits Hex](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
+
+---
+
+### Full Cards
+Full stats cards function like the minis, but with more data, with same customisation options, just `version=full` added:
+
+| Customization       | Preview                                                              | URL                                                                                              |
+|---------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| full + mania + bg3 | ![mania bg3](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full` |
+| full + osu + Color Hex | ![fruits Hex](https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1&version=full) | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1&version=full` |
 
 ---
 
 ## Data Caching
-- **Update Frequency:** Data is updated every 30 minutes.
+- **Update Frequency:** Data is updated every 5 minutes.
 - **Caching:** Cached data minimizes API requests to osu! servers.
 
 ---
@@ -96,11 +110,10 @@ Combine parameters for detailed customization:
 3. Commit your changes and open a pull request.
 4. Ensure your code follows project conventions and includes documentation.
 
-
 ---
 
 ## Deploying Your Own Instance
-Detailed deployment instructions can be found [here!](https://github.com/Luis-Tanese/osu-profile-stats/blob/main/DEPLOYMENT.md)
+Detailed deployment instructions can be found [here!](https://github.com/Luis-Tanese/osu-profile-stats/blob/main/DEPLOYMENT.md) (Up to date with new release. Make sure your repo is updated aswell!)
 
 ---
 

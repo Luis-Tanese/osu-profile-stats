@@ -1,7 +1,128 @@
 const renderRankHistoryGraph = require("./renderRankGraph.js");
-const { formatNumber, getBackground, getSillyImage, getSillyFont } = require("./utils.js");
+const { log, formatNumber, getBackground, getSillyImage, getSillyFont, getColor, validateHex } = require("./utils.js");
 
-const renderCard = async (data, background = "default", hex = null) => {
+const renderCard = async (data, options = {}) => {
+    const { background, hex, version } = options;
+
+    try {
+        if (version === "full") {
+            return await renderOldCard(data, background, hex);
+        } else {
+            return await renderNewCard(data, background, hex);
+        }
+    } catch (error) {
+        console.error("Error rendering card:", error);
+        throw new Error("Failed to render card. Check the console for details.");
+    }
+};
+
+// New render because old one was ugly, but you can still call it by making the version=full request in link
+const renderNewCard = async (data, background = null, hex = null) => {
+    const username = data.username || "Silly";
+    const stats = data.statistics || {};
+    const avatarUrl = data.avatar_url || "";
+    //log("Avatar URL being passed:", avatarUrl);
+    const flagUrl = `https://osu.ppy.sh/images/flags/${data.country_code}.png`;
+    const globalRank = stats.global_rank || "N/A";
+    const countryRank = stats.country_rank || "N/A";
+    const pp = stats.pp ? stats.pp.toFixed(0) : "N/A";
+    const accuracy = stats.hit_accuracy ? stats.hit_accuracy.toFixed(2) : "N/A";
+    const level = stats.level?.current || "N/A";
+    const playmode = data.playmode || "osu";
+    const playCount = stats.play_count || "N/A";
+    const supporterLevel = data.support_level || 0;
+    const rankHistory = data.rank_history || [];
+
+    const svgWidth = 400;
+    const svgHeight = 120;
+
+    let backgroundType;
+    if (!background) {
+        const bgURI = await getSillyImage(data.cover?.url || "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg");
+        backgroundType = `<image x="0" y="0" href="${bgURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
+    } else if (background === "color") {
+        if (hex) validateHex(hex);
+        backgroundType = getColor(hex, svgWidth, svgHeight);
+    } else {
+        backgroundType = await getBackground(background, hex, svgWidth, svgHeight);
+    }
+
+
+    // Solving for Data URIs ＞︿＜
+    const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
+    //log("Avatar Data URI:", avatarDataURI);
+    const flagDataURI = await getSillyImage(flagUrl);
+    const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
+    const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
+    const torusDataURI = await getSillyFont("https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf");
+    const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
+    const supporterDataURI = await getSillyImage(supporterUrl);
+    const rankGraphSVG = renderRankHistoryGraph(rankHistory);
+    const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
+        rankGraphSVG
+    ).toString("base64")}`;
+
+    const render = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+    <defs>
+        <clipPath id="clip-rounded">
+            <rect width="${svgWidth}" height="${svgHeight}" rx="15" ry="15" />
+        </clipPath>
+        <clipPath id="clip-pfp">
+            <rect x="10" y="10" width="100" height="100" rx="10" ry="10" />
+        </clipPath>
+    </defs>
+    <style>
+        @font-face {
+            font-family: 'Torus';
+            src: url('${torusDataURI}') format('opentype');
+        }
+        .text { fill:rgb(255, 255, 255); font-family: 'Torus', Arial, sans-serif; }
+        .massive { font-size: 17px; }
+        .large { font-size: 13px; }
+        .medium { font-size: 9px; }
+        .small { font-size: 7px; }
+        .ans { fill: rgb(247, 201, 221); }
+    </style>
+    ${backgroundType}
+    <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
+
+    <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="10" y="10" width="100" height="100" />
+
+    <text x="120" y="30" class="text massive">${username}</text>
+    <image href="${supporterDataURI}" height="15" x="${120 + (username.length * 8) + 10}" y="17" />
+
+    <image href="${flagDataURI}" x="360" y="20" width="25" height="20" />
+    <text x="${360 - (countryRank.toString().length * 8 + 5)}" y="32.5" class="text medium">#${formatNumber(countryRank)}</text>
+
+    <image href="${playmodeIconDataURI}" x="360" y="50" width="25" height="20" />
+    <text x="${360 - (level.toString().length * 8 + 8)}" y="62.5" class="text medium">Lv.${level}</text>
+
+    <image href="${rankGraphDataURI}" x="120" y="40" height="24" width="190" />
+
+    <line x1="120" y1="75" x2="180" y2="75" stroke="purple" stroke-width="2" />
+    <text x="120" y="90" class="text medium">Ranking</text>
+    <text x="120" y="105" class="text large">#${formatNumber(globalRank)}</text>
+
+    <line x1="200" y1="85" x2="230" y2="85" stroke="red" stroke-width="1" />
+    <text x="200" y="95" class="text small">pp</text>
+    <text x="200" y="105" class="text small">${formatNumber(pp)}</text>
+
+    <line x1="250" y1="85" x2="290" y2="85" stroke="lightgreen" stroke-width="1" />
+    <text x="250" y="95" class="text small">Accuracy</text>
+    <text x="250" y="105" class="text small">${accuracy}%</text>
+
+    <line x1="310" y1="85" x2="350" y2="85" stroke="yellow" stroke-width="1" />
+    <text x="310" y="95" class="text small">PC</text>
+    <text x="310" y="105" class="text small">${formatNumber(playCount)}</text>
+
+    </svg>
+    `;
+
+    return render;
+};
+
+const renderOldCard = async (data, background = null, hex = null) => {
     const stats = data.statistics || {};
     const grades = ["SSH", "SS", "SH", "S", "A"];
     const gradeCounts = stats.grade_counts || {};
@@ -53,12 +174,16 @@ const renderCard = async (data, background = "default", hex = null) => {
     const svgHeight = 200;
 
     // Background Settings 🗣🔥
-    const backgroundType = await getBackground(
-        background,
-        hex,
-        svgWidth,
-        svgHeight
-    );
+    let backgroundType;
+    if (!background) {
+        const bgURI = await getSillyImage(data.cover?.url || "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg");
+        backgroundType = `<image x="0" y="0" href="${bgURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
+    } else if (background === "color") {
+        if (hex) validateHex(hex);
+        backgroundType = getColor(hex, svgWidth, svgHeight);
+    } else {
+        backgroundType = await getBackground(background, hex, svgWidth, svgHeight);
+    }
 
     // Grade Settings 👨‍🎓
     const gradeIconHeight = 12;

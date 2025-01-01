@@ -51,4 +51,16 @@ const getBackground = async (background, hex = null, svgWidth, svgHeight) => {
     }
 };
 
-module.exports = { log, formatNumber, getBackground, getSillyImage, getSillyFont };
+const getColor = (hex, svgWidth, svgHeight) => {
+    let hexSelected = hex;
+    if (hexSelected === null) hexSelected = "f3f3f3f3f3";
+    return `<rect width="${svgWidth}" height="${svgHeight}" fill="#${hexSelected}" clip-path="url(#clip-rounded)" />`;
+};
+
+const validateHex = (hex) => {
+    const isValidHex = /^([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex);
+    if (!isValidHex) throw new Error(`Invalid hex color: ${hex}`);
+    return hex;
+};
+
+module.exports = { log, formatNumber, getBackground, getSillyImage, getSillyFont, getColor, validateHex };

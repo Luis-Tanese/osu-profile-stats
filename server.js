@@ -109,7 +109,7 @@ app.get("/", (req, res) => {
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
-        const { playmode, background, hex } = req.query;
+        const { playmode, background, hex, version } = req.query;
         log(
             `[${dateTan(
                 new Date(),
@@ -141,8 +141,11 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
         const card = await renderCard(
             userData,
-            background || undefined,
-            hex || undefined
+            {
+                background: background || undefined,
+                hex: hex || undefined,
+                version: version || "new",
+            }
         );
 
         res.setHeader("Content-Type", "image/svg+xml");
