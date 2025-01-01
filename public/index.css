@@ -73,6 +73,11 @@ main .intro p {
     line-height: 1.8;
 }
 
+main .intro .stats {
+    width: 400;
+    height: 120;
+}
+
 .click-api {
     text-decoration: none;
     color: #ff66aa;
