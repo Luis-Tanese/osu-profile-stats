@@ -4,14 +4,15 @@
 }
 
 * {
-    font-family: 'Torus';
+    font-family: "Torus";
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     line-height: 1.6;
-    background-color: #35272E;
+    background-color: #35272e;
     color: #333;
     display: flex;
     flex-direction: column;
@@ -22,7 +23,7 @@ header.navbar {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #35272E;
+    background-color: #35272e;
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -74,8 +75,8 @@ main .intro p {
 }
 
 main .intro .stats {
-    width: 400;
-    height: 120;
+    width: 400px !important;
+    height: 120px !important;
 }
 
 .click-api {
@@ -91,7 +92,7 @@ main .intro .stats {
 footer {
     text-align: center;
     padding: 1rem;
-    background-color: #35272E;
+    background-color: #35272e;
     color: white;
     font-size: 0.9rem;
     border-top: 1px solid #444;
