@@ -49,6 +49,10 @@ The SVG is customizable through URL parameters:
 
 ---
 
+> [!NOTE]
+> Previews are smaller then they actually are because github likes making my stuff smaller.
+> You can change it with the height param in the `img` tag.
+
 ### Background Examples
 Customize your background:
 
