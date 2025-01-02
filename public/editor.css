@@ -1,0 +1,137 @@
+@font-face {
+    font-family: "Torus";
+    src: url("https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf");
+}
+
+* {
+    font-family: "Torus";
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #35272e;
+    color: #ffffff;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+.generator {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #444;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+#card {
+    justify-content: center;
+}
+
+.generator h1 {
+    color: #ff66aa;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.generator h1 a {
+    color: #ff66aa;
+    text-decoration: none;
+}
+
+.generator h1 a:hover {
+    color: #fff0f6;
+}
+
+.form-group {
+    margin: 1rem 0;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-left: 0.5rem;
+    margin-bottom: 0.3rem;
+    color: #ff66aa;
+    font-size: 0.9rem;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 0.4rem 0.4rem;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #ff66aa;
+    outline: none;
+}
+
+textarea {
+    height: 80px;
+    resize: none;
+}
+
+button {
+    display: inline-block;
+    background-color: #ff66aa;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 1rem;
+}
+
+button:hover {
+    background-color: #fff0f6;
+    color: #35272e;
+    transform: translateY(-2px);
+}
+
+.preview img {
+    max-width: 100%;
+    margin: 1rem 0;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+#img-tag {
+    width: 100%;
+    max-width: 400px;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #35272e;
+    color: white;
+    font-size: 0.9rem;
+    border-top: 1px solid #444;
+    margin-top: 2rem;
+}

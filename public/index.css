@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Torus";
-    src: url("../assets/fonts/Torus-Regular.otf");
+    src: url("https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf");
 }
 
 * {
@@ -48,10 +48,11 @@ header.navbar nav ul li a {
     text-decoration: none;
     color: white;
     transition: color 0.3s;
+    margin-left: 0.9rem;
 }
 
 header.navbar nav ul li a:hover {
-    color: #fff0f6;
+    color: #ff66aa;
 }
 
 main {
@@ -75,17 +76,17 @@ main .intro p {
 }
 
 main .intro .stats {
-    width: 400px !important;
-    height: 120px !important;
+    width: 400px;
+    height: 120px;
 }
 
-.click-api {
+.click-silly {
     text-decoration: none;
     color: #ff66aa;
     transition: color 0.3s;
 }
 
-.click-api:hover {
+.click-silly:hover {
     color: #fff0f6;
 }
 

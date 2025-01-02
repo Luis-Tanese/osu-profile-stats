@@ -1,0 +1,95 @@
+@media screen and (max-width: 600px) {
+    header.navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    header.navbar .logo {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    header.navbar nav ul {
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+    }
+
+    header.navbar nav ul li {
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+    }
+
+    main .intro h1 {
+        font-size: 2rem;
+    }
+
+    main .intro p {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    main .intro .stats {
+        width: 300px;
+        height: 90px;
+    }
+
+    footer {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+    header.navbar {
+        padding: 1rem 1.5rem;
+    }
+
+    header.navbar .logo {
+        font-size: 1.4rem;
+    }
+
+    main .intro h1 {
+        font-size: 3.2rem;
+    }
+
+    main .intro p {
+        font-size: 1.3rem;
+    }
+
+    main .intro .stats {
+        width: 400px;
+        height: 120px;
+    }
+
+    footer {
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    header.navbar {
+        padding: 1rem 2rem;
+    }
+
+    header.navbar .logo {
+        font-size: 1.5rem;
+    }
+
+    main .intro h1 {
+        font-size: 2.5rem;
+    }
+
+    main .intro p {
+        font-size: 1.1rem;
+    }
+
+    main .intro .stats {
+        width: 400px;
+        height: 120px;
+    }
+
+    footer {
+        font-size: 0.9rem;
+    }
+}
