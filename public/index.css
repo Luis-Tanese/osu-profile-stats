@@ -75,11 +75,6 @@ main .intro p {
     line-height: 1.8;
 }
 
-main .intro .stats {
-    width: 400px;
-    height: 120px;
-}
-
 .click-silly {
     text-decoration: none;
     color: #ff66aa;
@@ -88,6 +83,11 @@ main .intro .stats {
 
 .click-silly:hover {
     color: #fff0f6;
+}
+
+main .intro .stats {
+    width: 400px;
+    height: 120px;
 }
 
 footer {
