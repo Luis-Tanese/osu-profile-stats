@@ -75,10 +75,16 @@
                 <div class="preview">
                     <h2>Preview</h2>
                     <img src="" alt="Card Preview" id="preview-image" />
-                    <textarea id="img-tag" readonly></textarea>
+                    <div class="textarea-container">
+                        <textarea id="img-tag" readonly></textarea>
+                        <button id="copy-img-btn" class="copy-btn">Copy</button>
+                    </div>
+                    <div class="textarea-container">
+                        <textarea id="markdown-tag" readonly></textarea>
+                        <button id="copy-md-btn" class="copy-btn">Copy</button>
+                    </div>
                 </div>
-
-                <button id="generate-btn">Generate Card</button>
+                
             </div>
         </main>
         <footer>

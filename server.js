@@ -109,7 +109,7 @@ app.get("/", (req, res) => {
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
-        const { playmode, background, hex, version } = req.query;
+        const { playmode, background, hex, version, height } = req.query;
         log(
             `[${dateTan(
                 new Date(),
@@ -139,17 +139,38 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 "en-us"
             )}][RENDER] Rendering silly profile card for ${username}.`
         );
-        const card = await renderCard(
-            userData,
-            {
-                background: background || undefined,
-                hex: hex || undefined,
-                version: version || "new",
-            }
-        );
+        
+        const card = await renderCard(userData, {
+            background: background || undefined,
+            hex: hex || undefined,
+            version: version || "new",
+        });
+
+        let originalWidth, originalHeight;
+        if (version === "full") {
+            originalWidth = 400;
+            originalHeight = 200;
+        } else {
+            originalWidth = 400;
+            originalHeight = 120;
+        }
+
+        const requestedHeight = parseInt(height, 10) || originalHeight;
+        const scaleFactor = requestedHeight / originalHeight;
+        const resizedWidth = originalWidth * scaleFactor;
+
+        const resizedSvg = `
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 width="${resizedWidth}" 
+                 height="${requestedHeight}" 
+                 viewBox="0 0 ${originalWidth} ${originalHeight}">
+                ${card}
+            </svg>
+        `;
 
         res.setHeader("Content-Type", "image/svg+xml");
-        res.send(card);
+        res.send(resizedSvg);
+
         log(
             `[${dateTan(
                 new Date(),
@@ -172,7 +193,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-/* app.listen(3000, () => {
+app.listen(3000, () => {
     log("Server running");
-}); */
-module.exports = app;
+});
+/* module.exports = app; */

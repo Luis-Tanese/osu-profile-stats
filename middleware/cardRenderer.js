@@ -85,6 +85,7 @@ const renderNewCard = async (data, background = null, hex = null) => {
         .ans { fill: rgb(247, 201, 221); }
     </style>
     ${backgroundType}
+    <rect x="0" y="70" width="${svgWidth}" height="${svgHeight - 70}" fill="rgba(10, 10, 29, 0.7)" clip-path="url(#clip-rounded)" />
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
 
     <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="10" y="10" width="100" height="100" />

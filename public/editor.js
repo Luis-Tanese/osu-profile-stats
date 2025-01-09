@@ -6,7 +6,9 @@ const versionSelect = document.getElementById("version");
 const heightInput = document.getElementById("height");
 const previewImage = document.getElementById("preview-image");
 const imgTagTextarea = document.getElementById("img-tag");
-const generateButton = document.getElementById("generate-btn");
+const markdownTagTextarea = document.getElementById("markdown-tag");
+const copyImgButton = document.getElementById("copy-img-btn");
+const copyMdButton = document.getElementById("copy-md-btn");
 
 const updatePreview = () => {
     const username = usernameInput.value.trim();
@@ -14,11 +16,17 @@ const updatePreview = () => {
     const background = backgroundSelect.value;
     let hexColor = hexColorInput.value.trim();
     const version = versionSelect.value;
-    const height = heightInput.value.trim() || 120;
+    let height;
+    if (version === "full") {
+        height = heightInput.value.trim() || 200;
+    } else {
+        height = heightInput.value.trim() || 120;
+    }
 
     if (!username) {
         previewImage.src = "";
         imgTagTextarea.value = "";
+        markdownTagTextarea.value = "";
         return;
     }
 
@@ -44,10 +52,12 @@ const updatePreview = () => {
     }
 
     const imgTag = `<img src="${url}" height="${height}" alt="osu stats">`;
+    const markdownTag = `![card](${url}?height=${height})`;
 
     previewImage.src = url;
     previewImage.height = height;
     imgTagTextarea.value = imgTag;
+    markdownTagTextarea.value = markdownTag;
 };
 
 backgroundSelect.addEventListener("change", () => {
@@ -65,12 +75,16 @@ backgroundSelect.addEventListener("change", () => {
     heightInput,
 ].forEach((el) => el.addEventListener("input", updatePreview));
 
-generateButton.addEventListener("click", () => {
-    if (imgTagTextarea.value) {
-        navigator.clipboard.writeText(imgTagTextarea.value).then(() => {
-            alert("Image tag copied to clipboard!");
-        });
-    }
+copyImgButton.addEventListener("click", () => {
+    navigator.clipboard.writeText(imgTagTextarea.value).then(() => {
+        alert("HTML tag copied to clipboard!");
+    });
+});
+
+copyMdButton.addEventListener("click", () => {
+    navigator.clipboard.writeText(markdownTagTextarea.value).then(() => {
+        alert("Markdown tag copied to clipboard!");
+    });
 });
 
 updatePreview();

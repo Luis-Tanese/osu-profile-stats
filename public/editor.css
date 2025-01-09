@@ -114,9 +114,16 @@ button:hover {
     border-radius: 5px;
 }
 
-#img-tag {
+/* Textarea with copy buttons */
+.textarea-container {
+    position: relative;
+    display: inline-block;
     width: 100%;
-    max-width: 400px;
+    margin-top: 1rem;
+}
+
+textarea {
+    width: 100%;
     background-color: #333;
     color: #fff;
     font-size: 0.85rem;
@@ -124,6 +131,27 @@ button:hover {
     border: none;
     border-radius: 5px;
     resize: none;
+    box-sizing: border-box;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: #ff66aa;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.copy-btn:hover {
+    background-color: #fff0f6;
+    color: #35272e;
+    transform: translateY(-2px);
 }
 
 footer {
