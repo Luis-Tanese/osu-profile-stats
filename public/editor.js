@@ -52,7 +52,7 @@ const updatePreview = () => {
     }
 
     const imgTag = `<img src="${url}" height="${height}" alt="osu stats">`;
-    const markdownTag = `![card](${url}?height=${height})`;
+    const markdownTag = `![card](${url}${url.includes("?") ? "&" : "?"}height=${height})`;
 
     previewImage.src = url;
     previewImage.height = height;
