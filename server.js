@@ -3,6 +3,7 @@ const express = require("express");
 const axios = require("axios");
 const Redis = require("ioredis");
 const path = require("path");
+const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
 const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
@@ -11,6 +12,8 @@ const app = express();
 const redis = new Redis(process.env.REDIS_URL);
 const OSU_AUTH_URL = "https://osu.ppy.sh/oauth/token";
 const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
+
+app.use(nocache());
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "assets")));
