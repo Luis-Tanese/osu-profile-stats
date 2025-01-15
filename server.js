@@ -4,7 +4,7 @@ const axios = require("axios");
 const Redis = require("ioredis");
 const path = require("path");
 const renderCard = require("./middleware/cardRenderer.js");
-const { log } = require("./middleware/utils.js");
+const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
 
 const app = express();
@@ -139,7 +139,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 "en-us"
             )}][RENDER] Rendering silly profile card for ${username}.`
         );
-        
+
         const card = await renderCard(userData, {
             background: background || undefined,
             hex: hex || undefined,
@@ -180,6 +180,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
     } catch (error) {
         console.error(error);
+
         log(
             `[${dateTan(
                 new Date(),
@@ -189,11 +190,29 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 req.originalUrl
             }, Params for request: ${req.query}`
         );
-        res.status(500).send("Internal Server Error");
+
+        let originalWidth, originalHeight;
+        if (req.query.version === "full") {
+            originalWidth = 400;
+            originalHeight = 200;
+        } else {
+            originalWidth = 400;
+            originalHeight = 120;
+        }
+
+        const requestedHeight =
+            parseInt(req.query.height, 10) || originalHeight;
+        const scaleFactor = requestedHeight / originalHeight;
+        const resizedWidth = originalWidth * scaleFactor;
+
+        const errorSvg = await renderErrorCard(requestedHeight, resizedWidth);
+
+        res.setHeader("Content-Type", "image/svg+xml");
+        res.status(500).send(errorSvg);
     }
 });
 
-app.listen(3000, () => {
+/* app.listen(3000, () => {
     log("Server running");
-});
-/* module.exports = app; */
+}); */
+module.exports = app;

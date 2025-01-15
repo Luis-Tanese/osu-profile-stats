@@ -1,5 +1,13 @@
 const renderRankHistoryGraph = require("./renderRankGraph.js");
-const { log, formatNumber, getBackground, getSillyImage, getSillyFont, getColor, validateHex } = require("./utils.js");
+const {
+    log,
+    formatNumber,
+    getBackground,
+    getSillyImage,
+    getSillyFont,
+    getColor,
+    validateHex,
+} = require("./utils.js");
 
 const renderCard = async (data, options = {}) => {
     const { background, hex, version } = options;
@@ -12,7 +20,9 @@ const renderCard = async (data, options = {}) => {
         }
     } catch (error) {
         console.error("Error rendering card:", error);
-        throw new Error("Failed to render card. Check the console for details.");
+        throw new Error(
+            "Failed to render card. Check the console for details."
+        );
     }
 };
 
@@ -38,15 +48,22 @@ const renderNewCard = async (data, background = null, hex = null) => {
 
     let backgroundType;
     if (!background) {
-        const bgURI = await getSillyImage(data.cover?.url || "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg");
+        const bgURI = await getSillyImage(
+            data.cover?.url ||
+                "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg"
+        );
         backgroundType = `<image x="0" y="0" href="${bgURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
     } else if (background === "color") {
         if (hex) validateHex(hex);
         backgroundType = getColor(hex, svgWidth, svgHeight);
     } else {
-        backgroundType = await getBackground(background, hex, svgWidth, svgHeight);
+        backgroundType = await getBackground(
+            background,
+            hex,
+            svgWidth,
+            svgHeight
+        );
     }
-
 
     // Solving for Data URIs ＞︿＜
     const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
@@ -54,7 +71,9 @@ const renderNewCard = async (data, background = null, hex = null) => {
     const flagDataURI = await getSillyImage(flagUrl);
     const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
     const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
-    const torusDataURI = await getSillyFont("https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf");
+    const torusDataURI = await getSillyFont(
+        "https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf"
+    );
     const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
     const supporterDataURI = await getSillyImage(supporterUrl);
     const rankGraphSVG = renderRankHistoryGraph(rankHistory);
@@ -85,19 +104,27 @@ const renderNewCard = async (data, background = null, hex = null) => {
         .ans { fill: rgb(247, 201, 221); }
     </style>
     ${backgroundType}
-    <rect x="0" y="70" width="${svgWidth}" height="${svgHeight - 70}" fill="rgba(10, 10, 29, 0.7)" clip-path="url(#clip-rounded)" />
+    <rect x="0" y="70" width="${svgWidth}" height="${
+        svgHeight - 70
+    }" fill="rgba(10, 10, 29, 0.7)" clip-path="url(#clip-rounded)" />
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
 
     <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="10" y="10" width="100" height="100" />
 
     <text x="120" y="30" class="text massive">${username}</text>
-    <image href="${supporterDataURI}" height="15" x="${120 + (username.length * 8) + 10}" y="17" />
+    <image href="${supporterDataURI}" height="15" x="${
+        120 + username.length * 8 + 10
+    }" y="17" />
 
     <image href="${flagDataURI}" x="360" y="20" width="25" height="20" />
-    <text x="${360 - (countryRank.toString().length * 8 + 5)}" y="32.5" class="text medium">#${formatNumber(countryRank)}</text>
+    <text x="${
+        360 - (countryRank.toString().length * 8 + 5)
+    }" y="32.5" class="text medium">#${formatNumber(countryRank)}</text>
 
     <image href="${playmodeIconDataURI}" x="360" y="50" width="25" height="20" />
-    <text x="${360 - (level.toString().length * 8 + 8)}" y="62.5" class="text medium">Lv.${level}</text>
+    <text x="${
+        360 - (level.toString().length * 8 + 8)
+    }" y="62.5" class="text medium">Lv.${level}</text>
 
     <image href="${rankGraphDataURI}" x="120" y="40" height="24" width="190" />
 
@@ -165,10 +192,11 @@ const renderOldCard = async (data, background = null, hex = null) => {
         const styleURL = `https://osu-profile-stats.vercel.app/assets/images/icons/${style}.svg`;
         playStyleIcons[style] = await getSillyImage(styleURL);
     }
-    const torusDataURI = await getSillyFont("https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf");
+    const torusDataURI = await getSillyFont(
+        "https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf"
+    );
     const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
     const supporterDataURI = await getSillyImage(supporterUrl);
-
 
     // SVG Settings =^-^=
     const svgWidth = 400;
@@ -177,13 +205,21 @@ const renderOldCard = async (data, background = null, hex = null) => {
     // Background Settings 🗣🔥
     let backgroundType;
     if (!background) {
-        const bgURI = await getSillyImage(data.cover?.url || "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg");
+        const bgURI = await getSillyImage(
+            data.cover?.url ||
+                "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg"
+        );
         backgroundType = `<image x="0" y="0" href="${bgURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
     } else if (background === "color") {
         if (hex) validateHex(hex);
         backgroundType = getColor(hex, svgWidth, svgHeight);
     } else {
-        backgroundType = await getBackground(background, hex, svgWidth, svgHeight);
+        backgroundType = await getBackground(
+            background,
+            hex,
+            svgWidth,
+            svgHeight
+        );
     }
 
     // Grade Settings 👨‍🎓
@@ -259,13 +295,19 @@ const renderOldCard = async (data, background = null, hex = null) => {
     <image class="flag" href="${flagDataURI}" x="340" y="15" width="40" height="25" />
 
     <text x="80" y="30" class="text large">${data.username}</text>
-    <image href="${supporterDataURI}" height="12" x="${80 + (data.username.length * 7) + 1}" y="20" />
+    <image href="${supporterDataURI}" height="12" x="${
+        80 + data.username.length * 7 + 1
+    }" y="20" />
 
     <text x="80" y="50" class="text medium">Global Rank</text>
-    <text x="80" y="60" class="text medium ans">#${formatNumber(globalRank)}</text>
+    <text x="80" y="60" class="text medium ans">#${formatNumber(
+        globalRank
+    )}</text>
 
     <text x="160" y="50" class="text medium">Country Rank</text>
-    <text x="160" y="60" class="text medium ans">#${formatNumber(countryRank)}</text>
+    <text x="160" y="60" class="text medium ans">#${formatNumber(
+        countryRank
+    )}</text>
 
 
     <image href="${rankGraphDataURI}" x="80" y="80" width="180" height="40" />
@@ -312,7 +354,9 @@ const renderOldCard = async (data, background = null, hex = null) => {
     <text x="120" y="185" class="text medium ans">${formatNumber(pp)}</text>
 
     <text x="160" y="175" class="text medium">Total Play Time</text>
-    <text x="160" y="185" class="text medium ans">${formatNumber(playTime)} hours</text>
+    <text x="160" y="185" class="text medium ans">${formatNumber(
+        playTime
+    )} hours</text>
 
     
     ${gradeIconsRender}

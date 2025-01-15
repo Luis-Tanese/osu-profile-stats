@@ -63,4 +63,43 @@ const validateHex = (hex) => {
     return hex;
 };
 
-module.exports = { log, formatNumber, getBackground, getSillyImage, getSillyFont, getColor, validateHex };
+const renderErrorCard = async (svgHeight = 120, svgWidth = 400) => {
+    const backgroundType = await getBackground(
+        "bg1",
+        null,
+        svgWidth,
+        svgHeight
+    );
+
+    const render = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
+    <defs>
+        <clipPath id="clip-rounded">
+            <rect width="${svgWidth}" height="${svgHeight}" rx="15" ry="15" />
+        </clipPath>
+    </defs>
+    <style>
+        .text { fill: rgb(255, 255, 255); font-family: Arial, sans-serif; }
+        .large { font-size: 20px; }
+    </style>
+    ${backgroundType}
+    <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
+    <text x="50%" y="50%" class="text large" dominant-baseline="middle" text-anchor="middle">
+        An error occurred
+    </text>
+    </svg>
+    `;
+
+    return render;
+};
+
+module.exports = {
+    log,
+    formatNumber,
+    getBackground,
+    getSillyImage,
+    getSillyFont,
+    getColor,
+    validateHex,
+    renderErrorCard,
+};
