@@ -3,14 +3,17 @@ const express = require("express");
 const axios = require("axios");
 //const Redis = require("ioredis");
 const path = require("path");
+const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
-const { log } = require("./middleware/utils.js");
+const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
 
 const app = express();
 //const redis = new Redis(process.env.REDIS_URL);
 const OSU_AUTH_URL = "https://osu.ppy.sh/oauth/token";
 const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
+
+app.use(nocache());
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "assets")));
@@ -43,8 +46,7 @@ const getOsuToken = async () => {
     });
 
     const token = res.data.access_token;
-    /* await redis.set("osuToken", token, "EX", 3600);
-    log(
+    /* log(
         `[${dateTan(
             new Date(),
             "YYYY-MM-DD HH:mm:ss:ms Z",
@@ -109,7 +111,7 @@ app.get("/", (req, res) => {
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
-        const { playmode, background, hex, version } = req.query;
+        const { playmode, background, hex, version, height } = req.query;
         log(
             `[${dateTan(
                 new Date(),
@@ -139,17 +141,38 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 "en-us"
             )}][RENDER] Rendering silly profile card for ${username}.`
         );
-        const card = await renderCard(
-            userData,
-            {
-                background: background || undefined,
-                hex: hex || undefined,
-                version: version || "new",
-            }
-        );
+
+        const card = await renderCard(userData, {
+            background: background || undefined,
+            hex: hex || undefined,
+            version: version || "new",
+        });
+
+        let originalWidth, originalHeight;
+        if (version === "full") {
+            originalWidth = 400;
+            originalHeight = 200;
+        } else {
+            originalWidth = 400;
+            originalHeight = 120;
+        }
+
+        const requestedHeight = parseInt(height, 10) || originalHeight;
+        const scaleFactor = requestedHeight / originalHeight;
+        const resizedWidth = originalWidth * scaleFactor;
+
+        const resizedSvg = `
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 width="${resizedWidth}" 
+                 height="${requestedHeight}" 
+                 viewBox="0 0 ${originalWidth} ${originalHeight}">
+                ${card}
+            </svg>
+        `;
 
         res.setHeader("Content-Type", "image/svg+xml");
-        res.send(card);
+        res.send(resizedSvg);
+
         log(
             `[${dateTan(
                 new Date(),
@@ -159,6 +182,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
     } catch (error) {
         console.error(error);
+
         log(
             `[${dateTan(
                 new Date(),
@@ -168,7 +192,25 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 req.originalUrl
             }, Params for request: ${req.query}`
         );
-        res.status(500).send("Internal Server Error");
+
+        let originalWidth, originalHeight;
+        if (req.query.version === "full") {
+            originalWidth = 400;
+            originalHeight = 200;
+        } else {
+            originalWidth = 400;
+            originalHeight = 120;
+        }
+
+        const requestedHeight =
+            parseInt(req.query.height, 10) || originalHeight;
+        const scaleFactor = requestedHeight / originalHeight;
+        const resizedWidth = originalWidth * scaleFactor;
+
+        const errorSvg = await renderErrorCard(requestedHeight, resizedWidth);
+
+        res.setHeader("Content-Type", "image/svg+xml");
+        res.status(500).send(errorSvg);
     }
 });
 
