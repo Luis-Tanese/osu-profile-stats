@@ -15,8 +15,31 @@ const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
 
 app.use(nocache());
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "assets")));
+app.use((req, res, next) => {
+    res.setHeader(
+        "Cache-Control",
+        "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    next();
+});
+
+app.use(
+    express.static(path.join(__dirname, "public"), {
+        setHeaders: (res) => {
+            res.setHeader("Cache-Control", "no-store");
+        },
+    })
+);
+
+app.use(
+    express.static(path.join(__dirname, "assets"), {
+        setHeaders: (res) => {
+            res.setHeader("Cache-Control", "no-store");
+        },
+    })
+);
 
 const getOsuToken = async () => {
     const cachedToken = await redis.get("osuToken");
