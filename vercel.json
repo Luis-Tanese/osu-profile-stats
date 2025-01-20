@@ -23,18 +23,5 @@
             "src": "/(.*)",
             "dest": "server.js"
         }
-    ],
-    "static": {
-        "headers": [
-            {
-                "source": "/(.*)",
-                "headers": [
-                    {
-                        "key": "Cache-Control",
-                        "value": "no-store"
-                    }
-                ]
-            }
-        ]
-    }
+    ]
 }
