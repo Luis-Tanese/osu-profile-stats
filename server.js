@@ -14,7 +14,7 @@ const OSU_AUTH_URL = "https://osu.ppy.sh/oauth/token";
 const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
 
 app.use(nocache());
-
+//update you silly
 app.use((req, res, next) => {
     res.setHeader(
         "Cache-Control",
