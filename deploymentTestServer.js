@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
-//const Redis = require("ioredis");
+/* const Redis = require("ioredis"); */
 const path = require("path");
 const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
@@ -9,7 +9,7 @@ const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
 
 const app = express();
-//const redis = new Redis(process.env.REDIS_URL);
+/* const redis = new Redis(process.env.REDIS_URL); */
 const OSU_AUTH_URL = "https://osu.ppy.sh/oauth/token";
 const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
 
@@ -43,6 +43,7 @@ app.use(
 
 const getOsuToken = async () => {
     /* const cachedToken = await redis.get("osuToken");
+
     if (cachedToken) {
         log(
             `[${dateTan(
@@ -61,6 +62,7 @@ const getOsuToken = async () => {
             "en-us"
         )}][REQUEST] Fetching osuToken from osu! API.`
     );
+
     const res = await axios.post(OSU_AUTH_URL, {
         client_id: process.env.OSU_CLIENT_ID,
         client_secret: process.env.OSU_CLIENT_SECRET,
@@ -69,19 +71,25 @@ const getOsuToken = async () => {
     });
 
     const token = res.data.access_token;
-    /* log(
+
+    /* await redis.set("osuToken", token, "EX", 3600);
+
+    log(
         `[${dateTan(
             new Date(),
             "YYYY-MM-DD HH:mm:ss:ms Z",
             "en-us"
         )}][CACHE] osuToken cached in Redis for 1 hour.`
     ); */
+
     return token;
 };
 
 const fetchUserData = async (username, token, playmode) => {
     /* const cacheKey = `user-${username}-${playmode}`;
+
     const cachedData = await redis.get(cacheKey);
+
     if (cachedData) {
         log(
             `[${dateTan(
@@ -101,10 +109,13 @@ const fetchUserData = async (username, token, playmode) => {
             "en-us"
         )}][REQUEST] Fetching user data for ${username} from API.`
     );
+
     const userRes = await axios.get(`${OSU_API_BASE_URL}/users/${username}`, {
         headers: { Authorization: `Bearer ${token}` },
     });
+
     const user = userRes.data;
+
     const inferredPlaymode = playmode || user.playmode || "osu";
 
     const statsRes = await axios.get(
@@ -115,7 +126,9 @@ const fetchUserData = async (username, token, playmode) => {
     );
 
     const result = { ...statsRes.data, playmode: inferredPlaymode };
+
     /* await redis.set(cacheKey, JSON.stringify(result), "EX", 300);
+
     log(
         `[${dateTan(
             new Date(),
@@ -134,7 +147,9 @@ app.get("/", (req, res) => {
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
+
         const { playmode, background, hex, version, height } = req.query;
+
         log(
             `[${dateTan(
                 new Date(),
@@ -144,6 +159,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
 
         const token = await getOsuToken();
+
         const userData = await fetchUserData(username, token, playmode);
 
         if (!userData) {
@@ -172,6 +188,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         });
 
         let originalWidth, originalHeight;
+
         if (version === "full") {
             originalWidth = 400;
             originalHeight = 200;
