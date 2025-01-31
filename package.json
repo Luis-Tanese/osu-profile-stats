@@ -12,13 +12,13 @@
     "license": "MIT",
     "description": "",
     "dependencies": {
-        "@resvg/resvg-js": "^2.6.2",
         "axios": "^1.7.9",
         "datetan": "^1.0.3",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "ioredis": "^5.4.2",
-        "nocache": "^4.0.0"
+        "nocache": "^4.0.0",
+        "sharp": "^0.33.5"
     },
     "devDependencies": {
         "nodemon": "^3.1.9"
