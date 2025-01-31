@@ -9,8 +9,44 @@ const imgTagTextarea = document.getElementById("img-tag");
 const markdownTagTextarea = document.getElementById("markdown-tag");
 const copyImgButton = document.getElementById("copy-img-btn");
 const copyMdButton = document.getElementById("copy-md-btn");
-const downloadPngButton = document.getElementById('download-png-btn');
-const copyPngButton = document.getElementById('copy-png-btn');
+const downloadPngButton = document.getElementById("download-png-btn");
+const copyPngButton = document.getElementById("copy-png-btn");
+
+const convertSvgToPng = async (svgUrl, height) => {
+    try {
+        const response = await fetch(svgUrl, { mode: "cors" });
+        const svgText = await response.text();
+
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = svgText;
+
+        const img = new Image();
+        const svgBlob = new Blob([svgText], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(svgBlob);
+
+        await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = url;
+        });
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const scale = height / img.height;
+        canvas.width = img.width * scale;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        URL.revokeObjectURL(url);
+
+        return canvas.toDataURL("image/png");
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
 const updatePreview = () => {
     const username = usernameInput.value.trim();
@@ -91,48 +127,45 @@ copyMdButton.addEventListener("click", () => {
     });
 });
 
-downloadPngButton.addEventListener('click', async () => {
+downloadPngButton.addEventListener("click", async () => {
     const username = usernameInput.value.trim();
-    if (!username) return alert('Enter username first');
-    
+    if (!username) return alert("Enter username first");
+
     try {
-        const url = new URL(previewImage.src);
-        url.searchParams.set('format', 'png');
-        
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const downloadUrl = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.href = downloadUrl;
+        const pngData = await convertSvgToPng(
+            previewImage.src,
+            previewImage.height
+        );
+
+        const a = document.createElement("a");
+        a.href = pngData;
         a.download = `${username}.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(downloadUrl);
     } catch (error) {
-        alert('Error downloading PNG');
+        alert("Error downloading PNG");
         console.error(error);
     }
 });
 
-copyPngButton.addEventListener('click', async () => {
+copyPngButton.addEventListener("click", async () => {
     const username = usernameInput.value.trim();
-    if (!username) return alert('Enter username first');
-    
+    if (!username) return alert("Enter username first");
+
     try {
-        const url = new URL(previewImage.src);
-        url.searchParams.set('format', 'png');
-        
-        const response = await fetch(url);
-        const blob = await response.blob();
-        
+        const pngData = await convertSvgToPng(
+            previewImage.src,
+            previewImage.height
+        );
+        const blob = await (await fetch(pngData)).blob();
+
         await navigator.clipboard.write([
-            new ClipboardItem({ [blob.type]: blob })
+            new ClipboardItem({ [blob.type]: blob }),
         ]);
-        alert('PNG copied to clipboard!');
+        alert("PNG copied to clipboard!");
     } catch (error) {
-        alert('Error copying PNG');
+        alert("Error copying PNG");
         console.error(error);
     }
 });
