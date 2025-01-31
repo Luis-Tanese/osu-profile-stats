@@ -95,6 +95,7 @@ const renderNewCard = async (data, background = null, hex = null) => {
         @font-face {
             font-family: 'Torus';
             src: url('${torusDataURI}') format('opentype');
+            font-display: block;
         }
         .text { fill:rgb(255, 255, 255); font-family: 'Torus', Arial, sans-serif; }
         .massive { font-size: 17px; }
@@ -281,6 +282,7 @@ const renderOldCard = async (data, background = null, hex = null) => {
         @font-face {
             font-family: 'Torus';
             src: url('${torusDataURI}') format('opentype');
+            font-display: block;
         }
         .text { fill:rgb(255, 255, 255); font-family: 'Torus', Arial, sans-serif; }
         .large { font-size: 12px; }

@@ -7,7 +7,7 @@ const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
 const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
-const sharp = require("sharp");
+const { Resvg } = require("@resvg/resvg-js");
 
 const app = express();
 const redis = new Redis(process.env.REDIS_URL);
@@ -212,7 +212,15 @@ app.get("/api/profile-stats/:username", async (req, res) => {
 
         if (format === "png") {
             try {
-                const pngBuffer = await sharp(Buffer.from(resizedSvg)).png().toBuffer();
+                const opts = {
+                    font: {
+                        loadSystemFonts: false
+                    }
+                };
+
+                const resvg = new Resvg(resizedSvg, opts);
+                const pngData = resvg.render();
+                const pngBuffer = pngData.asPng();
 
                 res.setHeader("Content-Type", "image/png");
                 res.send(pngBuffer);
@@ -223,7 +231,8 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 console.error(error);
 
                 const errorSvg = await renderErrorCard(requestedHeight, resizedWidth);
-                const errorPng = await sharp(Buffer.from(errorSvg)).png().toBuffer();
+                const errorResvg = new Resvg(errorSvg);
+                const errorPng = errorResvg.render().asPng();
 
                 res.setHeader("Content-Type", "image/png");
                 res.status(500).send(errorPng);
