@@ -121,7 +121,7 @@ copyPngButton.addEventListener('click', async () => {
     if (!username) return alert('Enter username first');
     
     try {
-        const url = new URL(prevzzzzzzzzzzziewImage.src);
+        const url = new URL(previewImage.src);
         url.searchParams.set('format', 'png');
         
         const response = await fetch(url);
