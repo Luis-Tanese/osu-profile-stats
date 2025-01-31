@@ -7,7 +7,7 @@ const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
 const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
-const { Resvg } = require("@resvg/resvg-js");
+const sharp = require("sharp");
 
 const app = express();
 const redis = new Redis(process.env.REDIS_URL);
@@ -212,9 +212,9 @@ app.get("/api/profile-stats/:username", async (req, res) => {
 
         if (format === "png") {
             try {
-                const resvg = new Resvg(resizedSvg);
-                const pngData = resvg.render();
-                const pngBuffer = pngData.asPng();
+                const pngBuffer = await sharp(Buffer.from(resizedSvg), {
+                    density: 300
+                }).png().toBuffer();
 
                 res.setHeader("Content-Type", "image/png");
                 res.send(pngBuffer);
@@ -225,8 +225,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 console.error(error);
 
                 const errorSvg = await renderErrorCard(requestedHeight, resizedWidth);
-                const errorResvg = new Resvg(errorSvg);
-                const errorPng = errorResvg.render().asPng();
+                const errorPng = await sharp(Buffer.from(errorSvg)).png().toBuffer();
 
                 res.setHeader("Content-Type", "image/png");
                 res.status(500).send(errorPng);
@@ -290,7 +289,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-/* app.listen(3000, () => {
+app.listen(3000, () => {
     log("Server running");
-}); */
-module.exports = app;
+});
+/* module.exports = app; */

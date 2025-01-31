@@ -18,10 +18,8 @@ const getSillyImage = async (url) => {
 
 const getSillyFont = async (url) => {
     try {
-        const res = await axios.get(url, { responseType: "arraybuffer" });
-        const contentType = res.headers["content-type"];
-        const base64 = Buffer.from(res.data, "binary").toString("base64");
-        return `data:${contentType};base64,${base64}`;
+        const res = await axios.get(url, { responseType: 'arraybuffer' });
+        return `data:application/vnd.ms-opentype;base64,${Buffer.from(res.data).toString('base64')}`;
     } catch (error) {
         console.error(`Failed to get silly font from ${url}:`, error);
         return "";
