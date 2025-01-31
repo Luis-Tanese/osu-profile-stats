@@ -212,13 +212,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
 
         if (format === "png") {
             try {
-                const opts = {
-                    font: {
-                        loadSystemFonts: false
-                    }
-                };
-
-                const resvg = new Resvg(resizedSvg, opts);
+                const resvg = new Resvg(resizedSvg);
                 const pngData = resvg.render();
                 const pngBuffer = pngData.asPng();
 
@@ -296,7 +290,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
+/* app.listen(3000, () => {
     log("Server running");
-});
-/* module.exports = app; */
+}); */
+module.exports = app;
