@@ -114,7 +114,6 @@ button:hover {
     border-radius: 5px;
 }
 
-/* Textarea with copy buttons */
 .textarea-container {
     position: relative;
     display: inline-block;

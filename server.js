@@ -7,6 +7,7 @@ const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
 const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
+const sharp = require("sharp");
 
 const app = express();
 const redis = new Redis(process.env.REDIS_URL);
@@ -148,7 +149,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
 
-        const { playmode, background, hex, version, height } = req.query;
+        const { playmode, background, hex, version, height, format } = req.query;
 
         log(
             `[${dateTan(
@@ -159,7 +160,6 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
 
         const token = await getOsuToken();
-
         const userData = await fetchUserData(username, token, playmode);
 
         if (!userData) {
@@ -210,6 +210,27 @@ app.get("/api/profile-stats/:username", async (req, res) => {
             </svg>
         `;
 
+        if (format === "png") {
+            try {
+                const pngBuffer = await sharp(Buffer.from(resizedSvg)).png().toBuffer();
+
+                res.setHeader("Content-Type", "image/png");
+                res.send(pngBuffer);
+
+                log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][RESPONSE] PNG profile card for ${username} sent successfully.`);
+                return;
+            } catch (error) {
+                console.error(error);
+
+                const errorSvg = await renderErrorCard(requestedHeight, resizedWidth);
+                const errorPng = await sharp(Buffer.from(errorSvg)).png().toBuffer();
+
+                res.setHeader("Content-Type", "image/png");
+                res.status(500).send(errorPng);
+                return;
+            }
+        }
+
         res.setHeader("Content-Type", "image/svg+xml");
         res.send(resizedSvg);
 
@@ -249,12 +270,24 @@ app.get("/api/profile-stats/:username", async (req, res) => {
 
         const errorSvg = await renderErrorCard(requestedHeight, resizedWidth);
 
+        if (req.query.format === "png") {
+            try {
+                const errorPng = await sharp(Buffer.from(errorSvg)).png().toBuffer();
+
+                res.setHeader("Content-Type", "image/png");
+                res.status(500).send(errorPng);
+            } catch (error) {
+                res.status(500).send("Internal Server Error");
+            }
+            return;
+        }
+
         res.setHeader("Content-Type", "image/svg+xml");
         res.status(500).send(errorSvg);
     }
 });
 
-/* app.listen(3000, () => {
+app.listen(3000, () => {
     log("Server running");
-}); */
-module.exports = app;
+});
+/* module.exports = app; */

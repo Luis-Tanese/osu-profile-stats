@@ -39,7 +39,8 @@ const getBackground = async (background, hex = null, svgWidth, svgHeight) => {
         if (hexSelected === null) hexSelected = "f3f3f3f3f3";
         return `<rect width="${svgWidth}" height="${svgHeight}" fill="#${hexSelected}" clip-path="url(#clip-rounded)" />`;
     } else {
-        const bgTypes = ["default", "bg1", "bg2", "bg3"];
+        const bgTypes = ["default", "bg1", "bg2", "bg3", "bg4", "bg5"];
+        
         const selectedBg = bgTypes.includes(background)
             ? background
             : "default";
