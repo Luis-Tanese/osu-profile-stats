@@ -18,8 +18,10 @@ const getSillyImage = async (url) => {
 
 const getSillyFont = async (url) => {
     try {
-        const res = await axios.get(url, { responseType: 'arraybuffer' });
-        return `data:font/otf;base64,${Buffer.from(res.data).toString('base64')}`;
+        const res = await axios.get(url, { responseType: "arraybuffer" });
+        return `data:font/otf;base64,${Buffer.from(res.data).toString(
+            "base64"
+        )}`;
     } catch (error) {
         console.error(`Failed to get silly font from ${url}:`, error);
         return "";
@@ -38,7 +40,7 @@ const getBackground = async (background, hex = null, svgWidth, svgHeight) => {
         return `<rect width="${svgWidth}" height="${svgHeight}" fill="#${hexSelected}" clip-path="url(#clip-rounded)" />`;
     } else {
         const bgTypes = ["default", "bg1", "bg2", "bg3", "bg4", "bg5"];
-        
+
         const selectedBg = bgTypes.includes(background)
             ? background
             : "default";

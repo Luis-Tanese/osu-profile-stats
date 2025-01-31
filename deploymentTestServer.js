@@ -7,11 +7,20 @@ const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
 const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
+const cors = require("cors");
 
 const app = express();
 /* const redis = new Redis(process.env.REDIS_URL); */
 const OSU_AUTH_URL = "https://osu.ppy.sh/oauth/token";
 const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
+
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET"],
+        allowedHeaders: ["Content-Type"],
+    })
+);
 
 app.use(nocache());
 
@@ -71,7 +80,6 @@ const getOsuToken = async () => {
     });
 
     const token = res.data.access_token;
-
     /* await redis.set("osuToken", token, "EX", 3600);
 
     log(
@@ -87,7 +95,6 @@ const getOsuToken = async () => {
 
 const fetchUserData = async (username, token, playmode) => {
     /* const cacheKey = `user-${username}-${playmode}`;
-
     const cachedData = await redis.get(cacheKey);
 
     if (cachedData) {
@@ -98,7 +105,6 @@ const fetchUserData = async (username, token, playmode) => {
                 "en-us"
             )}][CACHE] User data for ${username} (playmode: ${playmode}) retrieved from Redis.`
         );
-        //log(JSON.parse(cachedData));
         return JSON.parse(cachedData);
     } */
 
@@ -115,7 +121,6 @@ const fetchUserData = async (username, token, playmode) => {
     });
 
     const user = userRes.data;
-
     const inferredPlaymode = playmode || user.playmode || "osu";
 
     const statsRes = await axios.get(
@@ -126,7 +131,6 @@ const fetchUserData = async (username, token, playmode) => {
     );
 
     const result = { ...statsRes.data, playmode: inferredPlaymode };
-
     /* await redis.set(cacheKey, JSON.stringify(result), "EX", 300);
 
     log(
@@ -136,7 +140,7 @@ const fetchUserData = async (username, token, playmode) => {
             "en-us"
         )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 5 minutes.`
     ); */
-    //log(result);
+
     return result;
 };
 
@@ -147,7 +151,6 @@ app.get("/", (req, res) => {
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
-
         const { playmode, background, hex, version, height } = req.query;
 
         log(
@@ -159,7 +162,6 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
 
         const token = await getOsuToken();
-
         const userData = await fetchUserData(username, token, playmode);
 
         if (!userData) {
@@ -257,4 +259,5 @@ app.get("/api/profile-stats/:username", async (req, res) => {
 /* app.listen(3000, () => {
     log("Server running");
 }); */
+
 module.exports = app;

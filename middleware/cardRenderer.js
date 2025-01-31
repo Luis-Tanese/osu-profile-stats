@@ -31,7 +31,6 @@ const renderNewCard = async (data, background = null, hex = null) => {
     const username = data.username || "Silly";
     const stats = data.statistics || {};
     const avatarUrl = data.avatar_url || "";
-    //log("Avatar URL being passed:", avatarUrl);
     const flagUrl = `https://osu.ppy.sh/images/flags/${data.country_code}.png`;
     const globalRank = stats.global_rank || "N/A";
     const countryRank = stats.country_rank || "N/A";
@@ -65,9 +64,8 @@ const renderNewCard = async (data, background = null, hex = null) => {
         );
     }
 
-    // Solving for Data URIs ＞︿＜
     const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
-    //log("Avatar Data URI:", avatarDataURI);
+
     const flagDataURI = await getSillyImage(flagUrl);
     const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
     const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
@@ -142,7 +140,7 @@ const renderNewCard = async (data, background = null, hex = null) => {
     <text x="250" y="105" class="text small">${accuracy}%</text>
 
     <line x1="310" y1="85" x2="350" y2="85" stroke="yellow" stroke-width="1" />
-    <text x="310" y="95" class="text small">PC</text>
+    <text x="310" y="95" class="text small">Play Count</text>
     <text x="310" y="105" class="text small">${formatNumber(playCount)}</text>
 
     </svg>
