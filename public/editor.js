@@ -35,12 +35,12 @@ const convertSvgToPng = async (url, height) => {
 
         const img = new Image();
         const svgBlob = new Blob([svg], { type: "image/svg+xml" });
-        const url = URL.createObjectURL(svgBlob);
+        const urlObj = URL.createObjectURL(svgBlob);
 
         await new Promise((resolve, reject) => {
             img.onload = resolve;
             img.onerror = reject;
-            img.src = url;
+            img.src = urlObj;
         });
 
         const canvas = document.createElement("canvas");
@@ -50,9 +50,9 @@ const convertSvgToPng = async (url, height) => {
         canvas.width = img.width * scale;
         canvas.height = height;
 
-        ctw.drawImage(img, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        URL.revokeObjectURL(url);
+        URL.revokeObjectURL(urlObj);
 
         return canvas.toDataURL("image/png");
     } catch (error) {
