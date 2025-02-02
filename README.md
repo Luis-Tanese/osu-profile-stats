@@ -17,11 +17,14 @@ This generates SVG cards displaying osu! profile statistics. Customize the cards
 
 > [!IMPORTANT]
 > You can create a card at our website so you can have an easier time [here!](https://osu-profile-stats.vercel.app/editor.html)
+> 
 > I'll be making some updates to the editor from time to time to make it better!
 
 > [!NOTE]
-> I've removed URL parameter instructions on this version of the README, but you can still find instructions for it [here.]()
-> Reason I've removed it is because doing through the website is much more convenient (Plus I spent a lot of time on the frontend of the editor XD).
+> I've removed URL parameter instructions on this version of the README, but you can still find instructions for it [here.](https://github.com/Luis-Tanese/osu-profile-stats/blob/main/OLD_README.md)
+> 
+> Reason I've removed it is because doing through the website is much more convenient *(Plus I spent a lot of time on the frontend of the editor XD)*.
+> 
 > Also the old readme will still stay up-to-date with the current API, so no worries on that end.
 
 ---
