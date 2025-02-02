@@ -26,6 +26,8 @@ This generates SVG cards displaying osu! profile statistics. Customize the cards
 > Reason I've removed it is because doing through the website is much more convenient *(Plus I spent a lot of time on the frontend of the editor XD)*.
 > 
 > Also the old readme will still stay up-to-date with the current API, so no worries on that end.
+>
+> And no, I didn't copy [osu-stats-signature](https://github.com/solstice23/osu-stats-signature). Our codebases are way different, since I made mine from the ground up, plus I made sure that EVERY feature I have works.
 
 ---
 
