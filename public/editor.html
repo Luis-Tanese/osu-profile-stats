@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./editor-media.css" />
         <link rel="stylesheet" href="./editor.css" />
         <title>OSC Editor</title>
     </head>
@@ -75,21 +76,93 @@
                 <div class="preview">
                     <h2>Preview</h2>
                     <img src="" alt="Card Preview" id="preview-image" />
-                    <br />
-                    BBCode
-                    <div class="textarea-container">
-                        <textarea id="markdown-tag" readonly></textarea>
-                        <button id="copy-md-btn" class="copy-btn">Copy</button>
+                    <div class="code-grid">
+                        <div class="code-block">
+                            <label>URL</label>
+                            <div class="textarea-container">
+                                <textarea id="code-url" readonly></textarea>
+                                <button class="copy-btn" data-type="url">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <label>BBCode</label>
+                            <div class="textarea-container">
+                                <textarea id="code-bbcode" readonly></textarea>
+                                <button class="copy-btn" data-type="bbcode">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <label>BBCode with Profile Link</label>
+                            <div class="textarea-container">
+                                <textarea
+                                    id="code-bbcode-link"
+                                    readonly
+                                ></textarea>
+                                <button
+                                    class="copy-btn"
+                                    data-type="bbcode-link"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <label>Markdown</label>
+                            <div class="textarea-container">
+                                <textarea
+                                    id="code-markdown"
+                                    readonly
+                                ></textarea>
+                                <button class="copy-btn" data-type="markdown">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <label>Markdown with Profile Link</label>
+                            <div class="textarea-container">
+                                <textarea
+                                    id="code-markdown-link"
+                                    readonly
+                                ></textarea>
+                                <button
+                                    class="copy-btn"
+                                    data-type="markdown-link"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <label>HTML</label>
+                            <div class="textarea-container">
+                                <textarea id="code-html" readonly></textarea>
+                                <button class="copy-btn" data-type="html">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="code-block">
+                            <label>HTML with Profile Link</label>
+                            <div class="textarea-container">
+                                <textarea
+                                    id="code-html-link"
+                                    readonly
+                                ></textarea>
+                                <button class="copy-btn" data-type="html-link">
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    IMG Tag
-                    <div class="textarea-container">
-                        <textarea id="img-tag" readonly></textarea>
-                        <button id="copy-img-btn" class="copy-btn">Copy</button>
+                    <div class="button-group">
+                        <button id="download-png-btn">Download PNG</button>
+                        <button id="copy-png-btn">Copy PNG</button>
                     </div>
-                </div>
-                <div class="button-group">
-                    <button id="download-png-btn">Download PNG</button>
-                    <button id="copy-png-btn">Copy PNG</button>
                 </div>
             </div>
         </main>

@@ -1,0 +1,22 @@
+@media screen and (max-width: 600px) {
+    .code-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .code-block textarea {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    .generator {
+        padding: 1rem;
+    }
+
+    body {
+        padding: 0 0.5rem;
+    }
+
+    button {
+        padding: 0.5rem 1rem;
+    }
+}

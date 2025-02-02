@@ -107,18 +107,18 @@ button:hover {
     transform: translateY(-2px);
 }
 
-.preview img {
+#preview-image {
     max-width: 100%;
     margin: 1rem 0;
     border: 1px solid #555;
     border-radius: 5px;
+    background: #333;
 }
 
 .textarea-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 textarea {
@@ -133,18 +133,17 @@ textarea {
     box-sizing: border-box;
 }
 
+.textarea-container textarea {
+    flex-grow: 1;
+    min-width: 0;
+}
+
 .copy-btn {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    background-color: #ff66aa;
-    color: white;
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 5px;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 0;
+    height: 2.3rem;
+    padding: 0.3rem 0.8rem;
+    flex-shrink: 0;
+    font-size: 0.7rem;
 }
 
 .copy-btn:hover {
@@ -161,4 +160,52 @@ footer {
     font-size: 0.9rem;
     border-top: 1px solid #444;
     margin-top: 2rem;
+}
+
+.code-grid {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    margin-top: 0.5rem;
+}
+
+.code-block {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.code-content {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+}
+
+.code-block textarea {
+    height: 2.3rem;
+    min-width: 0;
+    margin: 0;
+    font-size: 0.75rem;
+    overflow-x: auto;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.code-block label {
+    text-align: left;
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+}
+
+textarea::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: #333;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #ff66aa;
+    border-radius: 3px;
 }
