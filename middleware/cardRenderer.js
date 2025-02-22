@@ -27,7 +27,13 @@ const renderCard = async (data, options = {}) => {
 };
 
 // New render because old one was ugly, but you can still call it by making the version=full request in link
-const renderNewCard = async (data, background = null, hex = null) => {
+const renderNewCard = async (
+    data,
+    background = null,
+    hex = null,
+    supporter,
+    team
+) => {
     const username = data.username || "Silly";
     const stats = data.statistics || {};
     const avatarUrl = data.avatar_url || "";
@@ -41,13 +47,7 @@ const renderNewCard = async (data, background = null, hex = null) => {
     const playCount = stats.play_count || "N/A";
     const supporterLevel = data.support_level || 0;
     const rankHistory = data.rank_history || [];
-    const team = data.team;
-
-    const teamFlagUrl = team?.flag_url || null;
-    let teamFlagDataURI = null;
-    if (teamFlagUrl) {
-        teamFlagDataURI = await getSillyImage(teamFlagUrl);
-    }
+    const teamData = data.team;
 
     const svgWidth = 400;
     const svgHeight = 120;
@@ -79,6 +79,15 @@ const renderNewCard = async (data, background = null, hex = null) => {
     const torusDataURI = await getSillyFont(
         "https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf"
     );
+
+    const showSupporter = supporter !== "false" && supporterLevel > 0;
+    const showTeam = team !== "false" && teamData?.flag_url;
+
+    let teamFlagDataURI = null;
+    if (showTeam) {
+        teamFlagDataURI = await getSillyImage(teamData.flag_url);
+    }
+
     const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
     const supporterDataURI = await getSillyImage(supporterUrl);
     const supporterX = 120 + username.length * 8 + 10;
@@ -128,11 +137,19 @@ const renderNewCard = async (data, background = null, hex = null) => {
     <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="10" y="10" width="100" height="100" />
 
     <text x="120" y="30" class="text massive">${username}</text>
-    <image href="${supporterDataURI}" height="15" x="${supporterX}" y="17" />
     ${
-        teamFlagDataURI
-            ? `<image href="${teamFlagDataURI}" height="15" x="${teamX}" y="17" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-team-flag)" />`
-            : ``
+        showSupporter
+            ? `
+        <image href="${supporterDataURI}" height="15" x="${supporterX}" y="17" />
+        `
+            : ""
+    }
+    ${
+        showTeam
+            ? `
+        <image href="${teamFlagDataURI}" height="15" x="${teamX}" y="17" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-team-flag)" />
+        `
+            : ""
     }
 
     <image href="${flagDataURI}" x="360" y="20" width="25" height="20" />
