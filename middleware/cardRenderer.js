@@ -41,6 +41,13 @@ const renderNewCard = async (data, background = null, hex = null) => {
     const playCount = stats.play_count || "N/A";
     const supporterLevel = data.support_level || 0;
     const rankHistory = data.rank_history || [];
+    const team = data.team;
+
+    const teamFlagUrl = team?.flag_url || null;
+    let teamFlagDataURI = null;
+    if (teamFlagUrl) {
+        teamFlagDataURI = await getSillyImage(teamFlagUrl);
+    }
 
     const svgWidth = 400;
     const svgHeight = 120;
@@ -74,6 +81,13 @@ const renderNewCard = async (data, background = null, hex = null) => {
     );
     const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
     const supporterDataURI = await getSillyImage(supporterUrl);
+    const supporterX = 120 + username.length * 8 + 10;
+
+    const teamX =
+        supporterLevel != 0
+            ? supporterX + 15 + 20
+            : 120 + username.length * 8 + 10;
+
     const rankGraphSVG = renderRankHistoryGraph(rankHistory);
     const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
         rankGraphSVG
@@ -87,6 +101,9 @@ const renderNewCard = async (data, background = null, hex = null) => {
         </clipPath>
         <clipPath id="clip-pfp">
             <rect x="10" y="10" width="100" height="100" rx="10" ry="10" />
+        </clipPath>
+        <clipPath id="clip-team-flag">
+            <rect x="${teamX}" y="17" width="25" height="15" rx="3" ry="3" />
         </clipPath>
     </defs>
     <style>
@@ -111,9 +128,12 @@ const renderNewCard = async (data, background = null, hex = null) => {
     <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="10" y="10" width="100" height="100" />
 
     <text x="120" y="30" class="text massive">${username}</text>
-    <image href="${supporterDataURI}" height="15" x="${
-        120 + username.length * 8 + 10
-    }" y="17" />
+    <image href="${supporterDataURI}" height="15" x="${supporterX}" y="17" />
+    ${
+        teamFlagDataURI
+            ? `<image href="${teamFlagDataURI}" height="15" x="${teamX}" y="17" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-team-flag)" />`
+            : ``
+    }
 
     <image href="${flagDataURI}" x="360" y="20" width="25" height="20" />
     <text x="${
