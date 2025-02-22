@@ -27,13 +27,8 @@ const renderCard = async (data, options = {}) => {
 };
 
 // New render because old one was ugly, but you can still call it by making the version=full request in link
-const renderNewCard = async (
-    data,
-    background = null,
-    hex = null,
-    supporter,
-    team
-) => {
+const renderNewCard = async (data, options = {}) => {
+    const { background = null, hex = null, supporter, team } = options;
     const username = data.username || "Silly";
     const stats = data.statistics || {};
     const avatarUrl = data.avatar_url || "";
@@ -92,10 +87,9 @@ const renderNewCard = async (
     const supporterDataURI = await getSillyImage(supporterUrl);
     const supporterX = 120 + username.length * 8 + 10;
 
-    const teamX =
-        supporterLevel != 0
-            ? supporterX + 15 + 20
-            : 120 + username.length * 8 + 10;
+    const teamX = showSupporter
+        ? supporterX + 25
+        : 120 + username.length * 8 + 10;
 
     const rankGraphSVG = renderRankHistoryGraph(rankHistory);
     const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
@@ -111,9 +105,15 @@ const renderNewCard = async (
         <clipPath id="clip-pfp">
             <rect x="10" y="10" width="100" height="100" rx="10" ry="10" />
         </clipPath>
-        <clipPath id="clip-team-flag">
-            <rect x="${teamX}" y="17" width="25" height="15" rx="3" ry="3" />
-        </clipPath>
+        ${
+            showTeam
+                ? `
+            <clipPath id="clip-team-flag">
+                <rect x="${teamX}" y="17" width="25" height="15" rx="3" ry="3" />
+            </clipPath>
+            `
+                : ""
+        }
     </defs>
     <style>
         @font-face {

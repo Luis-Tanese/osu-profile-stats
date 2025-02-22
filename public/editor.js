@@ -65,8 +65,16 @@ const convertSvgToPng = async (url, height) => {
 };
 
 const generateImageUrl = () => {
-    const { username, playmode, background, hexColor, version, height } =
-        getFormValues();
+    const {
+        username,
+        playmode,
+        background,
+        hexColor,
+        version,
+        height,
+        supporter,
+        team,
+    } = getFormValues();
     if (!username) return "";
 
     const params = new URLSearchParams();
@@ -82,8 +90,8 @@ const generateImageUrl = () => {
         params.append("background", background);
     }
 
-    if (supporter === 'false') params.append('supporter', 'false');
-    if (team === 'false') params.append('team', 'false');
+    if (supporter === "false") params.append("supporter", "false");
+    if (team === "false") params.append("team", "false");
 
     return `https://osu-profile-stats.vercel.app/api/profile-stats/${encodeURIComponent(
         username
@@ -99,8 +107,8 @@ const getFormValues = () => ({
     height:
         elements.inputs.height.value ||
         (elements.inputs.version.value === "full" ? 200 : 120),
-    supporter: elements.inputs.supporter.checked ? undefined : 'false',
-    team: elements.inputs.team.checked ? undefined : 'false',
+    supporter: elements.inputs.supporter.checked ? undefined : "false",
+    team: elements.inputs.team.checked ? undefined : "false",
 });
 
 const generateAllCodeFormats = (imageUrl, username) => {
@@ -213,5 +221,8 @@ elements.buttons.copyPng.addEventListener("click", async () => {
         throw error;
     }
 });
+
+elements.inputs.supporter.addEventListener('change', updatePreview);
+elements.inputs.team.addEventListener('change', updatePreview);
 
 updatePreview();
