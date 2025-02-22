@@ -10,13 +10,13 @@ const {
 } = require("./utils.js");
 
 const renderCard = async (data, options = {}) => {
-    const { background, hex, version } = options;
+    const { version } = options;
 
     try {
         if (version === "full") {
-            return await renderOldCard(data, background, hex);
+            return await renderOldCard(data, options);
         } else {
-            return await renderNewCard(data, background, hex);
+            return await renderNewCard(data, options);
         }
     } catch (error) {
         console.error("Error rendering card:", error);
