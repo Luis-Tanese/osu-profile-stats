@@ -19,4 +19,14 @@
     button {
         padding: 0.5rem 1rem;
     }
+
+    .checkbox-group label {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
 }

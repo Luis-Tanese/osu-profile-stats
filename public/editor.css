@@ -209,3 +209,67 @@ textarea::-webkit-scrollbar-thumb {
     background: #ff66aa;
     border-radius: 3px;
 }
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0;
+    padding: 0.5rem;
+    border-radius: 5px;
+    background-color: rgba(255, 102, 170, 0.05);
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.checkbox-group label:hover {
+    background-color: rgba(255, 102, 170, 0.1);
+}
+
+.checkbox-group input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ff66aa;
+    border-radius: 4px;
+    background-color: #333;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background-color: #ff66aa;
+    border-color: #ff66aa;
+}
+
+.checkbox-group input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 6px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    transform: translate(-50%, -60%) rotate(-45deg);
+}
+
+.checkbox-group input[type="checkbox"]:focus {
+    outline: 2px solid rgba(255, 102, 170, 0.5);
+    outline-offset: 2px;
+}
+
+.generator p {
+    font-size: 0.7rem;
+}
