@@ -151,7 +151,8 @@ app.get("/", (req, res) => {
 app.get("/api/profile-stats/:username", async (req, res) => {
     try {
         const username = req.params.username;
-        const { playmode, background, hex, version, height } = req.query;
+        const { playmode, background, hex, version, height, supporter, team } =
+            req.query;
 
         log(
             `[${dateTan(
@@ -187,6 +188,8 @@ app.get("/api/profile-stats/:username", async (req, res) => {
             background: background || undefined,
             hex: hex || undefined,
             version: version || "new",
+            supporter: supporter,
+            team: team,
         });
 
         let originalWidth, originalHeight;

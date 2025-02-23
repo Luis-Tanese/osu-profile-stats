@@ -259,8 +259,8 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
+/* app.listen(3000, () => {
     log("Server running");
-});
+}); */
 
-/* module.exports = app; */
+module.exports = app;

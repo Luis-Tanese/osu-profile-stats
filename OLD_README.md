@@ -59,6 +59,9 @@ The SVG is customizable through URL parameters:
 | `background` | `bg1`, `bg2`, `bg3`, `bg4`, `bg5`, `color&hex=11bdb1` | User's default cover | Choose a background. Use color for solid colors by specifying a hex code (without `#`).  |
 | `playmode`   | `osu`, `mania`, `fruits`, `taiko`                     | User's default mode  | Select a play mode to display stats for.                                                 |
 | `version`    | `mini`, `full`                                        | `mini`               | This selects the type of card, since the old one was a bit ugly I made the mini version. |
+| `height`     | any integer                                           | Auto sized           | Set custom card height while maintaining aspect ratio                                    |
+| `supporter`  | `true`, `false`                                       | `true`               | Toggle supporter tag display                                                             |
+| `team`       | `true`, `false`                                       | `true`               | Toggle team flag display                                                                 |
 
 ---
 
@@ -99,10 +102,11 @@ Display stats for different play modes:
 
 Combine parameters for detailed customization:
 
-| Customization   | Preview                                                                                                                           | URL                                                                                                         |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| mania + bg3     | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3" alt="mania bg3" >          | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3`               |
-| osu + Color Hex | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1" alt="osu Hex" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
+| Customization           | Preview                                                                                                                           | URL                                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| mania + bg3             | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3" alt="mania bg3" >          | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3`               |
+| osu + Color Hex         | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1" alt="osu Hex" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
+| Custom height + no team | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?height=150&team=false" alt="osu Hex" >                    | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?height=150&team=false`                       |
 
 ---
 
