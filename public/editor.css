@@ -41,12 +41,12 @@ main {
     margin-bottom: 1.5rem;
 }
 
-.generator h1 a {
+a {
     color: #ff66aa;
     text-decoration: none;
 }
 
-.generator h1 a:hover {
+a:hover {
     color: #fff0f6;
 }
 
