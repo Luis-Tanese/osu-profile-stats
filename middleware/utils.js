@@ -94,6 +94,89 @@ const renderErrorCard = async (svgHeight = 120, svgWidth = 400) => {
     return render;
 };
 
+const getNameSpacing = (length, supporterLevel = 0, username) => {
+    let baseSpacing;
+    switch (length) {
+        case 3:
+            baseSpacing = 35;
+            break; //tested
+        case 4:
+            baseSpacing = 40;
+            break; //tested
+        case 5:
+            baseSpacing = 45;
+            break; //tested
+        case 6:
+            baseSpacing = 55;
+            break; //tested
+        case 7:
+            baseSpacing = 70;
+            break; //tested
+        case 8:
+            baseSpacing = 75;
+            break; //tested
+        case 9:
+            baseSpacing = 80;
+            break; //tested
+        case 10:
+            baseSpacing = 95;
+            break; //tested
+        case 11:
+            baseSpacing = 100;
+            break; //tested
+        case 12:
+            baseSpacing = 105;
+            break; //tested
+        case 13:
+            baseSpacing = 125;
+            break; //tested
+        case 14:
+            baseSpacing = 130;
+            break; //not tested (I'm too lazy for this crap IVE BEEN HERE FOR 3 HOURS MAKING THIS ACTUALLY LOOK GOOD GODDAMIT I AM GOING INSANE)
+        case 15:
+            baseSpacing = 135;
+            break; //tested
+        default:
+            baseSpacing = 35;
+    }
+
+    return (
+        baseSpacing +
+        getSupporterSpacing(supporterLevel) +
+        capitalLetters(username)
+    );
+};
+
+const getSupporterSpacing = (level) => {
+    switch (level) {
+        case 1:
+            return 5;
+        case 2:
+            return 10;
+        case 3:
+            return 15;
+        default:
+            return 0;
+    }
+};
+
+const capitalLetters = (username) => {
+    return (username.match(/[A-Z]/g) || []).length * 2;
+};
+
+const getSupporterSpacingFlag = (level) => {
+    switch (level) {
+        case 1:
+            return 27;
+        case 2:
+            return 33;
+        case 3:
+            return 45;
+        default:
+            return 0;
+    }
+};
+
 module.exports = {
     log,
     formatNumber,
@@ -103,4 +186,6 @@ module.exports = {
     getColor,
     validateHex,
     renderErrorCard,
+    getNameSpacing,
+    getSupporterSpacingFlag,
 };

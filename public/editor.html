@@ -11,7 +11,14 @@
         <main>
             <div class="generator">
                 <h1><a href="./index.html">←</a> Osu Card Generator</h1>
-                <p>Cards may take ~2 seconds to load as the server processes all requests.</p>
+                <p>
+                    If you find ANY issue in your card, please open an issue in
+                    <a
+                        href="https://github.com/Luis-Tanese/osu-profile-stats/issues"
+                        >here</a
+                    >
+                    or message me on discord @ tanese asap
+                </p>
                 <form id="card">
                     <div class="form-group">
                         <label for="username">Username:</label>
@@ -77,10 +84,12 @@
                         <label>Extras:</label>
                         <div class="checkbox-group">
                             <label>
-                                <input type="checkbox" id="supporter" checked> Show Supporter
+                                <input type="checkbox" id="supporter" checked />
+                                Show Supporter
                             </label>
                             <label>
-                                <input type="checkbox" id="team" checked> Show Team Flag
+                                <input type="checkbox" id="team" checked /> Show
+                                Team Flag
                             </label>
                         </div>
                     </div>
@@ -88,7 +97,23 @@
 
                 <div class="preview">
                     <h2>Preview</h2>
-                    <img src="" alt="Card Preview" id="preview-image" />
+                    <div class="image-container">
+                        <img src="" alt="Card Preview" id="preview-image" />
+                        <div
+                            class="loading-container hidden"
+                            id="loading-container"
+                        >
+                            <div class="spinner">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
+                            </div>
+                            <p class="loading-text">
+                                Your card is loading and will be ready in a
+                                second...
+                            </p>
+                        </div>
+                    </div>
                     <div class="code-grid">
                         <div class="code-block">
                             <label>URL</label>

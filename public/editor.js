@@ -11,6 +11,7 @@ const elements = {
     },
     preview: {
         image: document.getElementById("preview-image"),
+        loadingContainer: document.getElementById("loading-container"),
         codes: {
             url: document.getElementById("code-url"),
             markdown: document.getElementById("code-markdown"),
@@ -129,11 +130,28 @@ const generateAllCodeFormats = (imageUrl, username) => {
     };
 };
 
-const updatePreview = () => {
+const updatePreview = async () => {
     const { username, height } = getFormValues();
     const imageUrl = generateImageUrl();
 
-    elements.preview.image.src = imageUrl;
+    if (imageUrl) {
+        elements.preview.loadingContainer.classList.remove("hidden");
+        elements.preview.image.classList.add("hidden");
+
+        try {
+            await new Promise((resolve, reject) => {
+                elements.preview.image.onload = resolve;
+                elements.preview.image.onerror = reject;
+                elements.preview.image.src = imageUrl;
+            });
+        } finally {
+            elements.preview.loadingContainer.classList.add("hidden");
+            elements.preview.image.classList.remove("hidden");
+        }
+    } else {
+        elements.preview.image.src = "";
+    }
+
     elements.preview.image.style.height = `${height}px`;
 
     const codes = generateAllCodeFormats(imageUrl, username);
@@ -222,7 +240,7 @@ elements.buttons.copyPng.addEventListener("click", async () => {
     }
 });
 
-elements.inputs.supporter.addEventListener('change', updatePreview);
-elements.inputs.team.addEventListener('change', updatePreview);
+elements.inputs.supporter.addEventListener("change", updatePreview);
+elements.inputs.team.addEventListener("change", updatePreview);
 
 updatePreview();

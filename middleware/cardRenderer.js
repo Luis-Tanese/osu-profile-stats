@@ -7,6 +7,8 @@ const {
     getSillyFont,
     getColor,
     validateHex,
+    getNameSpacing,
+    getSupporterSpacingFlag,
 } = require("./utils.js");
 
 const renderCard = async (data, options = {}) => {
@@ -85,11 +87,12 @@ const renderNewCard = async (data, options = {}) => {
 
     const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
     const supporterDataURI = await getSillyImage(supporterUrl);
-    const supporterX = 120 + username.length * 8 + 10;
+    const supporterX =
+        120 + getNameSpacing(username.length, supporterLevel, username);
 
     const teamX = showSupporter
-        ? supporterX + 25
-        : 120 + username.length * 8 + 10;
+        ? supporterX + getSupporterSpacingFlag(supporterLevel)
+        : 120 + getNameSpacing(username.length, supporterLevel, username);
 
     const rankGraphSVG = renderRankHistoryGraph(rankHistory);
     const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
