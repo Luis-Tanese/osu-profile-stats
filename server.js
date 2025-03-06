@@ -162,18 +162,72 @@ app.get("/api/profile-stats/:username", async (req, res) => {
             )}][REQUEST] Profile stats request received for ${username} with playmode=${playmode} and background=${background}.`
         );
 
-        const token = await getOsuToken();
-        const userData = await fetchUserData(username, token, playmode);
+        if (!username) {
+            const errorCard = await renderErrorCard(
+                120,
+                400,
+                "Username is required"
+            );
+            res.setHeader("Content-Type", "image/svg+xml");
+            return res.status(400).send(errorCard);
+        }
 
-        if (!userData) {
+        const token = await getOsuToken();
+        if (!token) {
             log(
                 `[${dateTan(
                     new Date(),
                     "YYYY-MM-DD HH:mm:ss:ms Z",
                     "en-us"
-                )}][ERROR] User data for ${username} not found.`
+                )}][ERROR] Failed to auth with osu API.`
             );
-            return res.status(404).send("User not found");
+            const errorCard = await renderErrorCard(
+                120,
+                400,
+                "Failed to auth with osu API"
+            );
+            res.setHeader("Content-Type", "image/svg+xml");
+            return res.status(500).send(errorCard);
+        }
+
+        let userData;
+        try {
+            userData = await fetchUserData(username, token, playmode);
+            if (!userData) {
+                log(
+                    `[${dateTan(
+                        new Date(),
+                        "YYYY-MM-DD HH:mm:ss:ms Z",
+                        "en-us"
+                    )}][ERROR] User data for ${username} not found.`
+                );
+                const errorCard = await renderErrorCard(
+                    120,
+                    400,
+                    `User "${username}" not found`
+                );
+                res.setHeader("Content-Type", "image/svg+xml");
+                return res.status(404).send(errorCard);
+            }
+        } catch (fetchError) {
+            const errorMessage =
+                fetchError.response?.status === 404
+                    ? `User "${username}" not found`
+                    : `Failed to fetch data for user "${username}"`;
+
+            log(
+                `[${dateTan(
+                    new Date(),
+                    "YYYY-MM-DD HH:mm:ss:ms Z",
+                    "en-us"
+                )}][ERROR] ${errorMessage}`
+            );
+
+            const errorCard = await renderErrorCard(120, 400, errorMessage);
+            res.setHeader("Content-Type", "image/svg+xml");
+            return res
+                .status(fetchError.response?.status || 500)
+                .send(errorCard);
         }
 
         log(
@@ -235,32 +289,30 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 "en-us"
             )}][ERROR] Internal Server Error for request: ${
                 req.originalUrl
-            }, Params for request: ${req.query}`
+            }, Params for request: ${JSON.stringify(req.query)}`
         );
 
-        let originalWidth, originalHeight;
-        if (req.query.version === "full") {
-            originalWidth = 400;
-            originalHeight = 200;
-        } else {
-            originalWidth = 400;
-            originalHeight = 120;
-        }
-
+        let originalWidth = 400;
+        let originalHeight = req.query.version === "full" ? 200 : 120;
         const requestedHeight =
             parseInt(req.query.height, 10) || originalHeight;
         const scaleFactor = requestedHeight / originalHeight;
         const resizedWidth = originalWidth * scaleFactor;
 
-        const errorSvg = await renderErrorCard(requestedHeight, resizedWidth);
+        const errorMessage = error.message || "An unexpected error occurred";
+        const errorCard = await renderErrorCard(
+            requestedHeight,
+            resizedWidth,
+            errorMessage
+        );
 
         res.setHeader("Content-Type", "image/svg+xml");
-        res.status(500).send(errorSvg);
+        res.status(500).send(errorCard);
     }
 });
 
-/* app.listen(3000, () => {
+app.listen(3000, () => {
     log("Server running");
-}); */
+});
 
-module.exports = app;
+/* module.exports = app; */

@@ -11,6 +11,17 @@ const {
     getSupporterSpacingFlag,
 } = require("./utils.js");
 
+/**
+ * Main function to render a player's profile card
+ * @param {Object} data - The player data from osu's API
+ * @param {Object} options - Rendering options
+ * @param {string} options.version - Card version ('full' for old style, anything else for new style)
+ * @param {string} options.background - Background type
+ * @param {string} options.hex - Hex color for color backgrounds
+ * @param {string} options.supporter - Whether to show supporter tag
+ * @param {string} options.team - Whether to show team flag
+ * @returns {Promise<string>} - SVG markup for the profile card
+ */
 const renderCard = async (data, options = {}) => {
     const { version } = options;
 
@@ -28,7 +39,16 @@ const renderCard = async (data, options = {}) => {
     }
 };
 
-// New render because old one was ugly, but you can still call it by making the version=full request in link
+/**
+ * New render because old one was ugly, but you can still call it by making the version=full request in link (compact version)
+ * @param {Object} data - The player data from osu's API
+ * @param {Object} options - Rendering options
+ * @param {string} options.background - Background type or image
+ * @param {string} options.hex - Hex color for color backgrounds
+ * @param {string} options.supporter - Whether to show supporter tag
+ * @param {string} options.team - Whether to show team flag
+ * @returns {Promise<string>} - SVG markup for the card
+ */
 const renderNewCard = async (data, options = {}) => {
     const { background = null, hex = null, supporter, team } = options;
     const username = data.username || "Silly";
@@ -87,12 +107,21 @@ const renderNewCard = async (data, options = {}) => {
 
     const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
     const supporterDataURI = await getSillyImage(supporterUrl);
-    const supporterX =
+
+    const usernameX = 120;
+    const usernameWidth = getNameSpacing(username.length, 0, username);
+
+    const teamX = usernameX + usernameWidth;
+    const teamWidth = 25;
+
+    const supporterX = showTeam ? teamX + teamWidth + 5 : teamX;
+
+    /* const supporterX =
         120 + getNameSpacing(username.length, supporterLevel, username);
 
     const teamX = showSupporter
         ? supporterX + getSupporterSpacingFlag(supporterLevel)
-        : 120 + getNameSpacing(username.length, supporterLevel, username);
+        : 120 + getNameSpacing(username.length, supporterLevel, username); */
 
     const rankGraphSVG = renderRankHistoryGraph(rankHistory);
     const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
@@ -141,18 +170,19 @@ const renderNewCard = async (data, options = {}) => {
 
     <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="10" y="10" width="100" height="100" />
 
-    <text x="120" y="30" class="text massive">${username}</text>
-    ${
-        showSupporter
-            ? `
-        <image href="${supporterDataURI}" height="15" x="${supporterX}" y="17" />
-        `
-            : ""
-    }
+    <text x="${usernameX}" y="30" class="text massive">${username}</text>
     ${
         showTeam
             ? `
         <image href="${teamFlagDataURI}" height="15" x="${teamX}" y="17" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-team-flag)" />
+        `
+            : ""
+    }
+
+    ${
+        showSupporter
+            ? `
+        <image href="${supporterDataURI}" height="15" x="${supporterX}" y="17" />
         `
             : ""
     }
@@ -191,6 +221,16 @@ const renderNewCard = async (data, options = {}) => {
     return render;
 };
 
+/**
+ * Renders the old style profile card (full version with more details)
+ * @param {Object} data - The player data from osu's API
+ * @param {Object} options - Rendering options
+ * @param {string} options.background - Background type or image
+ * @param {string} options.hex - Hex color for color backgrounds
+ * @param {string} options.supporter - Whether to show supporter badge
+ * @param {string} options.team - Whether to show team flag
+ * @returns {Promise<string>} - SVG markup for the old style profile card
+ */
 const renderOldCard = async (data, options = {}) => {
     const { background = null, hex = null, supporter, team } = options;
     const stats = data.statistics || {};
@@ -222,16 +262,17 @@ const renderOldCard = async (data, options = {}) => {
         teamFlagDataURI = await getSillyImage(teamData.flag_url);
     }
 
-    const usernameLength = data.username.length;
-    const supporterX = 80 + usernameLength * 7 + 1;
-    const supporterIconWidth = 20;
-    let teamX;
+    const usernameX = 80;
+    const usernameWidth = getNameSpacing(
+        data.username.length,
+        0,
+        data.username
+    );
 
-    if (showSupporter) {
-        teamX = supporterX + supporterIconWidth + 5;
-    } else {
-        teamX = 80 + usernameLength * 7 + 1;
-    }
+    const teamX = usernameX + usernameWidth;
+    const teamWidth = 20;
+
+    const supporterX = showTeam ? teamX + teamWidth + 5 : teamX;
 
     const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
     const flagDataURI = await getSillyImage(flagUrl);
@@ -360,15 +401,15 @@ const renderOldCard = async (data, options = {}) => {
     <image class="flag" href="${playmodeIconDataURI}" x="300" y="15" width="40" height="25" />
     <image class="flag" href="${flagDataURI}" x="340" y="15" width="40" height="25" />
 
-    <text x="80" y="30" class="text large">${data.username}</text>
-    ${
-        showSupporter
-            ? `<image href="${supporterDataURI}" height="12" x="${supporterX}" y="20" />`
-            : ""
-    }
+    <text x="${usernameX}" y="30" class="text large">${data.username}</text>
     ${
         showTeam
             ? `<image href="${teamFlagDataURI}" height="12" x="${teamX}" y="20" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-team-flag)" />`
+            : ""
+    }
+    ${
+        showSupporter
+            ? `<image href="${supporterDataURI}" height="12" x="${supporterX}" y="20" />`
             : ""
     }
 

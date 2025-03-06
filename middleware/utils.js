@@ -1,9 +1,18 @@
 const axios = require("axios");
 
+/**
+ * Logs a silly message (Just using it cuz smol)
+ * @param {string} string - The message to log
+ */
 const log = (string) => {
     console.log(string);
 };
 
+/**
+ * Gets a image from a URL and converts into a base64 data URI
+ * @param {string} url - The url of the image (duh)
+ * @returns {Promise<string>} - The base64-encoded data URI
+ */
 const getSillyImage = async (url) => {
     try {
         const res = await axios.get(url, { responseType: "arraybuffer" });
@@ -16,6 +25,11 @@ const getSillyImage = async (url) => {
     }
 };
 
+/**
+ * Same thing as getSillyImage but now im too lazy to merge them both
+ * @param {string} url - The url of the font (^___^)
+ * @returns {Promise<string>} - The base64-encoded data URI
+ */
 const getSillyFont = async (url) => {
     try {
         const res = await axios.get(url, { responseType: "arraybuffer" });
@@ -28,11 +42,24 @@ const getSillyFont = async (url) => {
     }
 };
 
+/**
+ * Just a helper function to format a number with commas as thousands separators
+ * @param {number|string} value - Num to format
+ * @returns {string} - Formatted num
+ */
 const formatNumber = (value) => {
     if (value === "N/A") return value;
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+/**
+ * This gets the background element for the card
+ * @param {string} background - Bg type or name
+ * @param {string|null} hex - The hex color code (for color backgrounds)
+ * @param {number} svgWidth - The width of the svg
+ * @param {number} svgHeight - The height of the svg
+ * @returns {Promise<string>} - Markup for the backgroud
+ */
 const getBackground = async (background, hex = null, svgWidth, svgHeight) => {
     if (background === "color") {
         let hexSelected = hex;
@@ -52,25 +79,63 @@ const getBackground = async (background, hex = null, svgWidth, svgHeight) => {
     }
 };
 
+/**
+ * Gets the color element for the card
+ * @param {string|null} hex - The hex color code
+ * @param {number} svgWidth - The width of the svg
+ * @param {number} svgHeight - The height of the svg
+ * @returns {string} - Markup for the color
+ */
 const getColor = (hex, svgWidth, svgHeight) => {
     let hexSelected = hex;
     if (hexSelected === null) hexSelected = "f3f3f3f3f3";
     return `<rect width="${svgWidth}" height="${svgHeight}" fill="#${hexSelected}" clip-path="url(#clip-rounded)" />`;
 };
 
+/**
+ * Simply validates a hex color code
+ * @param {string} hex - The hex color code
+ * @returns {string} - The validated hex color code
+ */
 const validateHex = (hex) => {
     const isValidHex = /^([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex);
     if (!isValidHex) throw new Error(`Invalid hex color: ${hex}`);
     return hex;
 };
-
-const renderErrorCard = async (svgHeight = 120, svgWidth = 400) => {
+/**
+ * Renders an error card with a specific error message
+ * @param {number} svgHeight - Height of the error card
+ * @param {number} svgWidth - Width of the error card
+ * @param {string} errorMessage - Specific error message to display
+ * @returns {Promise<string>} - SVG markup for the error card
+ */
+const renderErrorCard = async (svgHeight = 120, svgWidth = 400, errorMessage = "An error occurred") => {
     const backgroundType = await getBackground(
-        "bg1",
+        "bg4",
         null,
         svgWidth,
         svgHeight
     );
+
+    const maxCharsPerLine = 40;
+    const words = errorMessage.split(' ');
+    const lines = [];
+    let currentLine = '';
+
+    words.forEach(word => {
+        if ((currentLine + ' ' + word).length <= maxCharsPerLine) {
+            currentLine += (currentLine ? ' ' : '') + word;
+        } else {
+            lines.push(currentLine);
+            currentLine = word;
+        }
+    });
+    if (currentLine) {
+        lines.push(currentLine);
+    }
+
+    const lineHeight = 25;
+    const startY = (svgHeight / 2) - ((lines.length - 1) * lineHeight / 2);
 
     const render = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
@@ -84,86 +149,57 @@ const renderErrorCard = async (svgHeight = 120, svgWidth = 400) => {
         .large { font-size: 20px; }
     </style>
     ${backgroundType}
-    <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
-    <text x="50%" y="50%" class="text large" dominant-baseline="middle" text-anchor="middle">
-        An error occurred
-    </text>
+    <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.6)" clip-path="url(#clip-rounded)" />
+
+    ${lines.map((line, index) => `
+        <text 
+            x="50%" 
+            y="${startY + (index * lineHeight)}" 
+            class="text large" 
+            dominant-baseline="middle" 
+            text-anchor="middle"
+        >
+            ${line}
+        </text>
+    `).join('')}
     </svg>
     `;
 
     return render;
 };
 
+/**
+ * Calculates the appropriate spacing for a username based on its length and character composition. This took me so long to figure out and tweak it out, and it is still not perfect, but we roll with it
+ * @param {number} length - The length of the username
+ * @param {number} supporterLevel - The supporter level (not used and im lazy to remove it)
+ * @param {string} username - The username to calculate spacing for
+ * @returns {number} - The calculated width for the username
+ */
 const getNameSpacing = (length, supporterLevel = 0, username) => {
-    let baseSpacing;
-    switch (length) {
-        case 3:
-            baseSpacing = 35;
-            break; //tested
-        case 4:
-            baseSpacing = 40;
-            break; //tested
-        case 5:
-            baseSpacing = 45;
-            break; //tested
-        case 6:
-            baseSpacing = 55;
-            break; //tested
-        case 7:
-            baseSpacing = 70;
-            break; //tested
-        case 8:
-            baseSpacing = 75;
-            break; //tested
-        case 9:
-            baseSpacing = 80;
-            break; //tested
-        case 10:
-            baseSpacing = 95;
-            break; //tested
-        case 11:
-            baseSpacing = 100;
-            break; //tested
-        case 12:
-            baseSpacing = 105;
-            break; //tested
-        case 13:
-            baseSpacing = 125;
-            break; //tested
-        case 14:
-            baseSpacing = 130;
-            break; //not tested (I'm too lazy for this crap IVE BEEN HERE FOR 3 HOURS MAKING THIS ACTUALLY LOOK GOOD GODDAMIT I AM GOING INSANE)
-        case 15:
-            baseSpacing = 135;
-            break; //tested
-        default:
-            baseSpacing = 35;
-    }
+    let baseWidth = length * 8;
 
-    return (
-        baseSpacing +
-        getSupporterSpacing(supporterLevel) +
-        capitalLetters(username)
-    );
+    const capitalCount = (username.match(/[A-Z]/g) || []).length;
+    baseWidth += capitalCount * 2.5;
+
+    const wideCharCount = (username.match(/[MWmw]/g) || []).length;
+    baseWidth += wideCharCount * 3;
+
+    const mediumCharCount = (username.match(/[OQGD]/g) || []).length;
+    baseWidth += mediumCharCount * 1.25;
+
+    const narrowCharCount = (username.match(/[ilIjtf]/g) || []).length;
+    baseWidth -= narrowCharCount * 2;
+
+    const padding = length > 10 ? 8 : 15;
+
+    return baseWidth + padding;
 };
 
-const getSupporterSpacing = (level) => {
-    switch (level) {
-        case 1:
-            return 5;
-        case 2:
-            return 10;
-        case 3:
-            return 15;
-        default:
-            return 0;
-    }
-};
-
-const capitalLetters = (username) => {
-    return (username.match(/[A-Z]/g) || []).length * 2;
-};
-
+/**
+ * Gets the appropriate spacing for a flag to the supporter tag
+ * @param {number} level - The supporter level
+ * @returns {number} - The calculated width for the supporter level flag
+ */
 const getSupporterSpacingFlag = (level) => {
     switch (level) {
         case 1:

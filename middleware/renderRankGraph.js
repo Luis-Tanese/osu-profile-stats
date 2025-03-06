@@ -1,5 +1,12 @@
 const { log } = require("./utils.js");
 
+/**
+ * Renders a SVG graph of a player's rank history like in the osu website
+ * @param {object} rankHistory - The rank history object
+ * @param {string} rankHistory.mode - The mode of the rank history
+ * @param {number[]} rankHistory.data - The rank history data
+ * @returns {string} - Markup of the SVG graph
+ */
 const renderRankHistoryGraph = (rankHistory) => {
     const data = rankHistory.data;
 
