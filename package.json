@@ -1,11 +1,10 @@
 {
     "name": "osu-profile-stats",
-    "version": "1.6.0",
+    "version": "2.0.0",
     "main": "server.js",
     "scripts": {
         "test": "node testServer",
-        "start": "npx nodemon server",
-        "graphRender": "node ./middleware/renderRankGraph.js"
+        "dev": "npx nodemon server"
     },
     "keywords": [],
     "author": "Tanese",

@@ -144,8 +144,58 @@ const fetchUserData = async (username, token, playmode) => {
     return result;
 };
 
+const metrics = {
+    requests: 0,
+    cardsRendered: 0,
+    errors: 0,
+    startTime: `${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}`,
+};
+
+app.use((req, res, next) => {
+    metrics.requests++;
+    next();
+});
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.get("/api", (req, res) => {
+    res.json({
+        message: "Welcome to the silly api, here is some info:",
+        endpoints: {
+            profileStats: {
+                url: "/api/profile-stats/:username",
+                method: "GET",
+                info: "Gets profile stats for a user",
+                params: {
+                    username: "The osu username (required)",
+                    playmode:
+                        "The playmode (osu, taiko, catch, mania), if it's empty, it will be inferred from the default game mode from the user's profile.",
+                    background:
+                        "Background type (default, bg1, bg2, bg3, bg4, bg5 or color)",
+                    hex: "Hex color code when background=color",
+                    version: "Version of the card (new or full)",
+                    height: "Custom height for teh card",
+                    supporter: "Show supporter tag (true or false)",
+                    team: "Show team flag (true or false)",
+                },
+                example:
+                    "/api/profile-stats/peppy?playmode=osu&background=bg1&version=new",
+            },
+            api: {
+                url: "/api",
+                method: "GET",
+                info: "Gets info about the api",
+            },
+            health: {
+                url: "/health",
+                method: "GET",
+                info: "Gets health of the api",
+            },
+        },
+        repository: "https://github.com/Luis-Tanese/osu-profile-stats",
+    });
 });
 
 app.get("/api/profile-stats/:username", async (req, res) => {
@@ -271,6 +321,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
 
         res.setHeader("Content-Type", "image/svg+xml");
         res.send(resizedSvg);
+        metrics.cardsRendered++;
 
         log(
             `[${dateTan(
@@ -281,6 +332,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
     } catch (error) {
         console.error(error);
+        metrics.errors++;
 
         log(
             `[${dateTan(
@@ -311,8 +363,43 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    log("Server running");
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "ok",
+        uptime: process.uptime(),
+        timestamp: `${dateTan(
+            new Date(),
+            "YYYY-MM-DD HH:mm:ss:ms Z",
+            "en-us"
+        )}`,
+        metrics: {
+            requests: metrics.requests,
+            cardsRendered: metrics.cardsRendered,
+            errors: metrics.errors,
+            requestsPerMinute: (
+                metrics.requests /
+                (process.uptime() / 60)
+            ).toFixed(2),
+        },
+        memory: {
+            rss: `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB}`,
+            heapTotal: `${(
+                process.memoryUsage().heapTotal /
+                1024 /
+                1024
+            ).toFixed(2)} MB`,
+            heapUsed: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(
+                2
+            )} MB`,
+            external: `${(process.memoryUsage().external / 1024 / 1024).toFixed(
+                2
+            )} MB`,
+        },
+    });
 });
 
-/* module.exports = app; */
+/* app.listen(3000, () => {
+    log("Server running");
+}); */
+
+module.exports = app;
