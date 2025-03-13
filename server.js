@@ -8,6 +8,8 @@ const renderCard = require("./middleware/cardRenderer.js");
 const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
 const cors = require("cors");
+const renderRankHistoryGraph = require("./middleware/renderRankGraph.js");
+const { resourceUsage } = require("process");
 
 const app = express();
 const redis = new Redis(process.env.REDIS_URL);
@@ -167,7 +169,7 @@ app.get("/api", (req, res) => {
             profileStats: {
                 url: "/api/profile-stats/:username",
                 method: "GET",
-                info: "Gets profile stats for a user",
+                info: "Gets profile stats",
                 params: {
                     username: "The osu username (required)",
                     playmode:
@@ -181,7 +183,32 @@ app.get("/api", (req, res) => {
                     team: "Show team flag (true or false)",
                 },
                 example:
-                    "/api/profile-stats/peppy?playmode=osu&background=bg1&version=new",
+                    "/api/profile-stats/tanese?playmode=mania&background=bg4&version=new",
+            },
+            userData: {
+                url: "/api/user-data/:username",
+                method: "GET",
+                info: "Gets user data",
+                params: {
+                    username: "The osu username (required)",
+                    playmode:
+                        "The playmode (osu, taiko, catch, mania), if it's empty, it will be inferred from the default game mode from the user's profile.",
+                },
+                example: "/api/user-data/tanese?playmode=mania",
+            },
+            rankGraph: {
+                url: "/api/rank-graph/:username",
+                method: "GET",
+                info: "Gets a SVG graph of a user's rank history",
+                params: {
+                    username: "The osu username (required)",
+                    playmode:
+                        "The playmode (osu, taiko, catch, mania), if it's empty, it will be inferred from the default game mode from the user's profile.",
+                    width: "Width of the graph in pixels, defaults to 800",
+                    height: "Height of the graph in pixels, defaults to 100",
+                },
+                example:
+                    "/api/rank-graph/tanese?playmode=mania&width=800&height=100",
             },
             api: {
                 url: "/api",
@@ -363,9 +390,213 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
+app.get("/api/user-data/:username", async (req, res) => {
+    try {
+        const username = req.params.username;
+        const { playmode } = req.query;
+
+        log(
+            `${dateTan(
+                new Date(),
+                "YYYY-MM-DD HH:mm:ss:ms Z",
+                "en-us"
+            )} [REQUEST] User data request received for ${username} with playmode=${playmode}.`
+        );
+
+        if (!username) {
+            log(
+                `[${dateTan(
+                    new Date(),
+                    "YYYY-MM-DD HH:mm:ss:ms Z",
+                    "en-us"
+                )}][ERROR] Username is required.`
+            );
+
+            return res.status(400).json({ error: "Username is required" });
+        }
+
+        const token = await getOsuToken();
+        if (!token) {
+            log(
+                `[${dateTan(
+                    new Date(),
+                    "YYYY-MM-DD HH:mm:ss:ms Z",
+                    "en-us"
+                )}][ERROR] Failed to auth with osu API.`
+            );
+
+            return res.status(500).json({
+                error: "Failed to auth with osu API",
+            });
+        }
+
+        const userData = await fetchUserData(username, token, playmode);
+        if (!userData) {
+            log(
+                `[${dateTan(
+                    new Date(),
+                    "YYYY-MM-DD HH:mm:ss:ms Z",
+                    "en-us"
+                )}][ERROR] User data for ${username} not found.`
+            );
+            return res
+                .status(404)
+                .json({ error: `User "${username}" not found` });
+        }
+
+        log(
+            `[${dateTan(
+                new Date(),
+                "YYYY-MM-DD HH:mm:ss:ms Z",
+                "en-us"
+            )}][RESPONSE] User data for ${username} sent successfully ＞︿＜.`
+        );
+
+        res.json(userData);
+    } catch (error) {
+        console.error(error);
+        metrics.errors++;
+
+        log(
+            `[${dateTan(
+                new Date(),
+                "YYYY-MM-DD HH:mm:ss:ms Z",
+                "en-us"
+            )}][ERROR] Internal Server Error for request: ${
+                req.originalUrl
+            }, Params for request: ${JSON.stringify(req.query)}`
+        );
+
+        res.status(500).json({
+            error: "An unexpected error occurred",
+        });
+    }
+});
+
+app.get("/api/rank-graph/:username", async (req, res) => {
+    try {
+        const username = req.params.username;
+        const { playmode, width = 800, height = 100 } = req.query;
+
+        log(
+            `[${dateTan(
+                new Date(),
+                "YYYY-MM-DD HH:mm:ss:ms Z",
+                "en-us"
+            )}][REQUEST] Rank graph request received for ${username} with playmode=${playmode}.`
+        );
+
+        if (!username) {
+            log(
+                `[${dateTan(
+                    new Date(),
+                    "YYYY-MM-DD HH:mm:ss:ms Z",
+                    "en-us"
+                )}][ERROR] Username is required.`
+            );
+
+            return res.status(400).json({ error: "Username is required" });
+        }
+
+        const token = await getOsuToken();
+        if (!token) {
+            log(
+                `[${dateTan(
+                    new Date(),
+                    "YYYY-MM-DD HH:mm:ss:ms Z",
+                    "en-us"
+                )}][ERROR] Failed to auth with osu API.`
+            );
+
+            return res.status(500).json({
+                error: "Failed to auth with osu API",
+            });
+        }
+
+        const userData = await fetchUserData(username, token, playmode);
+        if (!userData) {
+            log(
+                `[${dateTan(
+                    new Date(),
+                    "YYYY-MM-DD HH:mm:ss:ms Z",
+                    "en-us"
+                )}][ERROR] User data for ${username} not found.`
+            );
+            return res
+                .status(404)
+                .json({ error: `User "${username}" not found` });
+        }
+
+        const rankHistory = userData.rank_history;
+
+        if (
+            !rankHistory ||
+            !rankHistory.data ||
+            rankHistory.data.length === 0
+        ) {
+            return res
+                .status(404)
+                .json({ error: "No rank history data available" });
+        }
+
+        const graph = renderRankHistoryGraph(rankHistory);
+
+        const requestedWidth = parseInt(width, 10);
+        const requestedHeight = parseInt(height, 10);
+
+        const resizedSvg = `
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 width="${requestedWidth}" 
+                 height="${requestedHeight}" 
+                 viewBox="0 0 800 100">
+                ${graph}
+            </svg>
+        `;
+
+        res.setHeader("Content-Type", "image/svg+xml");
+        res.send(resizedSvg);
+
+        log(
+            `[${dateTan(
+                new Date(),
+                "YYYY-MM-DD HH:mm:ss:ms Z",
+                "en-us"
+            )}][RESPONSE] Rank graph for ${username} sent successfully ＞︿＜.`
+        );
+    } catch (error) {
+        console.error(error);
+        metrics.errors++;
+
+        log(
+            `[${dateTan(
+                new Date(),
+                "YYYY-MM-DD HH:mm:ss:ms Z",
+                "en-us"
+            )}][ERROR] Internal Server Error for request: ${
+                req.originalUrl
+            }, Params for request: ${JSON.stringify(req.query)}`
+        );
+
+        res.status(500).json({ error: "Failed to generate rank graph" });
+    }
+});
+
 app.get("/health", (req, res) => {
-    res.status(200).json({
-        status: "ok",
+    const redisStatus = redis.status === "ready";
+
+    const osuStatus = async () => {
+        try {
+            const token = await getOsuToken();
+            return !!token;
+        } catch (error) {
+            return false;
+        }
+    };
+
+    const isHealthy = redisStatus;
+
+    res.status(isHealthy ? 200 : 503).json({
+        ok: isHealthy,
         uptime: process.uptime(),
         timestamp: `${dateTan(
             new Date(),
@@ -380,6 +611,10 @@ app.get("/health", (req, res) => {
                 metrics.requests /
                 (process.uptime() / 60)
             ).toFixed(2),
+        },
+        services: {
+            redis: redisStatus,
+            osu: osuStatus(),
         },
         memory: {
             rss: `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB}`,
