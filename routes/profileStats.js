@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const renderCard = require("../middleware/cardRenderer.js");
-const { log, renderErrorCard } = require("../middleware/utils.js");
+const { renderCard } = require("../middleware/cardRenderer.js");
+const { log } = require("../middleware/utils.js");
+const { renderErrorCard } = require("../middleware/cardRenderer.js");
 const { dateTan } = require("datetan");
-const { getOsuToken, fetchUserData } = require("../services/osuApi");
-const { metrics } = require("../services/metrics");
+const { getOsuToken, fetchUserData } = require("../services/osuApi.js");
+const { metrics } = require("../services/metrics.js");
 
 router.get("/:username", async (req, res) => {
     try {
@@ -15,8 +16,8 @@ router.get("/:username", async (req, res) => {
         const referer = req.headers.referer || "direct";
         let source = "Unknown";
 
-        if (referer.includes("osu-pofile0stats.vercel.app")) {
-            source = "OPS";
+        if (referer.includes("osu-pofile-stats.vercel.app")) {
+            source = "own";
         } else {
             try {
                 source = new URL(referer).hostname;
