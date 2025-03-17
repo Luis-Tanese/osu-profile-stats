@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
-/* const Redis = require("ioredis"); */
 const path = require("path");
 const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
@@ -10,9 +9,17 @@ const { dateTan } = require("datetan");
 const cors = require("cors");
 
 const app = express();
-/* const redis = new Redis(process.env.REDIS_URL); */
 const OSU_AUTH_URL = "https://osu.ppy.sh/oauth/token";
 const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
+
+// simple metrics so you can test yo stuff
+const metrics = {
+    requests: 0,
+    cardsRendered: 0,
+    errors: 0,
+    startTime: `${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}`,
+    origins: {},
+};
 
 app.use(
     cors({
@@ -50,20 +57,30 @@ app.use(
     })
 );
 
+/**
+ * Simple req tracking
+ * Only tracks basic data since I won't make it super duper detailed like on production
+ */
+app.use((req, res, next) => {
+    metrics.requests++;
+    
+    const referer = req.headers.referer || "direct";
+    
+    try {
+        if (referer !== "direct") {
+            const domain = new URL(referer).hostname;
+            metrics.origins[domain] = (metrics.origins[domain] || 0) + 1;
+        } else {
+            metrics.origins["direct"] = (metrics.origins["direct"] || 0) + 1;
+        }
+    } catch (error) {
+        metrics.origins["Unknown"] = (metrics.origins["Unknown"] || 0) + 1;
+    }
+    
+    next();
+});
+
 const getOsuToken = async () => {
-    /* const cachedToken = await redis.get("osuToken");
-
-    if (cachedToken) {
-        log(
-            `[${dateTan(
-                new Date(),
-                "YYYY-MM-DD HH:mm:ss:ms Z",
-                "en-us"
-            )}][CACHE] osuToken retrieved.`
-        );
-        return cachedToken;
-    } */
-
     log(
         `[${dateTan(
             new Date(),
@@ -79,35 +96,10 @@ const getOsuToken = async () => {
         scope: "public",
     });
 
-    const token = res.data.access_token;
-    /* await redis.set("osuToken", token, "EX", 3600);
-
-    log(
-        `[${dateTan(
-            new Date(),
-            "YYYY-MM-DD HH:mm:ss:ms Z",
-            "en-us"
-        )}][CACHE] osuToken cached in Redis for 1 hour.`
-    ); */
-
-    return token;
+    return res.data.access_token;
 };
 
 const fetchUserData = async (username, token, playmode) => {
-    /* const cacheKey = `user-${username}-${playmode}`;
-    const cachedData = await redis.get(cacheKey);
-
-    if (cachedData) {
-        log(
-            `[${dateTan(
-                new Date(),
-                "YYYY-MM-DD HH:mm:ss:ms Z",
-                "en-us"
-            )}][CACHE] User data for ${username} (playmode: ${playmode}) retrieved from Redis.`
-        );
-        return JSON.parse(cachedData);
-    } */
-
     log(
         `[${dateTan(
             new Date(),
@@ -130,18 +122,7 @@ const fetchUserData = async (username, token, playmode) => {
         }
     );
 
-    const result = { ...statsRes.data, playmode: inferredPlaymode };
-    /* await redis.set(cacheKey, JSON.stringify(result), "EX", 300);
-
-    log(
-        `[${dateTan(
-            new Date(),
-            "YYYY-MM-DD HH:mm:ss:ms Z",
-            "en-us"
-        )}][CACHE] User data for ${username} (playmode: ${inferredPlaymode}) cached in Redis for 5 minutes.`
-    ); */
-
-    return result;
+    return { ...statsRes.data, playmode: inferredPlaymode };
 };
 
 app.get("/", (req, res) => {
@@ -181,8 +162,10 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 new Date(),
                 "YYYY-MM-DD HH:mm:ss:ms Z",
                 "en-us"
-            )}][RENDER] Rendering silly profile card for ${username}.`
+            )}][RENDER] Rendering profile card for ${username}.`
         );
+
+        metrics.cardsRendered++;
 
         const card = await renderCard(userData, {
             background: background || undefined,
@@ -227,6 +210,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
     } catch (error) {
         console.error(error);
+        metrics.errors++;
 
         log(
             `[${dateTan(
@@ -235,7 +219,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
                 "en-us"
             )}][ERROR] Internal Server Error for request: ${
                 req.originalUrl
-            }, Params for request: ${req.query}`
+            }, Params for request: ${JSON.stringify(req.query)}`
         );
 
         let originalWidth, originalHeight;
@@ -259,8 +243,26 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
+// simple health endpoint so you can track with metrics
+app.get("/api/health", (req, res) => {
+    res.json({
+        ok: true,
+        uptime: process.uptime(),
+        timestamp: `${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}`,
+        metrics: {
+            info: "Basic usage statistics",
+            requests: metrics.requests,
+            cardsRendered: metrics.cardsRendered,
+            errors: metrics.errors,
+            requestsPerMinute: (metrics.requests / (process.uptime() / 60)).toFixed(2),
+            origins: metrics.origins
+        }
+    });
+});
+
+// uncomment only for local testing (tip: select all and uncomment/comment with alt + shift + a ;) )
 /* app.listen(3000, () => {
-    log("Server running");
+    log("Development server running on port 3000");
 }); */
 
 module.exports = app;
