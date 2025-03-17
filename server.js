@@ -4,8 +4,7 @@ const path = require("path");
 const nocache = require("nocache");
 const { log } = require("./middleware/utils.js");
 const cors = require("cors");
-/* const redis = require("../services/redis"); */
-const { metrics } = require("./services/metrics");
+const { metrics } = require("./services/metrics.js");
 
 const mainRoute = require("./routes/main.js");
 const profileStatsRoute = require("./routes/profileStats.js");

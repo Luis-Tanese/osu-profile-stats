@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { dateTan } = require("datetan");
-const { metrics } = require("../services/metrics");
+const { metrics } = require("../services/metrics.js");
 const redis = require("../services/redis");
-const { getOsuToken } = require("../services/osuApi");
+const { getOsuToken } = require("../services/osuApi.js");
 
 router.get("/", async (req, res) => {
     const redisStatus = redis.status === "ready";

@@ -3,8 +3,8 @@ const router = express.Router();
 const { log } = require("../middleware/utils.js");
 const { dateTan } = require("datetan");
 const renderRankHistoryGraph = require("../middleware/renderRankGraph.js");
-const { getOsuToken, fetchUserData } = require("../services/osuApi");
-const { metrics } = require("../services/metrics");
+const { getOsuToken, fetchUserData } = require("../services/osuApi.js");
+const { metrics } = require("../services/metrics.js");
 
 router.get("/:username", async (req, res) => {
     try {
