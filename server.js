@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const { log } = require("./middleware/utils.js");
 const cors = require("cors");
 
@@ -17,6 +18,9 @@ app.use(
         allowedHeaders: ["Content-Type"],
     })
 );
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "assets")));
 
 /* Removed the health thingy because it was useless since I'm running this project on vercel */
 

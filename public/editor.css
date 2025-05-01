@@ -19,16 +19,18 @@ body {
 
 main {
     padding: 2rem;
+    display: flex;
+    justify-content: center;
 }
 
 .generator {
     max-width: 500px;
-    margin: 0 auto;
     background-color: #444;
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    width: 100%;
 }
 
 #card {
@@ -56,11 +58,18 @@ a:hover {
 }
 
 label {
-    display: block;
+    display: inline-flex;
+    align-items: center;
     margin-left: 0.5rem;
     margin-bottom: 0.3rem;
     color: #ff66aa;
     font-size: 0.9rem;
+}
+
+label i {
+    margin-right: 0.4rem;
+    width: 1.1em;
+    text-align: center;
 }
 
 input,
@@ -152,26 +161,16 @@ textarea {
     transform: translateY(-2px);
 }
 
-footer {
-    text-align: center;
-    padding: 1rem;
-    background-color: #35272e;
-    color: white;
-    font-size: 0.9rem;
-    border-top: 1px solid #444;
-    margin-top: 2rem;
-}
-
 .code-grid {
     display: grid;
-    gap: 0.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    margin-top: 0.5rem;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-top: 1rem;
 }
 
 .code-block {
     position: relative;
-    margin-bottom: 0.5rem;
+    text-align: left;
 }
 
 .code-content {
@@ -181,19 +180,27 @@ footer {
 }
 
 .code-block textarea {
-    height: 2.3rem;
+    height: 2.5rem;
     min-width: 0;
     margin: 0;
     font-size: 0.75rem;
     overflow-x: auto;
-    white-space: normal;
-    word-wrap: break-word;
+    white-space: nowrap;
+    word-wrap: normal;
 }
 
 .code-block label {
     text-align: left;
     margin-bottom: 0.3rem;
     font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.code-block label i {
+    margin-right: 0.4em;
+    width: 1.1em;
+    text-align: center;
 }
 
 textarea::-webkit-scrollbar {
@@ -271,7 +278,9 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 .generator p {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
 }
 
 .image-container {
@@ -348,4 +357,101 @@ textarea::-webkit-scrollbar-thumb {
     color: #ff66aa;
     font-size: 0.9rem;
     margin-top: 1rem;
+}
+
+.generator h1 a i {
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+.copy-btn i,
+.button-group button i {
+    margin-right: 0.4em;
+}
+
+.preview h2 {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.preview h2 i {
+    margin-right: 0.5em;
+    color: white;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background-color: #35272e;
+    color: white;
+    font-size: 0.9rem;
+    border-top: 1px solid #444;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 1rem;
+}
+
+.footer-content p {
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #ff66aa;
+}
+
+.warning-box {
+    background-color: rgba(255, 165, 0, 0.15);
+    border: 1px solid rgba(255, 165, 0, 0.4);
+    border-radius: 5px;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0 1.5rem 0;
+    text-align: left;
+}
+
+.warning-box p {
+    margin: 0; 
+    color: #f0e6d2;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+}
+
+.warning-box p i {
+    color: #ffa500;
+    margin-right: 0.6em;
+    margin-top: 0.15em;
+    font-size: 1.1em;
+}
+
+.warning-box a {
+    color: #ffcc80;
+    text-decoration: underline;
+}
+
+.warning-box a:hover {
+    color: #ffffff;
 }

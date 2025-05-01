@@ -6,6 +6,10 @@ router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
+router.get("/editor", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public", "editor.html"));
+});
+
 router.get("/api", (req, res) => {
     res.json({
         message: "Welcome to the silly api, here is some info:",

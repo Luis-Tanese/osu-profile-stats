@@ -3,25 +3,43 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="./editor-media.css" />
         <link rel="stylesheet" href="./editor.css" />
+        <link rel="stylesheet" href="./editor-media.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
         <title>OSC Editor</title>
     </head>
     <body>
         <main>
             <div class="generator">
-                <h1><a href="./index.html">←</a> Osu Card Generator</h1>
-                <p>
-                    Warning: I'm fixing how flags/supporter look, if you find ANY issue in your card, please open an issue in
-                    <a
-                        href="https://github.com/Luis-Tanese/osu-profile-stats/issues"
-                        >here</a
-                    >
-                    or message me on discord @ tanese asap.
-                </p>
+                <h1>
+                    <a href="./index.html"
+                        ><i class="fa-solid fa-arrow-left"></i
+                    ></a>
+                    Osu Card Generator
+                </h1>
+                <div class="warning-box">
+                    <p>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Warning: I'm trying to fix how flags/supporter look, if
+                        you find ANY issue in your card, please open an issue
+                        in&nbsp;
+                        <a
+                            href="https://github.com/Luis-Tanese/osu-profile-stats/issues"
+                            >here</a
+                        >&nbsp;or message me on discord @ tanese asap.
+                    </p>
+                </div>
                 <form id="card">
                     <div class="form-group">
-                        <label for="username">Username:</label>
+                        <label for="username"
+                            ><i class="fa-solid fa-user"></i> Username:</label
+                        >
                         <input
                             type="text"
                             id="username"
@@ -30,7 +48,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="playmode">Play Mode:</label>
+                        <label for="playmode"
+                            ><i class="fa-solid fa-gamepad"></i> Play
+                            Mode:</label
+                        >
                         <select id="playmode">
                             <option value="">Default</option>
                             <option value="osu">osu!</option>
@@ -41,7 +62,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="background">Background:</label>
+                        <label for="background"
+                            ><i class="fa-solid fa-image"></i>
+                            Background:</label
+                        >
                         <select id="background">
                             <option value="">Default</option>
                             <option value="bg1">Background 1</option>
@@ -62,7 +86,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="version">Card Version:</label>
+                        <label for="version"
+                            ><i class="fa-solid fa-expand"></i> Card
+                            Version:</label
+                        >
                         <select id="version">
                             <option value="mini">Mini (Default)</option>
                             <option value="full">Full</option>
@@ -70,7 +97,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="height">Height (px):</label>
+                        <label for="height"
+                            ><i class="fa-solid fa-ruler-vertical"></i> Height
+                            (px):</label
+                        >
                         <input
                             type="number"
                             id="height"
@@ -81,7 +111,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Extras:</label>
+                        <label><i class="fa-solid fa-plus"></i> Extras:</label>
                         <div class="checkbox-group">
                             <label>
                                 <input type="checkbox" id="supporter" checked />
@@ -96,7 +126,7 @@
                 </form>
 
                 <div class="preview">
-                    <h2>Preview</h2>
+                    <h2><i class="fa-solid fa-eye"></i> Preview</h2>
                     <div class="image-container">
                         <img src="" alt="Card Preview" id="preview-image" />
                         <div
@@ -116,25 +146,30 @@
                     </div>
                     <div class="code-grid">
                         <div class="code-block">
-                            <label>URL</label>
+                            <label><i class="fa-solid fa-link"></i> URL</label>
                             <div class="textarea-container">
                                 <textarea id="code-url" readonly></textarea>
                                 <button class="copy-btn" data-type="url">
-                                    Copy
+                                    <i class="fa-solid fa-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
                         <div class="code-block">
-                            <label>BBCode</label>
+                            <label
+                                ><i class="fa-solid fa-code"></i> BBCode</label
+                            >
                             <div class="textarea-container">
                                 <textarea id="code-bbcode" readonly></textarea>
                                 <button class="copy-btn" data-type="bbcode">
-                                    Copy
+                                    <i class="fa-solid fa-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
                         <div class="code-block">
-                            <label>BBCode with Profile Link</label>
+                            <label
+                                ><i class="fa-solid fa-code"></i> BBCode with
+                                Profile Link</label
+                            >
                             <div class="textarea-container">
                                 <textarea
                                     id="code-bbcode-link"
@@ -144,24 +179,30 @@
                                     class="copy-btn"
                                     data-type="bbcode-link"
                                 >
-                                    Copy
+                                    <i class="fa-solid fa-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
                         <div class="code-block">
-                            <label>Markdown</label>
+                            <label
+                                ><i class="fa-brands fa-markdown"></i>
+                                Markdown</label
+                            >
                             <div class="textarea-container">
                                 <textarea
                                     id="code-markdown"
                                     readonly
                                 ></textarea>
                                 <button class="copy-btn" data-type="markdown">
-                                    Copy
+                                    <i class="fa-solid fa-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
                         <div class="code-block">
-                            <label>Markdown with Profile Link</label>
+                            <label
+                                ><i class="fa-brands fa-markdown"></i> Markdown
+                                with Profile Link</label
+                            >
                             <div class="textarea-container">
                                 <textarea
                                     id="code-markdown-link"
@@ -171,41 +212,60 @@
                                     class="copy-btn"
                                     data-type="markdown-link"
                                 >
-                                    Copy
+                                    <i class="fa-solid fa-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
                         <div class="code-block">
-                            <label>HTML</label>
+                            <label
+                                ><i class="fa-brands fa-html5"></i> HTML</label
+                            >
                             <div class="textarea-container">
                                 <textarea id="code-html" readonly></textarea>
                                 <button class="copy-btn" data-type="html">
-                                    Copy
+                                    <i class="fa-solid fa-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
                         <div class="code-block">
-                            <label>HTML with Profile Link</label>
+                            <label
+                                ><i class="fa-brands fa-html5"></i> HTML with
+                                Profile Link</label
+                            >
                             <div class="textarea-container">
                                 <textarea
                                     id="code-html-link"
                                     readonly
                                 ></textarea>
                                 <button class="copy-btn" data-type="html-link">
-                                    Copy
+                                    <i class="fa-solid fa-copy"></i> Copy
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="button-group">
-                        <button id="download-png-btn">Download PNG</button>
-                        <button id="copy-png-btn">Copy PNG</button>
+                        <button id="download-png-btn">
+                            <i class="fa-solid fa-download"></i> Download PNG
+                        </button>
+                        <button id="copy-png-btn">
+                            <i class="fa-solid fa-clipboard"></i> Copy PNG
+                        </button>
                     </div>
                 </div>
             </div>
         </main>
         <footer>
-            <p>Copyright © 2025 Tanese. All Rights Reserved</p>
+            <div class="footer-content">
+                <p>Copyright © 2025 Tanese. All Rights Reserved</p>
+                <div class="social-links">
+                    <a
+                        href="https://github.com/Luis-Tanese/osu-profile-stats"
+                        target="_blank"
+                        aria-label="GitHub Repository"
+                        ><i class="fab fa-github"></i
+                    ></a>
+                </div>
+            </div>
         </footer>
     </body>
     <script src="./editor.js"></script>
