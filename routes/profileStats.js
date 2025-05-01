@@ -5,7 +5,6 @@ const { log } = require("../middleware/utils.js");
 const { renderErrorCard } = require("../middleware/cardRenderer.js");
 const { dateTan } = require("datetan");
 const { getOsuToken, fetchUserData } = require("../services/osuApi.js");
-const { metrics } = require("../services/metrics.js");
 
 router.get("/:username", async (req, res) => {
     try {
@@ -143,7 +142,6 @@ router.get("/:username", async (req, res) => {
 
         res.setHeader("Content-Type", "image/svg+xml");
         res.send(resizedSvg);
-        metrics.cardsRendered++;
 
         log(
             `[${dateTan(
@@ -154,7 +152,6 @@ router.get("/:username", async (req, res) => {
         );
     } catch (error) {
         console.error(error);
-        metrics.errors++;
 
         log(
             `[${dateTan(

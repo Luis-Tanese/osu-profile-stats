@@ -3,7 +3,6 @@ const router = express.Router();
 const { log } = require("../middleware/utils.js");
 const { dateTan } = require("datetan");
 const { getOsuToken, fetchUserData } = require("../services/osuApi.js");
-const { metrics } = require("../services/metrics.js");
 
 router.get("/:username", async (req, res) => {
     try {
@@ -70,7 +69,6 @@ router.get("/:username", async (req, res) => {
         res.json(userData);
     } catch (error) {
         console.error(error);
-        metrics.errors++;
 
         log(
             `[${dateTan(

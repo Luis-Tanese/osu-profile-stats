@@ -1,6 +1,6 @@
 {
     "name": "osu-profile-stats",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "main": "server.js",
     "scripts": {
         "test": "node testServer",
@@ -16,8 +16,7 @@
         "datetan": "^1.0.3",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "ioredis": "^5.4.2",
-        "nocache": "^4.0.0"
+        "ioredis": "^5.4.2"
     },
     "devDependencies": {
         "nodemon": "^3.1.9"

@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const path = require("path");
-const nocache = require("nocache");
 const renderCard = require("./middleware/cardRenderer.js");
 const { log, renderErrorCard } = require("./middleware/utils.js");
 const { dateTan } = require("datetan");
@@ -12,15 +11,6 @@ const app = express();
 const OSU_AUTH_URL = "https://osu.ppy.sh/oauth/token";
 const OSU_API_BASE_URL = "https://osu.ppy.sh/api/v2";
 
-// simple metrics so you can test yo stuff
-const metrics = {
-    requests: 0,
-    cardsRendered: 0,
-    errors: 0,
-    startTime: `${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}`,
-    origins: {},
-};
-
 app.use(
     cors({
         origin: "*",
@@ -28,57 +18,6 @@ app.use(
         allowedHeaders: ["Content-Type"],
     })
 );
-
-app.use(nocache());
-
-app.use((req, res, next) => {
-    res.setHeader(
-        "Cache-Control",
-        "no-store, no-cache, must-revalidate, proxy-revalidate"
-    );
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
-    next();
-});
-
-app.use(
-    express.static(path.join(__dirname, "public"), {
-        setHeaders: (res) => {
-            res.setHeader("Cache-Control", "no-store");
-        },
-    })
-);
-
-app.use(
-    express.static(path.join(__dirname, "assets"), {
-        setHeaders: (res) => {
-            res.setHeader("Cache-Control", "no-store");
-        },
-    })
-);
-
-/**
- * Simple req tracking
- * Only tracks basic data since I won't make it super duper detailed like on production
- */
-app.use((req, res, next) => {
-    metrics.requests++;
-    
-    const referer = req.headers.referer || "direct";
-    
-    try {
-        if (referer !== "direct") {
-            const domain = new URL(referer).hostname;
-            metrics.origins[domain] = (metrics.origins[domain] || 0) + 1;
-        } else {
-            metrics.origins["direct"] = (metrics.origins["direct"] || 0) + 1;
-        }
-    } catch (error) {
-        metrics.origins["Unknown"] = (metrics.origins["Unknown"] || 0) + 1;
-    }
-    
-    next();
-});
 
 const getOsuToken = async () => {
     log(
@@ -165,8 +104,6 @@ app.get("/api/profile-stats/:username", async (req, res) => {
             )}][RENDER] Rendering profile card for ${username}.`
         );
 
-        metrics.cardsRendered++;
-
         const card = await renderCard(userData, {
             background: background || undefined,
             hex: hex || undefined,
@@ -210,8 +147,6 @@ app.get("/api/profile-stats/:username", async (req, res) => {
         );
     } catch (error) {
         console.error(error);
-        metrics.errors++;
-
         log(
             `[${dateTan(
                 new Date(),
@@ -243,22 +178,7 @@ app.get("/api/profile-stats/:username", async (req, res) => {
     }
 });
 
-// simple health endpoint so you can track with metrics
-app.get("/api/health", (req, res) => {
-    res.json({
-        ok: true,
-        uptime: process.uptime(),
-        timestamp: `${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}`,
-        metrics: {
-            info: "Basic usage statistics",
-            requests: metrics.requests,
-            cardsRendered: metrics.cardsRendered,
-            errors: metrics.errors,
-            requestsPerMinute: (metrics.requests / (process.uptime() / 60)).toFixed(2),
-            origins: metrics.origins
-        }
-    });
-});
+/* Removed too X-X */
 
 // uncomment only for local testing (tip: select all and uncomment/comment with alt + shift + a ;) )
 /* app.listen(3000, () => {

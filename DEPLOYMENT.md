@@ -101,7 +101,11 @@ Easily deploy your own instance to reduce the delay (from 5 minutes) to be insta
 You can embed your osu! stats into other websites or README files using the following HTML tag:
 
 ```html
-<img src="https://your-url.vercel.app/api/profile-stats/{username}" height="245" alt="osu stats"/>
+<img
+    src="https://your-url.vercel.app/api/profile-stats/{username}"
+    height="245"
+    alt="osu stats"
+/>
 ```
 
 ---
