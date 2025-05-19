@@ -6,25 +6,25 @@
  * @returns {string} - Markup of the SVG graph
  */
 const renderRankHistoryGraph = (rankHistory) => {
-    const data = rankHistory.data;
+	const data = rankHistory.data;
 
-    if (!data || data.length === 0) {
-        return `
+	if (!data || data.length === 0) {
+		return `
         <svg xmlns="http://www.w3.org/2000/svg" width="800" height="100">
         </svg>
         `;
-    }
+	}
 
-    const svgWidth = 800;
-    const svgHeight = 100;
-    const padding = 20;
+	const svgWidth = 800;
+	const svgHeight = 100;
+	const padding = 20;
 
-    const minRank = Math.min(...data);
-    const maxRank = Math.max(...data);
+	const minRank = Math.min(...data);
+	const maxRank = Math.max(...data);
 
-    if (minRank === maxRank) {
-        const flatLineY = svgHeight - padding - (svgHeight - 2 * padding) / 2;
-        const flatLineRender = `
+	if (minRank === maxRank) {
+		const flatLineY = svgHeight - padding - (svgHeight - 2 * padding) / 2;
+		const flatLineRender = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
             <line 
                 x1="${padding}" 
@@ -36,30 +36,26 @@ const renderRankHistoryGraph = (rankHistory) => {
             />
         </svg>
         `;
-        return flatLineRender;
-    }
+		return flatLineRender;
+	}
 
-    const normalize = (value) => {
-        return (value - minRank) / (maxRank - minRank);
-    };
+	const normalize = (value) => {
+		return (value - minRank) / (maxRank - minRank);
+	};
 
-    const points = data.map((rank, index) => {
-        const x =
-            (index / (data.length - 1)) * (svgWidth - 2 * padding) + padding;
-        const y =
-            svgHeight - padding - normalize(rank) * (svgHeight - 2 * padding);
-        return { x, y };
-    });
+	const points = data.map((rank, index) => {
+		const x = (index / (data.length - 1)) * (svgWidth - 2 * padding) + padding;
+		const y = svgHeight - padding - normalize(rank) * (svgHeight - 2 * padding);
+		return { x, y };
+	});
 
-    const pathData = points
-        .map((point, index) => {
-            return index === 0
-                ? `M ${point.x}, ${point.y}`
-                : `L ${point.x}, ${point.y}`;
-        })
-        .join(" ");
+	const pathData = points
+		.map((point, index) => {
+			return index === 0 ? `M ${point.x}, ${point.y}` : `L ${point.x}, ${point.y}`;
+		})
+		.join(" ");
 
-    /* const render = `
+	/* const render = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
     <g transform="rotate(180, ${svgWidth / 2}, ${
         svgHeight / 2
@@ -72,17 +68,15 @@ const renderRankHistoryGraph = (rankHistory) => {
     </svg>
     `; */
 
-    const render = `
+	const render = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
-    <g transform="rotate(180, ${svgWidth / 2}, ${
-        svgHeight / 2
-    }) scale(-1, 1) translate(-${svgWidth}, 0)">
+    <g transform="rotate(180, ${svgWidth / 2}, ${svgHeight / 2}) scale(-1, 1) translate(-${svgWidth}, 0)">
         <path d="${pathData}" stroke="yellow" fill="none" stroke-width="2" stroke-linejoin="round" />
     </g>
     </svg>
     `;
 
-    return render;
+	return render;
 };
 
 /* const rankHistory = {

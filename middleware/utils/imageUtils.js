@@ -6,15 +6,15 @@ const axios = require("axios");
  * @returns {Promise<string>} - The base64-encoded data URI
  */
 const getSillyImage = async (url) => {
-    try {
-        const res = await axios.get(url, { responseType: "arraybuffer" });
-        const contentType = res.headers["content-type"];
-        const base64 = Buffer.from(res.data, "binary").toString("base64");
-        return `data:${contentType};base64,${base64}`;
-    } catch (error) {
-        console.error(`Failed to get silly image from ${url}:`, error);
-        return "";
-    }
+	try {
+		const res = await axios.get(url, { responseType: "arraybuffer" });
+		const contentType = res.headers["content-type"];
+		const base64 = Buffer.from(res.data, "binary").toString("base64");
+		return `data:${contentType};base64,${base64}`;
+	} catch (error) {
+		console.error(`Failed to get silly image from ${url}:`, error);
+		return "";
+	}
 };
 
 /**
@@ -23,18 +23,16 @@ const getSillyImage = async (url) => {
  * @returns {Promise<string>} - The base64-encoded data URI
  */
 const getSillyFont = async (url) => {
-    try {
-        const res = await axios.get(url, { responseType: "arraybuffer" });
-        return `data:font/otf;base64,${Buffer.from(res.data).toString(
-            "base64"
-        )}`;
-    } catch (error) {
-        console.error(`Failed to get silly font from ${url}:`, error);
-        return "";
-    }
+	try {
+		const res = await axios.get(url, { responseType: "arraybuffer" });
+		return `data:font/otf;base64,${Buffer.from(res.data).toString("base64")}`;
+	} catch (error) {
+		console.error(`Failed to get silly font from ${url}:`, error);
+		return "";
+	}
 };
 
 module.exports = {
-    getSillyImage,
-    getSillyFont,
+	getSillyImage,
+	getSillyFont,
 };

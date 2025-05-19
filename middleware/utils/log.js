@@ -3,9 +3,9 @@
  * @param {string} string - The message to log
  */
 const log = (string) => {
-    console.log(string);
+	console.log(string);
 };
 
 module.exports = {
-    log,
+	log,
 };

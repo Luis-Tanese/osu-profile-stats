@@ -4,10 +4,10 @@
  * @returns {string} - Formatted num
  */
 const formatNumber = (value) => {
-    if (value === "N/A") return value;
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	if (value === "N/A") return value;
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 module.exports = {
-    formatNumber,
+	formatNumber,
 };

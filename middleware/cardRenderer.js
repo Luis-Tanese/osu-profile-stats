@@ -14,23 +14,21 @@ const renderErrorCard = require("./renderers/errorCard.js");
  * @returns {Promise<string>} - SVG markup for the profile card
  */
 const renderCard = async (data, options = {}) => {
-    const { version } = options;
+	const { version } = options;
 
-    try {
-        if (version === "full") {
-            return await renderFullCard(data, options);
-        } else {
-            return await renderMiniCard(data, options);
-        }
-    } catch (error) {
-        console.error("Error rendering card:", error);
-        throw new Error(
-            "Failed to render card. Check the console for details."
-        );
-    }
+	try {
+		if (version === "full") {
+			return await renderFullCard(data, options);
+		} else {
+			return await renderMiniCard(data, options);
+		}
+	} catch (error) {
+		console.error("Error rendering card:", error);
+		throw new Error("Failed to render card. Check the console for details.");
+	}
 };
 
 module.exports = {
-    renderCard,
-    renderErrorCard,
+	renderCard,
+	renderErrorCard,
 };

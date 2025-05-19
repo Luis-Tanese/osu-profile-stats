@@ -1,133 +1,133 @@
 @media screen and (max-width: 600px) {
-    .code-grid {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        margin-top: 1rem;
-    }
+	.code-grid {
+		grid-template-columns: 1fr;
+		gap: 0.75rem;
+		margin-top: 1rem;
+	}
 
-    .code-block textarea {
-        white-space: normal;
-        word-wrap: break-word;
-        height: 3.5rem;
-        font-size: 0.8rem;
-    }
+	.code-block textarea {
+		white-space: normal;
+		word-wrap: break-word;
+		height: 3.5rem;
+		font-size: 0.8rem;
+	}
 
-    .code-block label {
-        font-size: 0.85rem;
-    }
+	.code-block label {
+		font-size: 0.85rem;
+	}
 
-    .textarea-container {
-        gap: 0.3rem;
-    }
+	.textarea-container {
+		gap: 0.3rem;
+	}
 
-    .copy-btn {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.75rem;
-        height: auto;
-        min-height: 2.3rem;
-    }
+	.copy-btn {
+		padding: 0.3rem 0.6rem;
+		font-size: 0.75rem;
+		height: auto;
+		min-height: 2.3rem;
+	}
 
-    .generator {
-        padding: 1rem;
-    }
+	.generator {
+		padding: 1rem;
+	}
 
-    .generator p {
-        font-size: 0.7rem;
-    }
+	.generator p {
+		font-size: 0.7rem;
+	}
 
-    body {
-        padding: 0 0.5rem;
-    }
+	body {
+		padding: 0 0.5rem;
+	}
 
-    button {
-        padding: 0.5rem 1rem;
-    }
+	button {
+		padding: 0.5rem 1rem;
+	}
 
-    .checkbox-group label {
-        padding: 0.5rem;
-        gap: 0.5rem;
-    }
+	.checkbox-group label {
+		padding: 0.5rem;
+		gap: 0.5rem;
+	}
 
-    .checkbox-group input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-    }
+	.checkbox-group input[type="checkbox"] {
+		width: 16px;
+		height: 16px;
+	}
 
-    label i,
-    .copy-btn i,
-    .button-group button i,
-    .preview h2 i,
-    .code-block label i {
-        font-size: inherit;
-    }
+	label i,
+	.copy-btn i,
+	.button-group button i,
+	.preview h2 i,
+	.code-block label i {
+		font-size: inherit;
+	}
 
-    .generator h1 a i {
-        font-size: 1.3rem;
-    }
+	.generator h1 a i {
+		font-size: 1.3rem;
+	}
 
-    footer {
-        font-size: 0.8rem;
-        padding: 1rem;
-    }
+	footer {
+		font-size: 0.8rem;
+		padding: 1rem;
+	}
 
-    .footer-content {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.8rem;
-    }
+	.footer-content {
+		flex-direction: column;
+		align-items: center;
+		gap: 0.8rem;
+	}
 
-    .footer-content p {
-        text-align: center;
-        order: 2;
-    }
+	.footer-content p {
+		text-align: center;
+		order: 2;
+	}
 
-    .social-links {
-        order: 1;
-        font-size: 1.3rem;
-    }
+	.social-links {
+		order: 1;
+		font-size: 1.3rem;
+	}
 }
 
 @media screen and (min-width: 900px) {
-    .generator {
-        max-width: 800px;
-    }
+	.generator {
+		max-width: 800px;
+	}
 
-    .code-grid {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
+	.code-grid {
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	}
 
-    footer {
-        font-size: 0.85rem;
-    }
+	footer {
+		font-size: 0.85rem;
+	}
 
-    .footer-content {
-        justify-content: space-between;
-        align-items: center;
-    }
+	.footer-content {
+		justify-content: space-between;
+		align-items: center;
+	}
 
-    .footer-content p {
-        text-align: left;
-    }
+	.footer-content p {
+		text-align: left;
+	}
 
-    .social-links a {
-        font-size: 1.4rem;
-    }
+	.social-links a {
+		font-size: 1.4rem;
+	}
 }
 
 @media screen and (min-width: 1200px) {
-    .generator {
-        max-width: 1100px;
-    }
+	.generator {
+		max-width: 1100px;
+	}
 
-    .code-grid {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
+	.code-grid {
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	}
 
-    footer {
-        font-size: 0.9rem;
-    }
+	footer {
+		font-size: 0.9rem;
+	}
 
-    .social-links a {
-        font-size: 1.5rem;
-    }
+	.social-links a {
+		font-size: 1.5rem;
+	}
 }

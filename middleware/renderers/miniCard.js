@@ -16,78 +16,68 @@ const { getNameSpacing } = require("../utils/spacing.js");
  * @returns {Promise<string>} - SVG markup for the card
  */
 const renderMiniCard = async (data, options = {}) => {
-    const { background = null, hex = null, supporter, team } = options;
-    const username = data.username || "Silly";
-    const stats = data.statistics || {};
-    const avatarUrl = data.avatar_url || "";
-    const flagUrl = `https://osu.ppy.sh/images/flags/${data.country_code}.png`;
-    const globalRank = stats.global_rank || "N/A";
-    const countryRank = stats.country_rank || "N/A";
-    const pp = stats.pp.toFixed(0) || "N/A";
-    const accuracy = stats.hit_accuracy?.toFixed(2) || "N/A";
-    const level = stats.level?.current || "N/A";
-    const playmode = data.playmode || "osu";
-    const playCount = stats.play_count || "N/A";
-    const supporterLevel = data.support_level || 0;
-    const rankHistory = data.rank_history || [];
-    const teamData = data.team;
+	const { background = null, hex = null, supporter, team } = options;
+	const username = data.username || "Silly";
+	const stats = data.statistics || {};
+	const avatarUrl = data.avatar_url || "";
+	const flagUrl = `https://osu.ppy.sh/images/flags/${data.country_code}.png`;
+	const globalRank = stats.global_rank || "N/A";
+	const countryRank = stats.country_rank || "N/A";
+	const pp = stats.pp.toFixed(0) || "N/A";
+	const accuracy = stats.hit_accuracy?.toFixed(2) || "N/A";
+	const level = stats.level?.current || "N/A";
+	const playmode = data.playmode || "osu";
+	const playCount = stats.play_count || "N/A";
+	const supporterLevel = data.support_level || 0;
+	const rankHistory = data.rank_history || [];
+	const teamData = data.team;
 
-    const svgWidth = 400;
-    const svgHeight = 120;
+	const svgWidth = 400;
+	const svgHeight = 120;
 
-    let backgroundType;
-    if (!background) {
-        const bgURI = await getSillyImage(
-            data.cover?.url ||
-                "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg"
-        );
-        backgroundType = `<image x="0" y="0" href="${bgURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
-    } else if (background === "color") {
-        if (hex) validateHex(hex);
-        backgroundType = getColor(hex, svgWidth, svgHeight);
-    } else {
-        backgroundType = await getBackground(
-            background,
-            hex,
-            svgWidth,
-            svgHeight
-        );
-    }
+	let backgroundType;
+	if (!background) {
+		const bgURI = await getSillyImage(
+			data.cover?.url || "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg"
+		);
+		backgroundType = `<image x="0" y="0" href="${bgURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
+	} else if (background === "color") {
+		if (hex) validateHex(hex);
+		backgroundType = getColor(hex, svgWidth, svgHeight);
+	} else {
+		backgroundType = await getBackground(background, hex, svgWidth, svgHeight);
+	}
 
-    const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
+	const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
 
-    const flagDataURI = await getSillyImage(flagUrl);
-    const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
-    const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
-    const torusDataURI = await getSillyFont(
-        "https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf"
-    );
+	const flagDataURI = await getSillyImage(flagUrl);
+	const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
+	const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
+	const torusDataURI = await getSillyFont("https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf");
 
-    const showSupporter = supporter !== "false" && supporterLevel > 0;
-    const showTeam = team !== "false" && teamData?.flag_url;
+	const showSupporter = supporter !== "false" && supporterLevel > 0;
+	const showTeam = team !== "false" && teamData?.flag_url;
 
-    let teamFlagDataURI = null;
-    if (showTeam) {
-        teamFlagDataURI = await getSillyImage(teamData.flag_url);
-    }
+	let teamFlagDataURI = null;
+	if (showTeam) {
+		teamFlagDataURI = await getSillyImage(teamData.flag_url);
+	}
 
-    const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
-    const supporterDataURI = await getSillyImage(supporterUrl);
+	const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
+	const supporterDataURI = await getSillyImage(supporterUrl);
 
-    const usernameX = 120;
-    const usernameWidth = getNameSpacing(username.length, 0, username);
+	const usernameX = 120;
+	const usernameWidth = getNameSpacing(username.length, 0, username);
 
-    const teamX = usernameX + usernameWidth;
-    const teamWidth = 25;
+	const teamX = usernameX + usernameWidth;
+	const teamWidth = 25;
 
-    const supporterX = showTeam ? teamX + teamWidth + 5 : teamX;
+	const supporterX = showTeam ? teamX + teamWidth + 5 : teamX;
 
-    const rankGraphSVG = renderRankHistoryGraph(rankHistory);
-    const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(
-        rankGraphSVG
-    ).toString("base64")}`;
+	const rankGraphSVG = renderRankHistoryGraph(rankHistory);
+	const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(rankGraphSVG).toString("base64")}`;
 
-    const render = `
+	const render = `
     <!-- Card Generated by https://osu-profile-stats.vercel.app -->
     <!-- Made with ♥ by Tanese -->
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
@@ -99,14 +89,14 @@ const renderMiniCard = async (data, options = {}) => {
             <rect x="10" y="10" width="100" height="100" rx="10" ry="10" />
         </clipPath>
         ${
-            showTeam
-                ? `
+			showTeam
+				? `
             <clipPath id="clip-team-flag">
                 <rect x="${teamX}" y="17" width="25" height="15" rx="3" ry="3" />
             </clipPath>
             `
-                : ""
-        }
+				: ""
+		}
     </defs>
     <style>
         @font-face {
@@ -123,38 +113,36 @@ const renderMiniCard = async (data, options = {}) => {
     </style>
     ${backgroundType}
     <rect x="0" y="70" width="${svgWidth}" height="${
-        svgHeight - 70
-    }" fill="rgba(10, 10, 29, 0.7)" clip-path="url(#clip-rounded)" />
+		svgHeight - 70
+	}" fill="rgba(10, 10, 29, 0.7)" clip-path="url(#clip-rounded)" />
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
 
     <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="10" y="10" width="100" height="100" />
 
     <text x="${usernameX}" y="30" class="text massive">${username}</text>
     ${
-        showTeam
-            ? `
+		showTeam
+			? `
         <image href="${teamFlagDataURI}" height="15" x="${teamX}" y="17" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-team-flag)" />
         `
-            : ""
-    }
+			: ""
+	}
 
     ${
-        showSupporter
-            ? `
+		showSupporter
+			? `
         <image href="${supporterDataURI}" height="15" x="${supporterX}" y="17" />
         `
-            : ""
-    }
+			: ""
+	}
 
     <image href="${flagDataURI}" x="360" y="20" width="25" height="20" />
-    <text x="${
-        360 - (countryRank.toString().length * 8 + 5)
-    }" y="32.5" class="text medium">#${formatNumber(countryRank)}</text>
+    <text x="${360 - (countryRank.toString().length * 8 + 5)}" y="32.5" class="text medium">#${formatNumber(
+		countryRank
+	)}</text>
 
     <image href="${playmodeIconDataURI}" x="360" y="50" width="25" height="20" />
-    <text x="${
-        360 - (level.toString().length * 8 + 8)
-    }" y="62.5" class="text medium">Lv.${level}</text>
+    <text x="${360 - (level.toString().length * 8 + 8)}" y="62.5" class="text medium">Lv.${level}</text>
 
     <image href="${rankGraphDataURI}" x="120" y="40" height="24" width="190" />
 
@@ -177,7 +165,7 @@ const renderMiniCard = async (data, options = {}) => {
     </svg>
     `;
 
-    return render;
+	return render;
 };
 
 module.exports = renderMiniCard;

@@ -7,39 +7,30 @@ const { getBackground } = require("../utils/bg.js");
  * @param {string} errorMessage - Specific error message to display
  * @returns {Promise<string>} - SVG markup for the error card
  */
-const renderErrorCard = async (
-    svgHeight = 120,
-    svgWidth = 400,
-    errorMessage = "An error occurred"
-) => {
-    const backgroundType = await getBackground(
-        "bg4",
-        null,
-        svgWidth,
-        svgHeight
-    );
+const renderErrorCard = async (svgHeight = 120, svgWidth = 400, errorMessage = "An error occurred") => {
+	const backgroundType = await getBackground("bg4", null, svgWidth, svgHeight);
 
-    const maxCharsPerLine = 40;
-    const words = errorMessage.split(" ");
-    const lines = [];
-    let currentLine = "";
+	const maxCharsPerLine = 40;
+	const words = errorMessage.split(" ");
+	const lines = [];
+	let currentLine = "";
 
-    words.forEach((word) => {
-        if ((currentLine + " " + word).length <= maxCharsPerLine) {
-            currentLine += (currentLine ? " " : "") + word;
-        } else {
-            lines.push(currentLine);
-            currentLine = word;
-        }
-    });
-    if (currentLine) {
-        lines.push(currentLine);
-    }
+	words.forEach((word) => {
+		if ((currentLine + " " + word).length <= maxCharsPerLine) {
+			currentLine += (currentLine ? " " : "") + word;
+		} else {
+			lines.push(currentLine);
+			currentLine = word;
+		}
+	});
+	if (currentLine) {
+		lines.push(currentLine);
+	}
 
-    const lineHeight = 25;
-    const startY = svgHeight / 2 - ((lines.length - 1) * lineHeight) / 2;
+	const lineHeight = 25;
+	const startY = svgHeight / 2 - ((lines.length - 1) * lineHeight) / 2;
 
-    const render = `
+	const render = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">
     <defs>
         <clipPath id="clip-rounded">
@@ -54,8 +45,8 @@ const renderErrorCard = async (
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.6)" clip-path="url(#clip-rounded)" />
 
     ${lines
-        .map(
-            (line, index) => `
+		.map(
+			(line, index) => `
         <text 
             x="50%" 
             y="${startY + index * lineHeight}" 
@@ -66,12 +57,12 @@ const renderErrorCard = async (
             ${line}
         </text>
     `
-        )
-        .join("")}
+		)
+		.join("")}
     </svg>
     `;
 
-    return render;
+	return render;
 };
 
 module.exports = renderErrorCard;
