@@ -1,6 +1,6 @@
 {
     "name": "osu-profile-stats",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "main": "server.js",
     "scripts": {
         "start": "node server",

@@ -2,14 +2,33 @@ const Redis = require("ioredis");
 const { log } = require("../middleware/utils.js");
 const { dateTan } = require("datetan");
 
-const redis = new Redis(process.env.REDIS_URL);
+let redis;
+let isRedisConnected = false;
 
-redis.on("connect", () => {
-	log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][REDIS] Connected to Redis yippie!!! ＞︿＜`);
-});
+if (process.env.REDIS_URL) {
+	redis = new Redis(process.env.REDIS_URL);
 
-redis.on("error", (err) => {
-	log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][REDIS] Error: ${err.message} :(`);
-});
+	redis.on("connect", () => {
+		log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][REDIS] Connected to Redis yippie!!! ＞︿＜`);
+		isRedisConnected = true;
+	});
 
-module.exports = redis;
+	redis.on("error", (err) => {
+		log(
+			`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][REDIS] Could not connect to Redis: ${
+				err.message
+			}. Running without cache.`
+		);
+		isRedisConnected = false;
+	});
+} else {
+	log(
+		`[${dateTan(
+			new Date(),
+			"YYYY-MM-DD HH:mm:ss:ms Z",
+			"en-us"
+		)}][REDIS] REDIS_URL not found. Running without cache.`
+	);
+}
+
+module.exports = { redis, isRedisConnected };

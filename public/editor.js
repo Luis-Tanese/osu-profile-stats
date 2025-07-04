@@ -85,7 +85,7 @@ const generateImageUrl = () => {
 	if (supporter === "false") params.append("supporter", "false");
 	if (team === "false") params.append("team", "false");
 
-	return `https://osu-profile-stats.vercel.app/api/profile-stats/${encodeURIComponent(
+	return `/api/profile-stats/${encodeURIComponent(
 		username
 	)}?${params.toString()}`;
 };

@@ -1,9 +1,7 @@
 const renderRankHistoryGraph = require("../renderRankGraph.js");
-const { formatNumber } = require("../utils/format.js");
-const { getBackground, getColor } = require("../utils/bg.js");
+const { formatNumber, getBackground, getColor, validateHex, getNameSpacing } = require("../utils");
 const { getSillyImage, getSillyFont } = require("../utils/imageUtils.js");
-const { validateHex } = require("../utils/validate.js");
-const { getNameSpacing } = require("../utils/spacing.js");
+const { BASE_URL } = require("../../config.js");
 
 /**
  * Renders the old style profile card (full version with more details)
@@ -38,59 +36,70 @@ const renderFullCard = async (data, options = {}) => {
 	const rankHistory = data.rank_history || [];
 	const teamData = data.team || {};
 
-	const showSupporter = supporter !== "false" && supporterLevel > 0;
-	const showTeam = team !== "false" && teamData?.flag_url;
-
-	let teamFlagDataURI = null;
-	if (showTeam) {
-		teamFlagDataURI = await getSillyImage(teamData.flag_url);
-	}
-
-	const usernameX = 80;
-	const usernameWidth = getNameSpacing(data.username.length, 0, data.username);
-
-	const teamX = usernameX + usernameWidth;
-	const teamWidth = 20;
-
-	const supporterX = showTeam ? teamX + teamWidth + 5 : teamX;
-
-	const avatarDataURI = avatarUrl ? await getSillyImage(avatarUrl) : "";
-	const flagDataURI = await getSillyImage(flagUrl);
-	const playmode = data.playmode || "osu";
-	const playmodeIconURL = `https://osu-profile-stats.vercel.app/assets/images/icons/mode-${playmode}.png`;
-	const playmodeIconDataURI = await getSillyImage(playmodeIconURL);
-	const rankGraphSVG = renderRankHistoryGraph(rankHistory);
-	const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(rankGraphSVG).toString("base64")}`;
-	const gradeIcons = {};
-	for (const grade of grades) {
-		const gradeURL = `https://osu-profile-stats.vercel.app/assets/images/grades/${grade}.svg`;
-		gradeIcons[grade] = await getSillyImage(gradeURL);
-	}
-	const playStyles = data.playstyle || [];
-	const playStyleIcons = {};
-	for (const style of playStyles) {
-		const styleURL = `https://osu-profile-stats.vercel.app/assets/images/icons/${style}.svg`;
-		playStyleIcons[style] = await getSillyImage(styleURL);
-	}
-	const torusDataURI = await getSillyFont("https://osu-profile-stats.vercel.app/assets/fonts/Torus-Regular.otf");
-	const supporterUrl = `https://osu-profile-stats.vercel.app/assets/images/icons/supporter_${supporterLevel}.svg`;
-	const supporterDataURI = await getSillyImage(supporterUrl);
-
 	const svgWidth = 400;
 	const svgHeight = 200;
 
-	let backgroundType;
-	if (!background) {
-		const bgURI = await getSillyImage(
-			data.cover?.url || "https://osu-profile-stats.vercel.app/assets/images/backgrounds/default.jpeg"
-		);
-		backgroundType = `<image x="0" y="0" href="${bgURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
-	} else if (background === "color") {
-		if (hex) validateHex(hex);
-		backgroundType = getColor(hex, svgWidth, svgHeight);
-	} else {
-		backgroundType = await getBackground(background, hex, svgWidth, svgHeight);
-	}
+	const showSupporter = supporter !== "false" && supporterLevel > 0;
+	const showTeam = team !== "false" && teamData?.flag_url;
+
+	const playmode = data.playmode || "osu";
+	const playmodeIconURL = `${BASE_URL}/assets/images/icons/mode-${playmode}.png`;
+	const torusFontURL = `${BASE_URL}/assets/fonts/Torus-Regular.otf`;
+	const supporterUrl = `${BASE_URL}/assets/images/icons/supporter_${supporterLevel}.svg`;
+	const defaultCoverURL = `${BASE_URL}/assets/images/backgrounds/default.jpeg`;
+	const playStyles = data.playstyle || [];
+
+	const assetPromises = [
+		getSillyImage(avatarUrl),
+		getSillyImage(flagUrl),
+		getSillyImage(playmodeIconURL),
+		getSillyFont(torusFontURL),
+		showTeam ? getSillyImage(teamData.flag_url) : Promise.resolve(null),
+		showSupporter ? getSillyImage(supporterUrl) : Promise.resolve(null),
+		!background ? getSillyImage(data.cover?.url || defaultCoverURL) : Promise.resolve(null),
+		background ? getBackground(background, hex, svgWidth, svgHeight) : Promise.resolve(null),
+	];
+
+	grades.forEach((grade) => {
+		assetPromises.push(getSillyImage(`${BASE_URL}/assets/images/grades/${grade}.svg`));
+	});
+	playStyles.forEach((style) => {
+		assetPromises.push(getSillyImage(`${BASE_URL}/assets/images/icons/${style}.svg`));
+	});
+
+	const allAssets = await Promise.all(assetPromises);
+
+	const [
+		avatarDataURI,
+		flagDataURI,
+		playmodeIconDataURI,
+		torusDataURI,
+		teamFlagDataURI,
+		supporterDataURI,
+		coverImageDataURI,
+		backgroundType,
+	] = allAssets;
+
+	const gradeIcons = {};
+	grades.forEach((grade, index) => {
+		gradeIcons[grade] = allAssets[8 + index];
+	});
+	const playStyleIcons = {};
+	playStyles.forEach((style, index) => {
+		playStyleIcons[style] = allAssets[8 + grades.length + index];
+	});
+
+	const finalBackground = background
+		? backgroundType
+		: `<image x="0" y="0" href="${coverImageDataURI}" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
+
+	const usernameX = 80;
+	const usernameWidth = getNameSpacing(data.username.length, 0, data.username);
+	const teamX = usernameX + usernameWidth;
+	const teamWidth = 20;
+	const supporterX = showTeam ? teamX + teamWidth + 5 : teamX;
+	const rankGraphSVG = renderRankHistoryGraph(rankHistory);
+	const rankGraphDataURI = `data:image/svg+xml;base64,${Buffer.from(rankGraphSVG).toString("base64")}`;
 
 	const gradeIconHeight = 12;
 	const gradeIconWidth = 24;
@@ -120,13 +129,9 @@ const renderFullCard = async (data, options = {}) => {
 	playStyles.forEach((style, index) => {
 		const row = Math.floor(index / 2);
 		const col = index % 2;
-
 		const x = playStyleBoxX + col * (playStyleIconSize + playStylePadding);
 		const y = playStyleBoxY + row * (playStyleIconSize + playStylePadding);
-
-		playStyleIconsRender += `
-            <image href="${playStyleIcons[style]}" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />
-        `;
+		playStyleIconsRender += `<image href="${playStyleIcons[style]}" x="${x}" y="${y}" width="${playStyleIconSize}" height="${playStyleIconSize}" />`;
 	});
 
 	const render = `
@@ -140,11 +145,7 @@ const renderFullCard = async (data, options = {}) => {
         </clipPath>
         ${
 			showTeam
-				? `
-                <clipPath id="clip-team-flag">
-                    <rect x="${teamX}" y="20" width="20" height="12" rx="3" ry="3" />
-                </clipPath>
-                `
+				? `<clipPath id="clip-team-flag"><rect x="${teamX}" y="20" width="20" height="12" rx="3" ry="3" /></clipPath>`
 				: ""
 		}
     </defs>
@@ -160,7 +161,7 @@ const renderFullCard = async (data, options = {}) => {
         .small { font-size: 7px; }
         .ans { fill: rgb(247, 201, 221); }
     </style>
-    ${backgroundType}
+    ${finalBackground}
     <rect width="${svgWidth}" height="${svgHeight}" fill="rgba(0, 0, 0, 0.4)" clip-path="url(#clip-rounded)" />
     <image href="${avatarDataURI}" clip-path="url(#clip-pfp)" x="15" y="15" width="50" height="50" />
     <image class="flag" href="${playmodeIconDataURI}" x="300" y="15" width="40" height="25" />
@@ -184,31 +185,22 @@ const renderFullCard = async (data, options = {}) => {
 
     <text x="290" y="65" class="text small">Ranked Score</text>
     <text x="290" y="75" class="text small ans">${formatNumber(rankedScore)}</text>
-
     <text x="290" y="90" class="text small">Accuracy</text>
     <text x="290" y="100" class="text small ans">${accuracy}%</text>
-
     <text x="290" y="115" class="text small">Play Count</text>
     <text x="290" y="125" class="text small ans">${formatNumber(playCount)}</text>
-
     <text x="290" y="140" class="text small">Total Score</text>
     <text x="290" y="150" class="text small ans">${formatNumber(totalScore)}</text>
-
     <text x="80" y="130" class="text small">Total Hits</text>
     <text x="80" y="140" class="text small ans">${formatNumber(totalHits)}</text>
-
     <text x="80" y="155" class="text small">Max Combo</text>
     <text x="80" y="165" class="text small ans">${formatNumber(maxCombo)}</text>
-
     <text x="80" y="180" class="text small">Replays Watched</text>
     <text x="80" y="190" class="text small ans">${formatNumber(replaysWatched)}</text>
-
     <text x="180" y="130" class="text small">Play Time</text>
     <text x="180" y="140" class="text small ans">${formatNumber(playTime)} hours</text>
-
     <text x="180" y="155" class="text small">Medals</text>
     <text x="180" y="165" class="text small ans">${formatNumber(medals)}</text>
-
     <text x="180" y="180" class="text small">Performance</text>
     <text x="180" y="190" class="text small ans">${formatNumber(pp)}pp</text>
 

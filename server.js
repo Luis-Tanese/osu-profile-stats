@@ -32,7 +32,7 @@ app.use("/api/rank-graph", rankGraphRoute);
 // I was tired of commenting and uncommenting this bs.
 if (process.env.NODE_ENV !== "production") {
 	app.listen(3000, () => {
-		log("Silly server running");
+		log("Silly server running @ http://localhost:3000");
 	});
 } else {
 	module.exports = app;

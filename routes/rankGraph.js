@@ -10,17 +10,7 @@ router.get("/:username", async (req, res) => {
 		const username = req.params.username;
 		const { playmode, width = 800, height = 100 } = req.query;
 
-		log(
-			`[${dateTan(
-				new Date(),
-				"YYYY-MM-DD HH:mm:ss:ms Z",
-				"en-us"
-			)}][REQUEST] Rank graph request received for ${username} with playmode=${playmode}.`
-		);
-
 		if (!username) {
-			log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][ERROR] Username is required.`);
-
 			return res.status(400).json({ error: "Username is required" });
 		}
 
@@ -67,14 +57,6 @@ router.get("/:username", async (req, res) => {
 
 		res.setHeader("Content-Type", "image/svg+xml");
 		res.send(resizedSvg);
-
-		log(
-			`[${dateTan(
-				new Date(),
-				"YYYY-MM-DD HH:mm:ss:ms Z",
-				"en-us"
-			)}][RESPONSE] Rank graph for ${username} sent successfully ＞︿＜.`
-		);
 	} catch (error) {
 		console.error(error);
 

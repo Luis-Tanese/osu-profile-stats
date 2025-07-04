@@ -1,0 +1,30 @@
+My silly plans going forward with this project:
+
+Top play card: 
+A feature that some players might want. It can create a card for their best performance. It would show: Beatmap Name, Difficulty, Mods, PP value, Accuracy, and Miss Count. Might also add so a player can select another type of play through it's ID, so more customisation.
+Planning:
+New endpoint: /api/top-play/:username
+Extra params: ?replayid=123
+
+Recent play card: 
+A card showing the player's most recent score. Updates every 5 mins.
+Planning:
+New endpoint: /api/recent-play/:username
+
+Color theming from  profile: 
+A new param value for background, where it gets the user's profile color and sets it as the card's theme.
+Planning:
+New value: background=profile
+
+Deeper plans:
+
+oAuth login: on the editor add a way in which allows users to log in with their osu! account. This can fill out their username and give them access to more detailed stats, like session stats, I could store the snapshot of a user's stats in a database (might go with mongodb) and then offer a card showing progress over the last 24 hours or 7 days or month, and each snapshot can also be saved as a card too, since it's only saving user data.
+
+Beatmap cards:
+Maybe a card that shows an image of the beatmap's background, name, mapper, diff stats, etc...
+Planning: 
+New endpoint: /api/beatmap-card/:mapid
+
+Ecosystem expansion:
+
+Maybe making a discord bot that uses my api where a user could type /stats :username and the bot would post the png of his stats since discord doesn't handle svgs.

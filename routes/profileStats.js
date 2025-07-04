@@ -6,117 +6,113 @@ const { renderErrorCard } = require("../middleware/cardRenderer.js");
 const { dateTan } = require("datetan");
 const { getOsuToken, fetchUserData } = require("../services/osuApi.js");
 
+const MIN_HEIGHT = 30;
+const MAX_HEIGHT = 1000;
+const DEFAULT_MINI_HEIGHT = 120;
+const DEFAULT_FULL_HEIGHT = 200;
+const MAX_USERNAME_LENGTH = 30;
+
+/**
+ * Helper function to log the src of a req
+ * @param {*} req - The req obj
+ * @returns {string} - The src of the req
+ */
+const getRequestSource = (req) => {
+	const referer = req.headers.referer || "direct";
+	if (referer === "direct") return "Direct";
+
+	try {
+		if (referer.includes("osu-profile-stats.vercel.app")) {
+			return "Internal (Editor)";
+		}
+		return new URL(referer).hostname;
+	} catch (error) {
+		return "Unknown";
+	}
+};
+
 router.get("/:username", async (req, res) => {
 	try {
-		const username = req.params.username;
-		const { playmode, background, hex, version, height, supporter, team } = req.query;
+		const { username } = req.params;
+		let { playmode, background, hex, version, height, supporter, team } = req.query;
 
-		const referer = req.headers.referer || "direct";
-		let source = "Unknown";
-
-		if (referer.includes("osu-pofile-stats.vercel.app")) {
-			source = "own";
-		} else {
-			try {
-				source = new URL(referer).hostname;
-			} catch (error) {
-				source = "Unknown";
-			}
-		}
+		const source = getRequestSource(req);
 
 		log(
 			`[${dateTan(
 				new Date(),
-				"YYYY-MM-DD HH:mm:ss:ms Z",
-				"en-us"
-			)}][REQUEST] Profile stats request received for ${username} with playmode=${playmode} and background=${background}. Source: ${source}.`
+				"YYYY-MM-DD HH:mm:ss:ms Z"
+			)}][REQUEST] Profile stats for "${username}". Source: ${source}. Params: ${JSON.stringify(req.query)}`
 		);
 
-		if (!username) {
-			const errorCard = await renderErrorCard(120, 400, "Username is required");
+		if (!username || username.trim() === "") {
+			const errorCard = await renderErrorCard(DEFAULT_MINI_HEIGHT, 400, "Username is required");
 			res.setHeader("Content-Type", "image/svg+xml");
 			return res.status(400).send(errorCard);
 		}
 
-		const token = await getOsuToken();
-		if (!token) {
-			log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][ERROR] Failed to auth with osu API.`);
-			const errorCard = await renderErrorCard(120, 400, "Failed to auth with osu API");
+		if (username.length > MAX_USERNAME_LENGTH) {
+			const errorCard = await renderErrorCard(DEFAULT_MINI_HEIGHT, 400, "Username is too long");
 			res.setHeader("Content-Type", "image/svg+xml");
-			return res.status(500).send(errorCard);
+			return res.status(400).send(errorCard);
 		}
 
+		version = version === "full" ? "full" : "mini";
+		const defaultHeight = version === "full" ? DEFAULT_FULL_HEIGHT : DEFAULT_MINI_HEIGHT;
+		let requestedHeight = parseInt(height, 10);
+
+		if (isNaN(requestedHeight) || requestedHeight < MIN_HEIGHT || requestedHeight > MAX_HEIGHT) {
+			requestedHeight = defaultHeight;
+		}
+
+		const token = await getOsuToken();
 		let userData;
 		try {
 			userData = await fetchUserData(username, token, playmode);
-			if (!userData) {
-				log(
-					`[${dateTan(
-						new Date(),
-						"YYYY-MM-DD HH:mm:ss:ms Z",
-						"en-us"
-					)}][ERROR] User data for ${username} not found.`
-				);
-				const errorCard = await renderErrorCard(120, 400, `User "${username}" not found`);
-				res.setHeader("Content-Type", "image/svg+xml");
-				return res.status(404).send(errorCard);
-			}
 		} catch (fetchError) {
-			const errorMessage =
-				fetchError.response?.status === 404
-					? `User "${username}" not found`
-					: `Failed to fetch data for user "${username}"`;
+			const isUserNotFound = fetchError.response?.status === 404;
+			const errorMessage = isUserNotFound ? `User "${username}" not found` : "Failed to fetch osu! data";
+			const statusCode = isUserNotFound ? 404 : 500;
 
-			log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][ERROR] ${errorMessage}`);
-
-			const errorCard = await renderErrorCard(120, 400, errorMessage);
+			log(`[ERROR] ${errorMessage}. Status: ${statusCode}`);
+			const errorCard = await renderErrorCard(
+				requestedHeight,
+				400 * (requestedHeight / defaultHeight),
+				errorMessage
+			);
 			res.setHeader("Content-Type", "image/svg+xml");
-			return res.status(fetchError.response?.status || 500).send(errorCard);
+			return res.status(statusCode).send(errorCard);
 		}
 
-		log(
-			`[${dateTan(
-				new Date(),
-				"YYYY-MM-DD HH:mm:ss:ms Z",
-				"en-us"
-			)}][RENDER] Rendering silly profile card for ${username}.`
-		);
-
-		const card = await renderCard(userData, {
+		const cardOptions = {
 			background: background || undefined,
 			hex: hex || undefined,
-			version: version || "new",
+			version: version,
 			supporter: supporter,
 			team: team,
-		});
+		};
 
-		let originalWidth, originalHeight;
+		const cardSvgString = await renderCard(userData, cardOptions);
 
-		if (version === "full") {
-			originalWidth = 400;
-			originalHeight = 200;
-		} else {
-			originalWidth = 400;
-			originalHeight = 120;
-		}
-
-		const requestedHeight = parseInt(height, 10) || originalHeight;
+		const originalWidth = 400;
+		const originalHeight = version === "full" ? DEFAULT_FULL_HEIGHT : DEFAULT_MINI_HEIGHT;
 		const scaleFactor = requestedHeight / originalHeight;
 		const resizedWidth = originalWidth * scaleFactor;
 
-		const resizedSvg = `
+		const finalSvg = `
 			<!-- Card Generated by https://osu-profile-stats.vercel.app -->
     		<!-- Made with ♥ by Tanese -->
             <svg xmlns="http://www.w3.org/2000/svg" 
                 width="${resizedWidth}" 
                 height="${requestedHeight}" 
                 viewBox="0 0 ${originalWidth} ${originalHeight}">
-                ${card}
+                ${cardSvgString}
             </svg>
         `;
 
 		res.setHeader("Content-Type", "image/svg+xml");
-		res.send(resizedSvg);
+		res.setHeader("Cache-Control", "public, max-age=300");
+		res.send(finalSvg);
 
 		log(
 			`[${dateTan(
@@ -126,22 +122,15 @@ router.get("/:username", async (req, res) => {
 			)}][RESPONSE] Profile card for ${username} sent successfully ＞︿＜.`
 		);
 	} catch (error) {
-		console.error(error);
+		console.error("An unexpected error occurred in /profile-stats route:", error);
+		log(`[FATAL ERROR] Internal Server Error for request: ${req.originalUrl}. Error: ${error.message}`);
 
-		log(
-			`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][ERROR] Internal Server Error for request: ${
-				req.originalUrl
-			}, Params for request: ${JSON.stringify(req.query)}`
+		const requestedHeight = parseInt(req.query.height, 10) || DEFAULT_MINI_HEIGHT;
+		const errorCard = await renderErrorCard(
+			requestedHeight,
+			400 * (requestedHeight / DEFAULT_MINI_HEIGHT),
+			"An unexpected error occurred"
 		);
-
-		let originalWidth = 400;
-		let originalHeight = req.query.version === "full" ? 200 : 120;
-		const requestedHeight = parseInt(req.query.height, 10) || originalHeight;
-		const scaleFactor = requestedHeight / originalHeight;
-		const resizedWidth = originalWidth * scaleFactor;
-
-		const errorMessage = error.message || "An unexpected error occurred";
-		const errorCard = await renderErrorCard(requestedHeight, resizedWidth, errorMessage);
 
 		res.setHeader("Content-Type", "image/svg+xml");
 		res.status(500).send(errorCard);

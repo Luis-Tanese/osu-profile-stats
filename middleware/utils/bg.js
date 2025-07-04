@@ -1,4 +1,5 @@
 const { getSillyImage } = require("./imageUtils.js");
+const { BASE_URL } = require("../../config.js");
 
 /**
  * This gets the background element for the card
@@ -17,9 +18,7 @@ const getBackground = async (background, hex = null, svgWidth, svgHeight) => {
 		const bgTypes = ["default", "bg1", "bg2", "bg3", "bg4", "bg5"];
 
 		const selectedBg = bgTypes.includes(background) ? background : "default";
-		const backgroundDataURI = await getSillyImage(
-			`https://osu-profile-stats.vercel.app/assets/images/backgrounds/${selectedBg}.jpg`
-		);
+		const backgroundDataURI = await getSillyImage(`${BASE_URL}/assets/images/backgrounds/${selectedBg}.jpg`);
 
 		return `<image href="${backgroundDataURI}" x="0" y="0" width="${svgWidth}" height="${svgHeight}" preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-rounded)" />`;
 	}

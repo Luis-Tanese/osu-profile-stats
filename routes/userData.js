@@ -9,17 +9,7 @@ router.get("/:username", async (req, res) => {
 		const username = req.params.username;
 		const { playmode } = req.query;
 
-		log(
-			`${dateTan(
-				new Date(),
-				"YYYY-MM-DD HH:mm:ss:ms Z",
-				"en-us"
-			)} [REQUEST] User data request received for ${username} with playmode=${playmode}.`
-		);
-
 		if (!username) {
-			log(`[${dateTan(new Date(), "YYYY-MM-DD HH:mm:ss:ms Z", "en-us")}][ERROR] Username is required.`);
-
 			return res.status(400).json({ error: "Username is required" });
 		}
 
@@ -43,14 +33,6 @@ router.get("/:username", async (req, res) => {
 			);
 			return res.status(404).json({ error: `User "${username}" not found` });
 		}
-
-		log(
-			`[${dateTan(
-				new Date(),
-				"YYYY-MM-DD HH:mm:ss:ms Z",
-				"en-us"
-			)}][RESPONSE] User data for ${username} sent successfully ＞︿＜.`
-		);
 
 		res.json(userData);
 	} catch (error) {
