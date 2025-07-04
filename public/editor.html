@@ -12,7 +12,7 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		/>
-		<title>OSC Editor</title>
+		<title>OSC - Editor</title>
 	</head>
 	<body>
 		<main>
@@ -24,145 +24,154 @@
 				<div class="warning-box">
 					<p>
 						<i class="fa-solid fa-triangle-exclamation"></i>
-						Warning: I'm trying to fix how flags/supporter look, if you find ANY issue in your card, please
-						open an issue in&nbsp;
-						<a href="https://github.com/Luis-Tanese/osu-profile-stats/issues">here</a>&nbsp;or message me on
-						discord @ tanese asap.
+						<span>
+							Warning: I'm trying to fix how flags/supporter look, if you find ANY issue in your card,
+							please open an issue in
+							<a href="https://github.com/Luis-Tanese/osu-profile-stats/issues">here</a> or message me on
+							discord @ tanese asap.
+						</span>
 					</p>
 				</div>
-				<form id="card">
-					<div class="form-group">
-						<label for="username"><i class="fa-solid fa-user"></i> Username:</label>
-						<input type="text" id="username" placeholder="Enter osu! username" />
-					</div>
 
-					<div class="form-group">
-						<label for="playmode"><i class="fa-solid fa-gamepad"></i> Play Mode:</label>
-						<select id="playmode">
-							<option value="">Default</option>
-							<option value="osu">osu!</option>
-							<option value="mania">Mania</option>
-							<option value="fruits">Fruits</option>
-							<option value="taiko">Taiko</option>
-						</select>
-					</div>
+				<div class="editor-layout">
+					<form id="card">
+						<div class="form-group">
+							<label for="username"><i class="fa-solid fa-user"></i> Username:</label>
+							<input type="text" id="username" placeholder="Enter osu! username" />
+						</div>
 
-					<div class="form-group">
-						<label for="background"><i class="fa-solid fa-image"></i> Background:</label>
-						<select id="background">
-							<option value="">Default</option>
-							<option value="bg1">Background 1</option>
-							<option value="bg2">Background 2</option>
-							<option value="bg3">Background 3</option>
-							<option value="bg4">Background 4</option>
-							<option value="bg5">Background 5</option>
-							<option value="color">Solid Color (Enter Hex Below)</option>
-						</select>
-						<input type="text" id="hex-color" placeholder="Hex color (e.g., 11bdb1)" disabled />
-					</div>
+						<div class="form-group">
+							<label for="playmode"><i class="fa-solid fa-gamepad"></i> Play Mode:</label>
+							<select id="playmode">
+								<option value="">Default</option>
+								<option value="osu">osu!</option>
+								<option value="mania">Mania</option>
+								<option value="fruits">Fruits</option>
+								<option value="taiko">Taiko</option>
+							</select>
+						</div>
 
-					<div class="form-group">
-						<label for="version"><i class="fa-solid fa-expand"></i> Card Version:</label>
-						<select id="version">
-							<option value="mini">Mini (Default)</option>
-							<option value="full">Full</option>
-						</select>
-					</div>
+						<div class="form-group">
+							<label for="background"><i class="fa-solid fa-image"></i> Background:</label>
+							<select id="background">
+								<option value="">Default</option>
+								<option value="bg1">Background 1</option>
+								<option value="bg2">Background 2</option>
+								<option value="bg3">Background 3</option>
+								<option value="bg4">Background 4</option>
+								<option value="bg5">Background 5</option>
+								<option value="color">Solid Color (Enter Hex Below)</option>
+							</select>
+							<input type="text" id="hex-color" placeholder="Hex color (e.g., 11bdb1)" disabled />
+						</div>
 
-					<div class="form-group">
-						<label for="height"><i class="fa-solid fa-ruler-vertical"></i> Height (px):</label>
-						<input type="number" id="height" placeholder="Default: 120" min="50" step="10" />
-					</div>
+						<div class="form-group">
+							<label for="version"><i class="fa-solid fa-expand"></i> Card Version:</label>
+							<select id="version">
+								<option value="mini">Mini (Default)</option>
+								<option value="full">Full</option>
+							</select>
+						</div>
 
-					<div class="form-group">
-						<label><i class="fa-solid fa-plus"></i> Extras:</label>
-						<div class="checkbox-group">
-							<label>
-								<input type="checkbox" id="supporter" checked />
-								Show Supporter
-							</label>
-							<label> <input type="checkbox" id="team" checked /> Show Team Flag </label>
+						<div class="form-group">
+							<label for="height"><i class="fa-solid fa-ruler-vertical"></i> Height (px):</label>
+							<input type="number" id="height" placeholder="Default: 120" min="50" step="10" />
 						</div>
-					</div>
-				</form>
 
-				<div class="preview">
-					<h2><i class="fa-solid fa-eye"></i> Preview</h2>
-					<div class="image-container">
-						<img src="" alt="Card Preview" id="preview-image" />
-						<div class="loading-container hidden" id="loading-container">
-							<div class="spinner">
-								<div class="bounce1"></div>
-								<div class="bounce2"></div>
-								<div class="bounce3"></div>
-							</div>
-							<p class="loading-text">Your card is loading and will be ready in a second...</p>
-						</div>
-					</div>
-					<div class="code-grid">
-						<div class="code-block">
-							<label><i class="fa-solid fa-link"></i> URL</label>
-							<div class="textarea-container">
-								<textarea id="code-url" readonly></textarea>
-								<button class="copy-btn" data-type="url"><i class="fa-solid fa-copy"></i> Copy</button>
+						<div class="form-group">
+							<label><i class="fa-solid fa-plus"></i> Extras:</label>
+							<div class="checkbox-group">
+								<label>
+									<input type="checkbox" id="supporter" checked />
+									Show Supporter
+								</label>
+								<label> <input type="checkbox" id="team" checked /> Show Team Flag </label>
 							</div>
 						</div>
-						<div class="code-block">
-							<label><i class="fa-solid fa-code"></i> BBCode</label>
-							<div class="textarea-container">
-								<textarea id="code-bbcode" readonly></textarea>
-								<button class="copy-btn" data-type="bbcode">
-									<i class="fa-solid fa-copy"></i> Copy
-								</button>
+					</form>
+
+					<div class="preview">
+						<h2><i class="fa-solid fa-eye"></i> Preview</h2>
+						<div class="image-container">
+							<img src="" alt="Card Preview" id="preview-image" />
+							<div class="loading-container hidden" id="loading-container">
+								<div class="spinner">
+									<div class="bounce1"></div>
+									<div class="bounce2"></div>
+									<div class="bounce3"></div>
+								</div>
+								<p class="loading-text">Your card is loading and will be ready in a second...</p>
 							</div>
 						</div>
-						<div class="code-block">
-							<label><i class="fa-solid fa-code"></i> BBCode with Profile Link</label>
-							<div class="textarea-container">
-								<textarea id="code-bbcode-link" readonly></textarea>
-								<button class="copy-btn" data-type="bbcode-link">
-									<i class="fa-solid fa-copy"></i> Copy
-								</button>
+						<div class="code-grid">
+							<div class="code-block">
+								<label><i class="fa-solid fa-link"></i> URL</label>
+								<div class="textarea-container">
+									<textarea id="code-url" readonly></textarea>
+									<button class="copy-btn" data-type="url">
+										<i class="fa-solid fa-copy"></i> Copy
+									</button>
+								</div>
+							</div>
+							<div class="code-block">
+								<label><i class="fa-solid fa-code"></i> BBCode</label>
+								<div class="textarea-container">
+									<textarea id="code-bbcode" readonly></textarea>
+									<button class="copy-btn" data-type="bbcode">
+										<i class="fa-solid fa-copy"></i> Copy
+									</button>
+								</div>
+							</div>
+							<div class="code-block">
+								<label><i class="fa-solid fa-code"></i> BBCode with Profile Link</label>
+								<div class="textarea-container">
+									<textarea id="code-bbcode-link" readonly></textarea>
+									<button class="copy-btn" data-type="bbcode-link">
+										<i class="fa-solid fa-copy"></i> Copy
+									</button>
+								</div>
+							</div>
+							<div class="code-block">
+								<label><i class="fa-brands fa-markdown"></i> Markdown</label>
+								<div class="textarea-container">
+									<textarea id="code-markdown" readonly></textarea>
+									<button class="copy-btn" data-type="markdown">
+										<i class="fa-solid fa-copy"></i> Copy
+									</button>
+								</div>
+							</div>
+							<div class="code-block">
+								<label><i class="fa-brands fa-markdown"></i> Markdown with Profile Link</label>
+								<div class="textarea-container">
+									<textarea id="code-markdown-link" readonly></textarea>
+									<button class="copy-btn" data-type="markdown-link">
+										<i class="fa-solid fa-copy"></i> Copy
+									</button>
+								</div>
+							</div>
+							<div class="code-block">
+								<label><i class="fa-brands fa-html5"></i> HTML</label>
+								<div class="textarea-container">
+									<textarea id="code-html" readonly></textarea>
+									<button class="copy-btn" data-type="html">
+										<i class="fa-solid fa-copy"></i> Copy
+									</button>
+								</div>
+							</div>
+							<div class="code-block">
+								<label><i class="fa-brands fa-html5"></i> HTML with Profile Link</label>
+								<div class="textarea-container">
+									<textarea id="code-html-link" readonly></textarea>
+									<button class="copy-btn" data-type="html-link">
+										<i class="fa-solid fa-copy"></i> Copy
+									</button>
+								</div>
 							</div>
 						</div>
-						<div class="code-block">
-							<label><i class="fa-brands fa-markdown"></i> Markdown</label>
-							<div class="textarea-container">
-								<textarea id="code-markdown" readonly></textarea>
-								<button class="copy-btn" data-type="markdown">
-									<i class="fa-solid fa-copy"></i> Copy
-								</button>
-							</div>
+						<div class="button-group">
+							<button id="download-png-btn"><i class="fa-solid fa-download"></i> Download PNG</button>
+							<button id="copy-png-btn"><i class="fa-solid fa-clipboard"></i> Copy PNG</button>
 						</div>
-						<div class="code-block">
-							<label><i class="fa-brands fa-markdown"></i> Markdown with Profile Link</label>
-							<div class="textarea-container">
-								<textarea id="code-markdown-link" readonly></textarea>
-								<button class="copy-btn" data-type="markdown-link">
-									<i class="fa-solid fa-copy"></i> Copy
-								</button>
-							</div>
-						</div>
-						<div class="code-block">
-							<label><i class="fa-brands fa-html5"></i> HTML</label>
-							<div class="textarea-container">
-								<textarea id="code-html" readonly></textarea>
-								<button class="copy-btn" data-type="html"><i class="fa-solid fa-copy"></i> Copy</button>
-							</div>
-						</div>
-						<div class="code-block">
-							<label><i class="fa-brands fa-html5"></i> HTML with Profile Link</label>
-							<div class="textarea-container">
-								<textarea id="code-html-link" readonly></textarea>
-								<button class="copy-btn" data-type="html-link">
-									<i class="fa-solid fa-copy"></i> Copy
-								</button>
-							</div>
-						</div>
-					</div>
-					<div class="button-group">
-						<button id="download-png-btn"><i class="fa-solid fa-download"></i> Download PNG</button>
-						<button id="copy-png-btn"><i class="fa-solid fa-clipboard"></i> Copy PNG</button>
 					</div>
 				</div>
 			</div>

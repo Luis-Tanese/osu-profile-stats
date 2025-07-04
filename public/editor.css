@@ -25,16 +25,13 @@ main {
 
 .generator {
 	max-width: 500px;
-	background-color: #444;
+	background-color: #2b2127;
 	padding: 1.5rem;
 	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	border: 1px solid #ffffff22;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 	overflow: hidden;
 	width: 100%;
-}
-
-#card {
-	justify-content: center;
 }
 
 .generator h1 {
@@ -61,28 +58,29 @@ label {
 	display: inline-flex;
 	align-items: center;
 	margin-left: 0.5rem;
-	margin-bottom: 0.3rem;
-	color: #ff66aa;
+	margin-bottom: 0.5rem;
+	color: #e0e0e0;
 	font-size: 0.9rem;
 }
 
 label i {
-	margin-right: 0.4rem;
+	margin-right: 0.6rem;
 	width: 1.1em;
 	text-align: center;
+	color: #ff66aa;
 }
 
 input,
 select,
 textarea {
 	width: 100%;
-	padding: 0.4rem 0.4rem;
+	padding: 0.6rem 0.8rem;
 	border: 1px solid #555;
 	border-radius: 5px;
-	background-color: #333;
+	background-color: #3e3138;
 	color: #fff;
 	font-size: 0.95rem;
-	transition: border-color 0.3s ease;
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input:focus,
@@ -90,21 +88,20 @@ select:focus,
 textarea:focus {
 	border-color: #ff66aa;
 	outline: none;
-}
-
-textarea {
-	height: 80px;
-	resize: none;
+	box-shadow: 0 0 0 3px rgba(255, 102, 170, 0.3);
 }
 
 button {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	background-color: #ff66aa;
 	color: #fff;
 	border: none;
 	padding: 0.75rem 1.5rem;
 	border-radius: 5px;
 	font-size: 1rem;
+	font-weight: bold;
 	cursor: pointer;
 	transition: background-color 0.3s ease, transform 0.2s ease;
 	margin-top: 1rem;
@@ -116,6 +113,10 @@ button:hover {
 	transform: translateY(-2px);
 }
 
+.preview {
+	margin-top: 2.5rem;
+}
+
 #preview-image {
 	max-width: 100%;
 	margin: 1rem 0;
@@ -125,46 +126,40 @@ button:hover {
 }
 
 .textarea-container {
+	position: relative;
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
 }
 
 textarea {
-	width: 100%;
-	background-color: #333;
-	color: #fff;
-	font-size: 0.85rem;
-	padding: 0.5rem;
-	border: none;
-	border-radius: 5px;
+	height: 80px;
 	resize: none;
-	box-sizing: border-box;
-}
-
-.textarea-container textarea {
-	flex-grow: 1;
-	min-width: 0;
 }
 
 .copy-btn {
 	margin-top: 0;
-	height: 2.3rem;
+	position: absolute;
+	right: 8px;
+	top: 50%;
+	transform: translateY(-50%);
+	height: auto;
 	padding: 0.3rem 0.8rem;
 	flex-shrink: 0;
 	font-size: 0.7rem;
+	background-color: #4f424a;
+	color: #fff;
 }
 
 .copy-btn:hover {
-	background-color: #fff0f6;
-	color: #35272e;
-	transform: translateY(-2px);
+	background-color: #ff66aa;
+	color: #fff;
+	transform: translateY(-50%) translateY(-1px);
 }
 
 .code-grid {
 	display: grid;
 	gap: 0.75rem;
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	grid-template-columns: 1fr;
 	margin-top: 1rem;
 }
 
@@ -173,14 +168,9 @@ textarea {
 	text-align: left;
 }
 
-.code-content {
-	display: flex;
-	gap: 0.3rem;
-	align-items: center;
-}
-
 .code-block textarea {
 	height: 2.5rem;
+	padding-right: 60px;
 	min-width: 0;
 	margin: 0;
 	font-size: 0.75rem;
@@ -273,8 +263,8 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 .checkbox-group input[type="checkbox"]:focus {
-	outline: 2px solid rgba(255, 102, 170, 0.5);
-	outline-offset: 2px;
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(255, 102, 170, 0.3);
 }
 
 .generator p {
@@ -439,6 +429,9 @@ footer {
 	display: flex;
 	align-items: flex-start;
 }
+.warning-box p span {
+	flex: 1;
+}
 
 .warning-box p i {
 	color: #ffa500;
@@ -454,4 +447,11 @@ footer {
 
 .warning-box a:hover {
 	color: #ffffff;
+}
+
+.button-group {
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	margin-top: 1rem;
 }

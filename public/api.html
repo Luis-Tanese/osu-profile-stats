@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./api.css" />
+		<link rel="stylesheet" href="./api-media.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+			integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<title>OSC - API Docs</title>
+	</head>
+	<body>
+		<header class="navbar">
+			<div class="logo"><a href="/" class="logo-link">Osu! Stats Cards</a></div>
+			<button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation">
+				<span class="hamburger"></span>
+			</button>
+			<nav id="main-nav">
+				<ul>
+					<li>
+						<a href="/"><i class="fa-solid fa-home"></i> Home</a>
+					</li>
+					<li>
+						<a href="/api.html" class="active"><i class="fa-solid fa-book"></i> API Docs</a>
+					</li>
+					<li>
+						<a href="/editor" class="nav-button"><i class="fa-solid fa-pen-ruler"></i> Make your card!</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<div class="api-container">
+			<aside class="api-nav">
+				<h3>Endpoints</h3>
+				<ul>
+					<li><a href="#introduction" class="active">Introduction</a></li>
+					<li><a href="#profile-stats">Profile Stats Card</a></li>
+					<li><a href="#user-data">User Data (JSON)</a></li>
+					<li><a href="#rank-graph">Rank History Graph</a></li>
+					<li><a href="#api-meta">API Meta</a></li>
+				</ul>
+			</aside>
+
+			<main class="api-content">
+				<section id="introduction" class="fade-in">
+					<h1>API Documentation</h1>
+					<p>
+						Welcome to the osu-profile-stats API documentation. Our API allows you to generate customizable
+						SVG cards and retrieve osu! player data. All endpoints are accessible via simple GET requests.
+					</p>
+					<div class="notice">
+						<strong>Base URL:</strong>
+						All endpoints are relative to
+						<code>https://osu-profile-stats.vercel.app</code>
+					</div>
+				</section>
+
+				<section id="profile-stats" class="fade-in">
+					<h2>Profile Stats Card</h2>
+					<p>Generates a customizable SVG card displaying a user's profile statistics.</p>
+					<div class="endpoint-header">
+						<span class="method get">GET</span>
+						<code class="path">/api/profile-stats/:username</code>
+					</div>
+
+					<h3>Parameters</h3>
+					<div class="table-container">
+						<table>
+							<thead>
+								<tr>
+									<th>Parameter</th>
+									<th>Type</th>
+									<th>Description</th>
+									<th>Default</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><code>username</code><span class="required">Required</span></td>
+									<td>Path</td>
+									<td>The osu! username of the player.</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><code>playmode</code></td>
+									<td>Query</td>
+									<td>
+										Game mode to display stats for.
+										<br />Values: <code>osu</code>, <code>mania</code>, <code>fruits</code>,
+										<code>taiko</code>.
+									</td>
+									<td>User's default</td>
+								</tr>
+								<tr>
+									<td><code>background</code></td>
+									<td>Query</td>
+									<td>
+										The card background.
+										<br />Values: <code>bg1</code>, <code>bg2</code>, <code>bg3</code>,
+										<code>bg4</code>, <code>bg5</code>, <code>color</code>.
+									</td>
+									<td>User's cover</td>
+								</tr>
+								<tr>
+									<td><code>hex</code></td>
+									<td>Query</td>
+									<td>A 3 or 6-digit hex code (without #) if <code>background=color</code>.</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><code>version</code></td>
+									<td>Query</td>
+									<td>Card version. Values: s<code>mini</code>, <code>full</code>.</td>
+									<td><code>mini</code></td>
+								</tr>
+								<tr>
+									<td><code>height</code></td>
+									<td>Query</td>
+									<td>Sets a custom height for the card in pixels.</td>
+									<td><code>120</code> (mini), <code>200</code> (full)</td>
+								</tr>
+								<tr>
+									<td><code>supporter</code></td>
+									<td>Query</td>
+									<td>
+										Toggle supporter tag visibility. Values: <code>true</code>, <code>false</code>.
+									</td>
+									<td><code>true</code></td>
+								</tr>
+								<tr>
+									<td><code>team</code></td>
+									<td>Query</td>
+									<td>
+										Toggle team flag visibility. Values: s<code>true</code>, <code>false</code>.
+									</td>
+									<td><code>true</code></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h3>Example Request</h3>
+					<pre><code>/api/profile-stats/tanese?playmode=mania&background=bg3&version=full</code></pre>
+
+					<h3>Example Success Response (200 OK)</h3>
+					<p>An SVG image is returned.</p>
+					<div class="response-preview">
+						<img
+							src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full"
+							alt="Example full card"
+						/>
+					</div>
+
+					<h3>Example Error Response (404 Not Found)</h3>
+					<p>An SVG error card is returned if the user is not found.</p>
+					<div class="response-preview">
+						<img
+							src="https://osu-profile-stats.vercel.app/api/profile-stats/thisuserdoesnotexist"
+							alt="Example error card"
+						/>
+					</div>
+				</section>
+
+				<section id="user-data" class="fade-in">
+					<h2>User Data (JSON)</h2>
+					<p>Retrieves raw user data and statistics as a JSON object.</p>
+					<div class="endpoint-header">
+						<span class="method get">GET</span>
+						<code class="path">/api/user-data/:username</code>
+					</div>
+
+					<h3>Parameters</h3>
+					<div class="table-container">
+						<table>
+							<thead>
+								<tr>
+									<th>Parameter</th>
+									<th>Type</th>
+									<th>Description</th>
+									<th>Default</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><code>username</code><span class="required">Required</span></td>
+									<td>Path</td>
+									<td>The osu! username of the player.</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><code>playmode</code></td>
+									<td>Query</td>
+									<td>
+										Game mode to retrieve stats for.
+										<br />Values: s<code>osu</code>, <code>mania</code>, <code>fruits</code>,
+										<code>taiko</code>.
+									</td>
+									<td>User's default</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h3>Example Request</h3>
+					<pre><code>/api/user-data/tanese?playmode=osu</code></pre>
+
+					<h3>Example Success Response (200 OK)</h3>
+					<pre><code>{
+    "avatar_url": "https://a.ppy.sh/...",
+    "country_code": "BR",
+    "id": 1234567,
+    "is_active": true,
+    "is_bot": false,
+    "is_deleted": false,
+    "is_online": true,
+    "is_supporter": true,
+    "username": "tanese",
+    "statistics": {
+        "global_rank": 76929,
+        "pp": 5000.12,
+        "ranked_score": 1234567890,
+        ...
+    },
+    "playmode": "osu"
+}</code></pre>
+
+					<h3>Example Error Response (404 Not Found)</h3>
+					<pre><code>{
+    "error": "User \"thisuserdoesnotexist\" not found"
+}</code></pre>
+				</section>
+
+				<section id="rank-graph" class="fade-in">
+					<h2>Rank History Graph</h2>
+					<p>Generates an SVG graph of a user's rank history over the last 90 days.</p>
+					<div class="endpoint-header">
+						<span class="method get">GET</span>
+						<code class="path">/api/rank-graph/:username</code>
+					</div>
+
+					<h3>Parameters</h3>
+					<div class="table-container">
+						<table>
+							<thead>
+								<tr>
+									<th>Parameter</th>
+									<th>Type</th>
+									<th>Description</th>
+									<th>Default</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><code>username</code><span class="required">Required</span></td>
+									<td>Path</td>
+									<td>The osu! username of the player.</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td><code>playmode</code></td>
+									<td>Query</td>
+									<td>
+										Game mode to display rank history for.
+										<br />Values: <code>osu</code>, <code>mania</code>, <code>fruits</code>,
+										<code>taiko</code>.
+									</td>
+									<td>User's default</td>
+								</tr>
+								<tr>
+									<td><code>width</code></td>
+									<td>Query</td>
+									<td>Width of the graph in pixels.</td>
+									<td><code>800</code></td>
+								</tr>
+								<tr>
+									<td><code>height</code></td>
+									<td>Query</td>
+									<td>Height of the graph in pixels.</td>
+									<td><code>100</code></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h3>Example Request</h3>
+					<pre><code>/api/rank-graph/tanese?playmode=mania&height=120</code></pre>
+
+					<h3>Example Success Response (200 OK)</h3>
+					<p>An SVG image is returned.</p>
+					<div class="response-preview">
+						<img
+							src="https://osu-profile-stats.vercel.app/api/rank-graph/tanese?playmode=mania&height=120"
+							alt="Example rank graph"
+						/>
+					</div>
+
+					<h3>Example Error Response (404 Not Found)</h3>
+					<p>A JSON error is returned.</p>
+					<pre><code>{
+    "error": "No rank history data available"
+}</code></pre>
+				</section>
+
+				<section id="api-meta" class="fade-in">
+					<h2>API Meta</h2>
+					<p>Returns a JSON object containing information about all available API endpoints.</p>
+					<div class="endpoint-header">
+						<span class="method get">GET</span>
+						<code class="path">/api</code>
+					</div>
+
+					<h3>Parameters</h3>
+					<p>This endpoint does not accept any parameters.</p>
+
+					<h3>Example Request</h3>
+					<pre><code>/api</code></pre>
+
+					<h3>Example Success Response (200 OK)</h3>
+					<pre><code>{
+    "message": "Welcome to the silly api, here is some info:",
+    "endpoints": {
+        "profileStats": { ... },
+        "userData": { ... },
+        "rankGraph": { ... },
+        "api": { ... }
+    },
+    "repository": "https://github.com/Luis-Tanese/osu-profile-stats"
+}</code></pre>
+				</section>
+			</main>
+		</div>
+
+		<footer>
+			<div class="footer-content">
+				<p>Copyright © 2025 Tanese. All Rights Reserved</p>
+				<div class="social-links">
+					<a
+						href="https://github.com/Luis-Tanese/osu-profile-stats"
+						target="_blank"
+						aria-label="GitHub Repository"
+						><i class="fab fa-github"></i
+					></a>
+				</div>
+			</div>
+		</footer>
+		<script src="./api.js"></script>
+	</body>
+</html>

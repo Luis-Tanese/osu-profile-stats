@@ -13,34 +13,109 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		/>
-		<title>Osu Stats Cards</title>
+		<title>OSC</title>
 	</head>
 	<body>
 		<header class="navbar">
-			<div class="logo">Osu Stats Cards</div>
-			<nav>
+			<div class="logo">Osu! Stats Cards</div>
+			<button id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation">
+				<span class="hamburger"></span>
+			</button>
+			<nav id="main-nav">
 				<ul>
 					<li>
-						<a href="https://github.com/Luis-Tanese/osu-profile-stats" target="_blank"
-							><i class="fa-solid fa-book"></i> API Documentation</a
-						>
-						<a href="/editor"><i class="fa-solid fa-pen-ruler"></i> Make your own card!</a>
+						<a href="/api.html"><i class="fa-solid fa-book"></i> API Docs</a>
+					</li>
+					<li>
+						<a href="/editor" class="nav-button"><i class="fa-solid fa-pen-ruler"></i> Make your card!</a>
 					</li>
 				</ul>
 			</nav>
 		</header>
 		<main>
-			<section class="intro">
-				<h1>Osu Stats Cards</h1>
+			<section class="hero fade-in">
+				<div class="hero-content">
+					<h1>Create and Share Custom osu! Cards</h1>
+					<p>
+						Generate dynamic, customizable SVG cards to showcase your osu! stats on your profile, GitHub, or
+						personal website.
+					</p>
+					<div class="hero-buttons">
+						<a href="/editor" class="btn btn-primary">Create Your Card</a>
+						<a href="/api.html" class="btn btn-secondary">View API Docs</a>
+					</div>
+				</div>
+				<div class="hero-image">
+					<img
+						src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese"
+						alt="Example osu! stats card"
+						class="stats-card-preview"
+					/>
+				</div>
+			</section>
+
+			<section class="features fade-in">
+				<h2>Features</h2>
+				<div class="features-grid">
+					<div class="feature-card">
+						<i class="fa-solid fa-palette"></i>
+						<h3>Big Customization</h3>
+						<p>Choose from multiple themes, solid colors, or even your osu! profile cover.</p>
+					</div>
+					<div class="feature-card">
+						<i class="fa-solid fa-gamepad"></i>
+						<h3>All Game Modes</h3>
+						<p>Display your stats for any mode: osu!, mania, fruits, or taiko.</p>
+					</div>
+					<div class="feature-card">
+						<i class="fa-solid fa-code"></i>
+						<h3>Easy Embedding</h3>
+						<p>Get ready-to-use snippets for BBCode, Markdown, and HTML to share anywhere.</p>
+					</div>
+					<div class="feature-card">
+						<i class="fa-solid fa-expand"></i>
+						<h3>Two Card Styles</h3>
+						<p>Pick between a compact 'mini' card or a 'full' card with more details.</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="how-it-works fade-in">
+				<h2>How It Works</h2>
+				<div class="steps-container">
+					<div class="step">
+						<div class="step-number">1</div>
+						<h3>Customize</h3>
+						<p>Use the editor to select your username, style, game mode, and background.</p>
+					</div>
+					<div class="step">
+						<div class="step-number">2</div>
+						<h3>Generate</h3>
+						<p>Instantly get a live preview of your card and the embeddable code.</p>
+					</div>
+					<div class="step">
+						<div class="step-number">3</div>
+						<h3>Share</h3>
+						<p>Copy the code and paste it into your osu! profile, a README file, or your website.</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="about fade-in">
+				<h2>About This Project</h2>
 				<p>
-					Osu Stats Cards is an API designed to take your stats and render into a customizable SVG card that
-					you can easily embed anywhere using an img or BBCode tag. If you would like to make your own card,
-					click
-					<a href="/editor" class="click-silly">here</a>
-					or on the top right of your screen to make it!
+					This is a personal project built with ♥ by me for the osu! community. The goal was to create
+					something like github readme cards but for osu, I started the project in december and added many
+					features I thought would be cool to have in a card, and I'm trying to keep implementations working
+					as the game updates.
 				</p>
-				<br />
-				<img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese" alt="stats" class="stats" />
+				<p>
+					It's open source! If you have feedback, find a bug, or want to contribute, please visit the
+					repository.
+				</p>
+				<a href="https://github.com/Luis-Tanese/osu-profile-stats" class="btn btn-secondary" target="_blank"
+					><i class="fab fa-github"></i> View on GitHub</a
+				>
 			</section>
 		</main>
 		<footer>
@@ -56,5 +131,7 @@
 				</div>
 			</div>
 		</footer>
+
+		<script src="./index.js"></script>
 	</body>
 </html>

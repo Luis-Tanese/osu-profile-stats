@@ -1,0 +1,147 @@
+@media (max-width: 1024px) {
+	.api-container {
+		flex-direction: column;
+		padding: 1.5rem;
+		gap: 1.5rem;
+	}
+	.api-nav {
+		position: static;
+		width: 100%;
+		height: auto;
+		overflow-y: visible;
+		border-bottom: 1px solid var(--border-color);
+		padding-bottom: 1.5rem;
+	}
+	.api-nav ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+	.api-content section {
+		padding: 1.5rem;
+	}
+}
+
+@media (max-width: 767px) {
+	header.navbar {
+		padding: 0.75rem 1rem;
+	}
+
+	.nav-toggle.is-active .hamburger {
+		background: transparent;
+	}
+	.nav-toggle.is-active .hamburger::before {
+		transform: rotate(45deg) translate(5px, 6px);
+	}
+	.nav-toggle.is-active .hamburger::after {
+		transform: rotate(-45deg) translate(5px, -6px);
+	}
+
+	.nav-toggle {
+		display: block;
+	}
+
+	#main-nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100vh;
+		background-color: rgba(43, 33, 39, 0.98);
+		backdrop-filter: blur(5px);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transform: translateX(100%);
+		transition: transform 0.3s ease-in-out;
+		z-index: 1000;
+	}
+
+	#main-nav.nav--visible {
+		transform: translateX(0);
+	}
+
+	#main-nav ul {
+		flex-direction: column;
+		gap: 2rem;
+		text-align: center;
+	}
+	#main-nav ul li a {
+		font-size: 1.5rem;
+	}
+	#main-nav .nav-button {
+		padding: 1rem 2rem;
+	}
+
+	.api-content h1 {
+		font-size: 2rem;
+	}
+	.api-content h2 {
+		font-size: 1.6rem;
+	}
+
+	.table-container {
+		overflow: visible;
+	}
+
+	table,
+	thead,
+	tbody,
+	th,
+	td,
+	tr {
+		display: block;
+	}
+
+	thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	tr {
+		border-bottom: 2px solid var(--border-color);
+		margin-bottom: 1rem;
+	}
+	tr:last-child {
+		border-bottom: none;
+	}
+
+	td {
+		border: none;
+		position: relative;
+		padding-left: 50%;
+		text-align: right;
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
+	}
+
+	td:before {
+		position: absolute;
+		left: 1rem;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		text-align: left;
+		font-weight: bold;
+		color: var(--accent-color);
+	}
+
+	td:nth-of-type(1):before {
+		content: "Parameter";
+	}
+	td:nth-of-type(2):before {
+		content: "Type";
+	}
+	td:nth-of-type(3):before {
+		content: "Description";
+	}
+	td:nth-of-type(4):before {
+		content: "Default";
+	}
+
+	pre {
+		overflow-x: auto;
+		white-space: pre;
+	}
+}

@@ -28,6 +28,8 @@ const elements = {
 	},
 };
 
+const BASE_URL = window.location.origin;
+
 const convertSvgToPng = async (url, height) => {
 	try {
 		const res = await fetch(url, { mode: "cors" });
@@ -85,9 +87,7 @@ const generateImageUrl = () => {
 	if (supporter === "false") params.append("supporter", "false");
 	if (team === "false") params.append("team", "false");
 
-	return `/api/profile-stats/${encodeURIComponent(
-		username
-	)}?${params.toString()}`;
+	return `${BASE_URL}/api/profile-stats/${encodeURIComponent(username)}?${params.toString()}`;
 };
 
 const getFormValues = () => ({
