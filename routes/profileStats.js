@@ -57,8 +57,18 @@ router.get("/:username", async (req, res) => {
 			return res.status(400).send(errorCard);
 		}
 
-		version = version === "full" ? "full" : "mini";
-		const defaultHeight = version === "full" ? DEFAULT_FULL_HEIGHT : DEFAULT_MINI_HEIGHT;
+		const validVersions = ["mini", "full"];
+		version = validVersions.includes(version) ? version : "mini";
+
+		let defaultHeight;
+		switch (version) {
+			case "full":
+				defaultHeight = DEFAULT_FULL_HEIGHT;
+				break;
+			default:
+				defaultHeight = DEFAULT_MINI_HEIGHT;
+		}
+
 		let requestedHeight = parseInt(height, 10);
 
 		if (isNaN(requestedHeight) || requestedHeight < MIN_HEIGHT || requestedHeight > MAX_HEIGHT) {
@@ -95,7 +105,14 @@ router.get("/:username", async (req, res) => {
 		const cardSvgString = await renderCard(userData, cardOptions);
 
 		const originalWidth = 400;
-		const originalHeight = version === "full" ? DEFAULT_FULL_HEIGHT : DEFAULT_MINI_HEIGHT;
+		let originalHeight;
+		switch (version) {
+			case "full":
+				originalHeight = DEFAULT_FULL_HEIGHT;
+				break;
+			default:
+				originalHeight = DEFAULT_MINI_HEIGHT;
+		}
 		const scaleFactor = requestedHeight / originalHeight;
 		const resizedWidth = originalWidth * scaleFactor;
 

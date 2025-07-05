@@ -48,9 +48,9 @@ router.get("/:username", async (req, res) => {
 
 		const resizedSvg = `
             <svg xmlns="http://www.w3.org/2000/svg" 
-                 width="${requestedWidth}" 
-                 height="${requestedHeight}" 
-                 viewBox="0 0 800 100">
+                width="${requestedWidth}" 
+                height="${requestedHeight}" 
+                viewBox="0 0 800 100">
                 ${graph}
             </svg>
         `;

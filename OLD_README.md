@@ -23,10 +23,10 @@ osu-profile-stats generates SVG cards displaying osu! profile statistics. Custom
 
 ## Features
 
-- You can choose from default, themed, or solid-color backgrounds.
-- Display stats for osu, mania, fruits, or taiko modes.
-- Use `<img>` tags to display your profile stats SVG anywhere.
-- Stats are updated every 5 minutes to prevent API overload (You can host your own deployment following the tutorial [here](#deploying-your-own-instance)).
+-   You can choose from default, themed, or solid-color backgrounds.
+-   Display stats for osu, mania, fruits, or taiko modes.
+-   Use `<img>` tags to display your profile stats SVG anywhere.
+-   Stats are updated every 5 minutes to prevent API overload (You can host your own deployment following the tutorial [here](#deploying-your-own-instance)).
 
 ---
 
@@ -35,11 +35,7 @@ osu-profile-stats generates SVG cards displaying osu! profile statistics. Custom
 Embed the SVG in your project using an `<img>` tag:
 
 ```html
-<img
-    src="https://osu-profile-stats.vercel.app/api/profile-stats/{username}"
-    height="150"
-    alt="osu stats"
-/>
+<img src="https://osu-profile-stats.vercel.app/api/profile-stats/{username}" height="150" alt="osu stats" />
 ```
 
 > [!NOTE]
@@ -54,14 +50,14 @@ Replace `{username}` with your osu! username
 
 The SVG is customizable through URL parameters:
 
-| Parameter    | Values                                                | Default              | Description                                                                              |
-| ------------ | ----------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------- |
-| `background` | `bg1`, `bg2`, `bg3`, `bg4`, `bg5`, `color&hex=11bdb1` | User's default cover | Choose a background. Use color for solid colors by specifying a hex code (without `#`).  |
-| `playmode`   | `osu`, `mania`, `fruits`, `taiko`                     | User's default mode  | Select a play mode to display stats for.                                                 |
-| `version`    | `mini`, `full`                                        | `mini`               | This selects the type of card, since the old one was a bit ugly I made the mini version. |
-| `height`     | any integer                                           | Auto sized           | Set custom card height while maintaining aspect ratio                                    |
-| `supporter`  | `true`, `false`                                       | `true`               | Toggle supporter tag display                                                             |
-| `team`       | `true`, `false`                                       | `true`               | Toggle team flag display                                                                 |
+| Parameter    | Values                                                | Default              | Description                                                                             |
+| ------------ | ----------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------- |
+| `background` | `bg1`, `bg2`, `bg3`, `bg4`, `bg5`, `color&hex=11bdb1` | User's default cover | Choose a background. Use color for solid colors by specifying a hex code (without `#`). |
+| `playmode`   | `osu`, `mania`, `fruits`, `taiko`                     | User's default mode  | Select a play mode to display stats for.                                                |
+| `version`    | `mini`, `full`                                        | `mini`               | Selects the type of card. `mini` is the default, `full` is the old style                |
+| `height`     | any integer                                           | Auto sized           | Set custom card height while maintaining aspect ratio                                   |
+| `supporter`  | `true`, `false`                                       | `true`               | Toggle supporter tag display                                                            |
+| `team`       | `true`, `false`                                       | `true`               | Toggle team flag display                                                                |
 
 ---
 
@@ -123,8 +119,8 @@ Full stats cards function like the minis, but with more data, with same customis
 
 ## Data Caching
 
-- **Update Frequency:** Data is updated every 5 minutes.
-- **Caching:** Cached data minimizes API requests to osu! servers.
+-   **Update Frequency:** Data is updated every 5 minutes.
+-   **Caching:** Cached data minimizes API requests to osu! servers.
 
 ---
 
