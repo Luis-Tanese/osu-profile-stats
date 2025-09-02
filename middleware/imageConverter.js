@@ -14,12 +14,7 @@ const getBrowser = async () => {
     if (!browserInstance) {
         try {
             const isServerless =
-                process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
-
-            log(
-                `[BROWSER] Environment detection: VERCEL=${process.env.VERCEL}, NODE_ENV=${process.env.NODE_ENV}`
-            );
-            log(`[BROWSER] Using serverless mode: ${!!isServerless}`);
+                process.env.VERCEL;
 
             if (isServerless) {
                 log("[BROWSER] Launching Chrome for serverless environment");
@@ -30,11 +25,7 @@ const getBrowser = async () => {
                     headless: chromium.headless,
                     ignoreHTTPSErrors: true,
                 });
-                log(
-                    "[BROWSER] Chrome launched successfully in serverless mode"
-                );
             } else {
-                // Use regular puppeteer for local development
                 let puppeteerRegular;
                 try {
                     puppeteerRegular = require("puppeteer");
@@ -44,9 +35,7 @@ const getBrowser = async () => {
                     );
                 }
 
-                log("[BROWSER] Launching Chrome for local development");
                 const executablePath = puppeteerRegular.executablePath();
-                log(`[BROWSER] Using Chrome executable: ${executablePath}`);
 
                 browserInstance = await puppeteer.launch({
                     executablePath,
@@ -66,7 +55,6 @@ const getBrowser = async () => {
                     ],
                     timeout: 30000,
                 });
-                log("[BROWSER] Chrome launched successfully in local mode");
             }
         } catch (error) {
             log(`[BROWSER-ERROR] Failed to launch browser: ${error.message}`);
