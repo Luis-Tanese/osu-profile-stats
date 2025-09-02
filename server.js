@@ -12,11 +12,11 @@ const rankGraphRoute = require("./routes/rankGraph.js");
 const app = express();
 
 app.use(
-	cors({
-		origin: "*",
-		methods: ["GET"],
-		allowedHeaders: ["Content-Type"],
-	})
+    cors({
+        origin: "*",
+        methods: ["GET"],
+        allowedHeaders: ["Content-Type"],
+    })
 );
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -31,9 +31,9 @@ app.use("/api/rank-graph", rankGraphRoute);
 
 // I was tired of commenting and uncommenting this bs.
 if (process.env.NODE_ENV !== "production") {
-	app.listen(3000, () => {
-		log("Silly server running @ http://localhost:3000");
-	});
+    app.listen(3000, () => {
+        log("Silly server running @ http://localhost:3000");
+    });
 } else {
-	module.exports = app;
+    module.exports = app;
 }

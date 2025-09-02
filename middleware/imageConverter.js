@@ -1,4 +1,6 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium");
+const puppeteerRegular = require("puppeteer");
 const { log } = require("./utils.js");
 const path = require("path");
 const fs = require("fs");
@@ -12,25 +14,52 @@ let browserInstance = null;
 const getBrowser = async () => {
     if (!browserInstance) {
         try {
-            browserInstance = await puppeteer.launch({
-                headless: "new",
-                args: [
-                    "--no-sandbox",
-                    "--disable-setuid-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-gpu",
-                    "--no-first-run",
-                    "--no-zygote",
-                    "--single-process",
-                    "--disable-extensions",
-                    "--disable-background-timer-throttling",
-                    "--disable-backgrounding-occluded-windows",
-                    "--disable-renderer-backgrounding",
-                ],
-                timeout: 30000,
-            });
+            const isServerless = process.env.NODE_ENV === "production";
+
+            if (isServerless) {
+                log("[BROWSER] Launching Chrome for serverless environment");
+                browserInstance = await puppeteer.launch({
+                    args: chromium.args,
+                    defaultViewport: chromium.defaultViewport,
+                    executablePath: await chromium.executablePath(),
+                    headless: chromium.headless,
+                    ignoreHTTPSErrors: true,
+                });
+                log(
+                    "[BROWSER] Chrome launched successfully in serverless mode"
+                );
+            } else {
+                log("[BROWSER] Launching Chrome for local development");
+                const executablePath = puppeteerRegular.executablePath();
+                log(`[BROWSER] Using Chrome executable: ${executablePath}`);
+
+                browserInstance = await puppeteer.launch({
+                    executablePath,
+                    headless: "new",
+                    args: [
+                        "--no-sandbox",
+                        "--disable-setuid-sandbox",
+                        "--disable-dev-shm-usage",
+                        "--disable-gpu",
+                        "--no-first-run",
+                        "--no-zygote",
+                        "--single-process",
+                        "--disable-extensions",
+                        "--disable-background-timer-throttling",
+                        "--disable-backgrounding-occluded-windows",
+                        "--disable-renderer-backgrounding",
+                    ],
+                    timeout: 30000,
+                });
+                log("[BROWSER] Chrome launched successfully in local mode");
+            }
         } catch (error) {
             log(`[BROWSER-ERROR] Failed to launch browser: ${error.message}`);
+            log(
+                `[BROWSER-ERROR] Environment: ${
+                    process.env.VERCEL ? "Vercel" : "Local"
+                }`
+            );
             throw error;
         }
     }
