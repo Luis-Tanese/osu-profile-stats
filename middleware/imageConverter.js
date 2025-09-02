@@ -1,11 +1,5 @@
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
-let puppeteerRegular;
-try {
-    puppeteerRegular = require("puppeteer");
-} catch (error) {
-    puppeteerRegular = null;
-}
 const { log } = require("./utils.js");
 const path = require("path");
 const fs = require("fs");
@@ -40,7 +34,11 @@ const getBrowser = async () => {
                     "[BROWSER] Chrome launched successfully in serverless mode"
                 );
             } else {
-                if (!puppeteerRegular) {
+                // Use regular puppeteer for local development
+                let puppeteerRegular;
+                try {
+                    puppeteerRegular = require("puppeteer");
+                } catch (error) {
                     throw new Error(
                         "Puppeteer not available for local development. Run: npm install puppeteer"
                     );
