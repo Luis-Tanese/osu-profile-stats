@@ -13,18 +13,18 @@
 </div>
 <br>
 
-This generates SVG cards displaying osu! profile statistics. Customize the cards' appearance and play mode preferences through our [website](https://osu-profile-stats.vercel.app/editor.html), and embed them directly into your osu! profile with BBCode, README files or website.
+This generates customizable cards displaying osu! profile statistics in multiple formats including SVG, PNG, and JPG. Customize the cards' appearance, play mode preferences, and output format through our [website](https://osu-profile-stats.vercel.app/editor), and embed them directly into your osu! profile with BBCode, README files or website.
 
 > [!IMPORTANT]
-> You can create a card at our website so you can have an easier time [here!](https://osu-profile-stats.vercel.app/editor.html)
-> 
+> You can create a card at our website so you can have an easier time [here!](https://osu-profile-stats.vercel.app/editor)
+>
 > I'll be making some updates to the editor from time to time to make it better!
 
 > [!NOTE]
 > I've removed URL parameter instructions on this version of the README, but you can still find instructions for it [here.](https://github.com/Luis-Tanese/osu-profile-stats/blob/main/OLD_README.md)
-> 
-> Reason I've removed it is because doing through the website is much more convenient *(Plus I spent a lot of time on the frontend of the editor XD)*.
-> 
+>
+> Reason I've removed it is because doing through the website is much more convenient _(Plus I spent a lot of time on the frontend of the editor XD)_.
+>
 > Also the old readme will still stay up-to-date with the current API, so no worries on that end.
 >
 > And no, I didn't copy [osu-stats-signature](https://github.com/solstice23/osu-stats-signature). Our codebases are way different, since I made mine from the ground up, plus I made sure that EVERY feature I have works.

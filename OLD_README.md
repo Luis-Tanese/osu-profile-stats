@@ -35,7 +35,11 @@ osu-profile-stats generates SVG cards displaying osu! profile statistics. Custom
 Embed the SVG in your project using an `<img>` tag:
 
 ```html
-<img src="https://osu-profile-stats.vercel.app/api/profile-stats/{username}" height="150" alt="osu stats" />
+<img
+    src="https://osu-profile-stats.vercel.app/api/profile-stats/{username}"
+    height="150"
+    alt="osu stats"
+/>
 ```
 
 > [!NOTE]
@@ -58,6 +62,22 @@ The SVG is customizable through URL parameters:
 | `height`     | any integer                                           | Auto sized           | Set custom card height while maintaining aspect ratio                                   |
 | `supporter`  | `true`, `false`                                       | `true`               | Toggle supporter tag display                                                            |
 | `team`       | `true`, `false`                                       | `true`               | Toggle team flag display                                                                |
+| `imageType`  | `svg`, `png`, `jpg`, `jpeg`                           | `svg`                | Output image format. Use PNG or JPG for better compatibility with some platforms        |
+
+---
+
+### Image Format Examples
+
+Choose different output formats for better compatibility:
+
+| Image Type    | Preview                                                                                            | URL                                                                           |
+| ------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| SVG (default) | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese" alt="SVG" >               | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese`               |
+| PNG           | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=png" alt="PNG" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=png` |
+| JPG           | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=jpg" alt="JPG" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=jpg` |
+
+> [!NOTE]
+> PNG format supports transparency and is ideal for overlaying on other content. JPG format provides smaller file sizes but with a solid background. SVG is the default format and offers the smallest file size with perfect scaling.
 
 ---
 
@@ -103,6 +123,8 @@ Combine parameters for detailed customization:
 | mania + bg3             | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3" alt="mania bg3" >          | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3`               |
 | osu + Color Hex         | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1" alt="osu Hex" > | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1` |
 | Custom height + no team | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?height=150&team=false" alt="osu Hex" >                    | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?height=150&team=false`                       |
+| PNG + custom height     | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=png&height=150" alt="PNG custom" >              | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=png&height=150`                    |
+| JPG + mania + bg2       | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=jpg&playmode=mania&background=bg2" alt="JPG" >  | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?imageType=jpg&playmode=mania&background=bg2` |
 
 ---
 
@@ -114,6 +136,7 @@ Full stats cards function like the minis, but with more data, with same customis
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | full + mania + bg3     | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full" alt="mania bg3 full">          | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=mania&background=bg3&version=full`               |
 | full + osu + Color Hex | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=osu&background=color&hex=11bdb1&version=full" alt="osu Hex full"> | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?playmode=fruits&background=color&hex=11bdb1&version=full` |
+| full + PNG format      | <img src="https://osu-profile-stats.vercel.app/api/profile-stats/tanese?version=full&imageType=png" alt="full PNG">                                | `https://osu-profile-stats.vercel.app/api/profile-stats/tanese?version=full&imageType=png`                               |
 
 ---
 

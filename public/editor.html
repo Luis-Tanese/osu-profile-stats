@@ -79,6 +79,15 @@
 						</div>
 
 						<div class="form-group">
+							<label for="imageType"><i class="fa-solid fa-file-image"></i> Image Format:</label>
+							<select id="imageType">
+								<option value="svg">SVG (Default)</option>
+								<option value="png">PNG</option>
+								<option value="jpg">JPG</option>
+							</select>
+						</div>
+
+						<div class="form-group">
 							<label><i class="fa-solid fa-plus"></i> Extras:</label>
 							<div class="checkbox-group">
 								<label>
@@ -169,7 +178,9 @@
 							</div>
 						</div>
 						<div class="button-group">
+							<button id="download-svg-btn"><i class="fa-solid fa-download"></i> Download SVG</button>
 							<button id="download-png-btn"><i class="fa-solid fa-download"></i> Download PNG</button>
+							<button id="download-jpg-btn"><i class="fa-solid fa-download"></i> Download JPG</button>
 							<button id="copy-png-btn"><i class="fa-solid fa-clipboard"></i> Copy PNG</button>
 						</div>
 					</div>
