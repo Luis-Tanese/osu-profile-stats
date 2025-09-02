@@ -1,6 +1,6 @@
 {
     "name": "osu-profile-stats",
-    "version": "2.2.0",
+    "version": "2.2.2",
     "main": "server.js",
     "scripts": {
         "start": "node server",
@@ -18,7 +18,7 @@
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "ioredis": "^5.4.2",
-        "puppeteer": "^22.0.0"
+        "puppeteer": "^24.18.0"
     },
     "devDependencies": {
         "nodemon": "^3.1.9"
