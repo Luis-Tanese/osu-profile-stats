@@ -1,6 +1,13 @@
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
-const puppeteerRegular = require("puppeteer");
+// Only require puppeteer for local development
+let puppeteerRegular;
+try {
+    puppeteerRegular = require("puppeteer");
+} catch (error) {
+    // puppeteer not available in production, that's fine
+    puppeteerRegular = null;
+}
 const { log } = require("./utils.js");
 const path = require("path");
 const fs = require("fs");
@@ -14,9 +21,17 @@ let browserInstance = null;
 const getBrowser = async () => {
     if (!browserInstance) {
         try {
-            const isServerless = process.env.NODE_ENV === "production";
+            // Check if we're in a serverless environment (Vercel/AWS Lambda)
+            const isServerless =
+                process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
+
+            log(
+                `[BROWSER] Environment detection: VERCEL=${process.env.VERCEL}, NODE_ENV=${process.env.NODE_ENV}`
+            );
+            log(`[BROWSER] Using serverless mode: ${!!isServerless}`);
 
             if (isServerless) {
+                // Use @sparticuz/chromium for serverless environments
                 log("[BROWSER] Launching Chrome for serverless environment");
                 browserInstance = await puppeteer.launch({
                     args: chromium.args,
@@ -29,6 +44,13 @@ const getBrowser = async () => {
                     "[BROWSER] Chrome launched successfully in serverless mode"
                 );
             } else {
+                // Use regular puppeteer for local development
+                if (!puppeteerRegular) {
+                    throw new Error(
+                        "Puppeteer not available for local development. Run: npm install puppeteer"
+                    );
+                }
+
                 log("[BROWSER] Launching Chrome for local development");
                 const executablePath = puppeteerRegular.executablePath();
                 log(`[BROWSER] Using Chrome executable: ${executablePath}`);
