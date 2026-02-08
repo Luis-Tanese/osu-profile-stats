@@ -13,6 +13,10 @@
 </div>
 <br>
 
+> [!IMPORTANT]
+> I am working on a BIG project, that will allow users to customize their cards however they wish, I am still working on making it actually work, then I'll make it nice looking and release for beta because holy moly it is gonna be crazyyyyy.
+> One thing to note, this project will be deprecated after it's successor, but will still be online regardless, trust me, I've been working on it for 2 months now and it is taking a really good shape.
+
 This generates customizable cards displaying osu! profile statistics in multiple formats including SVG, PNG, and JPG. Customize the cards' appearance, play mode preferences, and output format through our [website](https://osu-profile-stats.vercel.app/editor), and embed them directly into your osu! profile with BBCode, README files or website.
 
 > [!IMPORTANT]
@@ -52,3 +56,4 @@ Detailed deployment instructions can be found [here!](https://github.com/Luis-Ta
 ### If you have any issues or questions, feel free to dm me in discord at `tanese`, open an issue in this repository or shoot me an email `luis@tanese.com`.
 
 Made with ♥ by Tanese
+
