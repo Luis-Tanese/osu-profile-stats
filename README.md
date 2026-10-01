@@ -15,7 +15,7 @@
 
 > [!IMPORTANT]
 > I am working on a BIG project, that will allow users to customize their cards however they wish, I am still working on making it actually work, then I'll make it nice looking and release for beta because holy moly it is gonna be crazyyyyy.
-> One thing to note, this project will be deprecated after it's successor is released, but will still be online regardless, trust me, I've been working on it for 2 months now and it is taking a really good shape.
+> One thing to note, this project will be deprecated after it's successor is released, and will be taken offline due to hosting issues, and trust me, I've been working on it for well over a year now and it is taking a really good shape.
 
 This generates customizable cards displaying osu! profile statistics in multiple formats including SVG, PNG, and JPG. Customize the cards' appearance, play mode preferences, and output format through our [website](https://osu-profile-stats.vercel.app/editor), and embed them directly into your osu! profile with BBCode, README files or website.
 
